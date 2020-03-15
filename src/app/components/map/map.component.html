@@ -1,0 +1,13 @@
+
+<h3>Get stations near me</h3>
+<div [formGroup]="positionCompositionForm"style="height: 50px;">
+  <mat-form-field appearance="outline">
+    <mat-label >Distance</mat-label>
+    <input matInput formControlName="distance">
+  </mat-form-field>
+  <button mat-raised-button color="primary" (click)="findNearStations()">Get stations within distance</button>
+</div>
+<div class="map">
+  
+  <div id="map"></div>
+</div>
