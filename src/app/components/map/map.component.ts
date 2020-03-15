@@ -1,8 +1,9 @@
-import { Component, OnInit,Inject } from '@angular/core';
+import { Component, OnInit,Inject, ViewChild } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-//import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-//import {DialogBikeDetail} from '../dialog-showbikedetail'
+import {MatExpansionPanel} from '@angular/material/expansion'
+
+
 
 export interface DialogData {
   animal: string;
@@ -14,7 +15,7 @@ var marker;
 var userMarker;
 var biciMadPerimeter;
 let map;
-
+ 
 
 @Component({
   selector: 'app-map',
@@ -24,6 +25,10 @@ let map;
 export class MapComponent implements OnInit {
   positionCompositionForm: FormGroup;
    userPosition;
+   varmap:MatExpansionPanel;
+   nearestBikeStations:any;
+   @ViewChild("map",{static:true}) map:MatExpansionPanel;
+ @ViewChild("detail",{static:true}) detail:MatExpansionPanel;
   constructor(private _http: HttpClient, private fb: FormBuilder) { }
 
 
@@ -70,15 +75,24 @@ createUserLocationPoint(){
     true,draggable:'false'}).addTo(map);
 }
 
-findNearStations(){
+async findNearStations(){
+  this.detail.open()
   let params={
     'distance':parseFloat(this.positionCompositionForm.get('distance').value),
     'coordinates':'POINT ('+sessionStorage.getItem('lng')+' '+sessionStorage.getItem('lat')+'),4326)'
   }
-  console.log(this.positionCompositionForm.get('distance').value)
-  this._http.post('http://localhost:8081/api/EMTServices/findNearStations',params).subscribe();
+  const data = await this._http.post('http://localhost:8081/api/EMTServices/findNearStations',params).toPromise();
+  if(data){
+   this.nearestBikeStations=data;
+   console.log(this.nearestBikeStations)
+  }else{
+
+  }
 }
 
+getBackToMap(){
+  this.map.open()
+}
 
 getInfo(){
   this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
