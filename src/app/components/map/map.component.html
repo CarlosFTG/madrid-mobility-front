@@ -9,14 +9,33 @@
 <h3>Get stations near me</h3>
 <div [formGroup]="positionCompositionForm"style="height: 50px;">
   <mat-form-field appearance="outline">
-    <mat-label >Distance</mat-label>
-    <input matInput formControlName="distance">
+    <mat-label >Number of results</mat-label>
+    <input matInput formControlName="numberOfResults">
   </mat-form-field>
-  <button mat-raised-button color="primary" (click)="findNearStations()">Get stations within distance</button>
-  <mat-slide-toggle>Slide me!</mat-slide-toggle>
-</div>
-<div class="map">
+  <button mat-raised-button color="primary" (click)="getClosestStation()">Get the closest station</button>
+
+ Available bikes <mat-slide-toggle
+          class="example-margin"
+          [checked]="checked"
+          [disabled]="disabled" (change)="toggleSlide($event)">
+      </mat-slide-toggle> Free docks
   
+  <!-- <mat-slide-toggle (change)="changeToggle($event)"
+  class="example-margin"
+  [color]="color"
+  [checked]="checked">
+Slide me!
+</mat-slide-toggle> -->
+  
+</div>
+<!-- <mat-button-toggle-group #group="matButtonToggleGroup" name="bikeStationToggle" (change)="changeToggle($event)">
+  <mat-button-toggle  >
+  </mat-button-toggle>
+  <mat-button-toggle >
+  </mat-button-toggle>
+</mat-button-toggle-group>  -->
+<div class="map">
+
   <div id="map"></div>
 </div>
 </mat-expansion-panel>
@@ -28,23 +47,26 @@ Detail
 <mat-panel-description>
 </mat-panel-description>
 </mat-expansion-panel-header>
-<p-table [value]="nearestBikeStations">
-  <ng-template pTemplate="header">
-      <tr>
-          <th>Address</th>
-          <th>Available Bikes</th>
-          <th>Free Docks</th>
-          <th>Reservations</th> 
-      </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-bikeStation>
-      <tr>
-          <td>{{bikeStation.address}}</td>
-          <td>{{bikeStation.availableBikes}}</td>
-          <td>{{bikeStation.freeDocks}}</td>
-          <td>{{bikeStation.reservations}}</td> 
-      </tr>
-  </ng-template>
+<p-table [columns]="cols" [value]="nearestBikeStations" selectionMode="single" [(selection)]="selectedStation" dataKey="adress">
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th *ngFor="let col of columns">
+                {{col.header}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+            <td *ngFor="let col of columns" (click)="findNearStations(rowData)">
+                {{rowData[col.field]}} 
+            </td>
+        </tr>
+    </ng-template>
+    <!-- <ng-template pTemplate="summary">
+        <div style="text-align: left">
+            Selected Car: {{selectedCar1 ? selectedCar.vin + ' - ' + selectedCar1.brand + ' - ' + selectedCar1.year + ' - ' + selectedCar1.color: 'none'}}
+        </div>
+    </ng-template> -->
 </p-table>
 <button mat-raised-button color="primary" (click)="getBackToMap()">Get back to map</button>
 </mat-expansion-panel>
