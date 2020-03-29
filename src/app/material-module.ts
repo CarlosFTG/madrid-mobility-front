@@ -5,6 +5,8 @@ import {MatInputModule} from '@angular/material/input';
 import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatTableModule} from '@angular/material/table';
+import {MatDialogModule} from '@angular/material/dialog';
+
 @NgModule({
     exports:[
         MatButtonModule,
@@ -12,7 +14,8 @@ import {MatTableModule} from '@angular/material/table';
         MatInputModule,
         MatSlideToggleModule,
         MatExpansionModule,
-        MatTableModule
+        MatTableModule,
+        MatDialogModule
     ]
 })
 export class MaterialModule{}

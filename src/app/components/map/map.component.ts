@@ -2,8 +2,8 @@ import { Component, OnInit,Inject, ViewChild } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatExpansionPanel} from '@angular/material/expansion'
-//import {MatSpinner} from '@angular/material/progress-spinner';
-
+import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import {DialogComponent} from '../dialog/dialog.component';
 
 export interface DialogData {
   animal: string;
@@ -36,7 +36,7 @@ export class MapComponent implements OnInit {
    //sliderPosition:boolean=true;
    @ViewChild("map",{static:true}) map:MatExpansionPanel;
  @ViewChild("detail",{static:true}) detail:MatExpansionPanel;
-  constructor(private _http: HttpClient, private fb: FormBuilder) { }
+  constructor(private _http: HttpClient, private fb: FormBuilder,public dialog: MatDialog) { }
 
 
   ngOnInit() {
@@ -48,6 +48,7 @@ export class MapComponent implements OnInit {
         this.createForm();
         this.getUserPosition();
         this.createUserLocationPoint();
+        this.openDialog()
 
         this.cols = [
           { field: 'address', header: 'Address' },
@@ -56,6 +57,18 @@ export class MapComponent implements OnInit {
           { field: 'reservations', header: 'Reservations' }
       ];
   }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '600px',
+      //data: {name: this.name, animal: this.animal}
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log('The dialog was closed');
+      
+    });
+  }
+
   createForm(){
     this.positionCompositionForm = new FormGroup({
       'numberOfResults': new FormControl()
@@ -218,4 +231,19 @@ getInfo(){
 }
 }
 
+/* 
+@Component({
+  selector: 'dialog-overview-example-dialog',
+  templateUrl: 'dialog.html',
+})
+export class Dialog {
 
+  constructor(
+    public dialogRef: MatDialogRef<DialogOverviewExampleDialog>,
+     ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+} */

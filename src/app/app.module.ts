@@ -9,10 +9,13 @@ import {HttpClientModule } from '@angular/common/http';
 import { MaterialModule } from './material-module';
 import{BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {TableModule} from 'primeng/table';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { DialogComponent } from './components/dialog/dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
-    MapComponent
+    MapComponent,
+    DialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -21,7 +24,11 @@ import {TableModule} from 'primeng/table';
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialModule,
-    TableModule
+    TableModule,
+    MatProgressSpinnerModule
+  ],
+  entryComponents: [
+    DialogComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]
