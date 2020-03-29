@@ -2,7 +2,7 @@ import { Component, OnInit,Inject, ViewChild } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {MatExpansionPanel} from '@angular/material/expansion'
-
+//import {MatSpinner} from '@angular/material/progress-spinner';
 
 
 export interface DialogData {
@@ -15,7 +15,7 @@ var marker;
 var userMarker;
 var biciMadPerimeter;
 let map;
- 
+
 
 @Component({
   selector: 'app-map',
@@ -32,6 +32,7 @@ export class MapComponent implements OnInit {
    checked = false;
   disabled = false;
   bikeStations= new Array;
+  errorNumberResults=false;
    //sliderPosition:boolean=true;
    @ViewChild("map",{static:true}) map:MatExpansionPanel;
  @ViewChild("detail",{static:true}) detail:MatExpansionPanel;
@@ -74,22 +75,31 @@ getUserPosition(){
 }
 
 async getClosestStation(){
-  let params={
-    'numberOfResults':parseFloat(this.positionCompositionForm.get('numberOfResults').value),
-    'coordinates':'POINT ('+sessionStorage.getItem('lng')+' '+sessionStorage.getItem('lat')+'),3857)'
-  }
-
-  const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations',params).toPromise();
-  if(data){
-   this.nearestBikeStations=data;
-   let lat=this.nearestBikeStations[0].pointsList.coordinates.substring(0,this.nearestBikeStations[0].pointsList.coordinates.indexOf(" "));
-   let lng=this.nearestBikeStations[0].pointsList.coordinates.substring(this.nearestBikeStations[0].pointsList.coordinates.indexOf(" ")+1,this.nearestBikeStations[0].pointsList.coordinates.length);
+  var re = new RegExp("^[1-9]\d*$");
+  if(this.positionCompositionForm.get('numberOfResults').value!=null && re.test(this.positionCompositionForm.get('numberOfResults').value) ){
+    this.errorNumberResults=false;
+    let params={
+      'numberOfResults':parseFloat(this.positionCompositionForm.get('numberOfResults').value),
+      'coordinates':'POINT ('+sessionStorage.getItem('lng')+' '+sessionStorage.getItem('lat')+'),3857)'
+    }
   
-   //map.setView([lng,lat], 20);
-   this.detail.open();
-  }else{
+    const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations',params).toPromise();
+    if(data){
+     this.nearestBikeStations=data;
+     let lat=this.nearestBikeStations[0].pointsList.coordinates.substring(0,this.nearestBikeStations[0].pointsList.coordinates.indexOf(" "));
+     let lng=this.nearestBikeStations[0].pointsList.coordinates.substring(this.nearestBikeStations[0].pointsList.coordinates.indexOf(" ")+1,this.nearestBikeStations[0].pointsList.coordinates.length);
+    
+     this.positionCompositionForm.get('numberOfResults').reset();
+     this.detail.open();
+    }else{
+  
+    }
 
+  }else{
+    this.errorNumberResults=true;
+    this.positionCompositionForm.get('numberOfResults').reset();
   }
+  
 }
 
 toggleSlide(event:any){

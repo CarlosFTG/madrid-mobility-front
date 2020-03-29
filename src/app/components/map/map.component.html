@@ -7,11 +7,13 @@
       </mat-panel-title>
     </mat-expansion-panel-header>
 <h3>Get stations near me</h3>
+<span style="color:red" *ngIf="errorNumberResults">Please, type an integer minor than 10</span>
 <div [formGroup]="positionCompositionForm"style="height: 50px;">
   <mat-form-field appearance="outline">
     <mat-label >Number of results</mat-label>
     <input matInput formControlName="numberOfResults">
   </mat-form-field>
+  
   <button mat-raised-button color="primary" (click)="getClosestStation()">Get the closest station</button>
 
  Available bikes <mat-slide-toggle
@@ -19,21 +21,7 @@
           [checked]="checked"
           [disabled]="disabled" (change)="toggleSlide($event)">
       </mat-slide-toggle> Free docks
-  
-  <!-- <mat-slide-toggle (change)="changeToggle($event)"
-  class="example-margin"
-  [color]="color"
-  [checked]="checked">
-Slide me!
-</mat-slide-toggle> -->
-  
 </div>
-<!-- <mat-button-toggle-group #group="matButtonToggleGroup" name="bikeStationToggle" (change)="changeToggle($event)">
-  <mat-button-toggle  >
-  </mat-button-toggle>
-  <mat-button-toggle >
-  </mat-button-toggle>
-</mat-button-toggle-group>  -->
 <div class="map">
 
   <div id="map"></div>
