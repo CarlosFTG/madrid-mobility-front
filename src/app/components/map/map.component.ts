@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatExpansionPanel } from '@angular/material/expansion'
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
-
+import { LoaadingNearStationsComponent } from '../loaading-near-stations/loaading-near-stations.component';
 export interface DialogData {
   animal: string;
   name: string;
@@ -38,6 +38,7 @@ export class MapComponent implements OnInit {
   @ViewChild("detail", { static: true }) detail: MatExpansionPanel;
   constructor(private _http: HttpClient, private fb: FormBuilder, public dialog: MatDialog) { }
   dialogRef = this.dialog;
+  dialogCalculatingNearStations= this.dialog;
 
   ngOnInit() {
     map = L.map('map').setView([40.4167754, -3.7037902], 13);
@@ -53,7 +54,8 @@ export class MapComponent implements OnInit {
       { field: 'address', header: 'Address' },
       { field: 'availableBikes', header: 'Available bikes' },
       { field: 'freeDocks', header: 'Free docks' },
-      { field: 'reservations', header: 'Reservations' }
+      { field: 'reservations', header: 'Reservations' },
+      { field: 'distance', header: 'Distance' }
     ];
   }
 
@@ -61,14 +63,9 @@ export class MapComponent implements OnInit {
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '600px',
       
-      //data: {name: this.name, animal: this.animal}
     });
     dialogRef.afterClosed().subscribe(result => {
     });
-
-
-
-
   }
 
   createForm() {
@@ -76,17 +73,38 @@ export class MapComponent implements OnInit {
       'numberOfResults': new FormControl()
     });
   }
-
+  openCalculatingNearStationsDialog(): void {
+    const dialogRef = this.dialog.open(LoaadingNearStationsComponent, {
+      width: '600px',
+      
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
+  }
 
   getUserPosition() {
     
     navigator.geolocation.getCurrentPosition(function(location) {
       var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
-      var marker = L.marker(latlng).addTo(map);
+
+      var myIcon = L.icon({
+        iconSize: [41, 51],
+        iconAnchor: [20, 51],
+        popupAnchor: [-3, -76],
+        shadowSize: [68, 95],
+        
+        shadowAnchor: [22, 94]
+      });
+      myIcon.options.iconUrl = 'assets/leaflet/user.png';
+      var marker = L.marker(latlng, {
+        icon: myIcon, clickable:
+          true, draggable: false
+      }).addTo(map);
       globalLatlng=latlng;
     });
   }
   async getClosestStation() {
+    this.openCalculatingNearStationsDialog()
     var re = new RegExp("^[1-9]\d*$");
     if (this.positionCompositionForm.get('numberOfResults').value != null && re.test(this.positionCompositionForm.get('numberOfResults').value)) {
       this.errorNumberResults = false;
@@ -102,6 +120,8 @@ export class MapComponent implements OnInit {
         let lng = this.nearestBikeStations[0].pointsList.coordinates.substring(this.nearestBikeStations[0].pointsList.coordinates.indexOf(" ") + 1, this.nearestBikeStations[0].pointsList.coordinates.length);
 
         this.positionCompositionForm.get('numberOfResults').reset();
+        this.dialogCalculatingNearStations.closeAll();
+        this.dialogCalculatingNearStations.ngOnDestroy();
         this.detail.open();
       } else {
 
@@ -173,7 +193,7 @@ export class MapComponent implements OnInit {
   }
 
   getInfo() {
-    // this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
+     //this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
     this._http.get('https://safe-cliffs-89736.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
       res => {
 
@@ -207,10 +227,11 @@ export class MapComponent implements OnInit {
           coordsArray.push(lng); coordsArray.push(lat);
           marker = L.marker(coordsArray, {
             icon: myIcon, clickable:
-              true, draggable: 'false'
+              true, draggable: false
           }).addTo(map);
         }
         this.dialogRef.closeAll()
+        this.dialogRef.ngOnDestroy();
       }, err => {
       });
   }

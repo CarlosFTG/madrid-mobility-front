@@ -10,11 +10,11 @@
 <span style="color:red" *ngIf="errorNumberResults">Please, type an integer minor than 10</span>
 <div [formGroup]="positionCompositionForm"style="height: 50px;">
   <mat-form-field appearance="outline">
-    <mat-label >Number of results</mat-label>
+    <mat-label >Number of bike stations to be shown</mat-label>
     <input matInput formControlName="numberOfResults">
   </mat-form-field>
   
-  <button mat-raised-button color="primary" (click)="getClosestStation()">Get the closest station</button>
+  <button mat-raised-button color="primary" (click)="getClosestStation()">Get bike stations near me</button>
 
  Available bikes <mat-slide-toggle
           class="example-margin"
@@ -48,14 +48,10 @@ Detail
             <td *ngFor="let col of columns" (click)="findNearStations(rowData)">
                 {{rowData[col.field]}} 
             </td>
+            <td>meters</td>
         </tr>
     </ng-template>
-    <!-- <ng-template pTemplate="summary">
-        <div style="text-align: left">
-            Selected Car: {{selectedCar1 ? selectedCar.vin + ' - ' + selectedCar1.brand + ' - ' + selectedCar1.year + ' - ' + selectedCar1.color: 'none'}}
-        </div>
-    </ng-template> -->
 </p-table>
-<button mat-raised-button color="primary" (click)="getBackToMap()">Get back to map</button>
+<button mat-raised-button color="primary" (click)="getBackToMap()">Go back to map</button>
 </mat-expansion-panel>
 </mat-accordion>
