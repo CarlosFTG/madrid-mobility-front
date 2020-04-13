@@ -2,3 +2,6 @@ div{
     height: 500px;
     width: 100%;
 }
+
+md-autocomplete.autocompletable{ width: 500px; }
+  .autocompletable-contents{ }

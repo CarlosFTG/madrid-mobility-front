@@ -12,12 +12,14 @@ import {TableModule} from 'primeng/table';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { LoaadingNearStationsComponent } from './components/loaading-near-stations/loaading-near-stations.component';
+import { WelcomeDialogComponent } from './components/welcome-dialog/welcome-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
     MapComponent,
     DialogComponent,
     LoaadingNearStationsComponent,
+    WelcomeDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { LoaadingNearStationsComponent } from './components/loaading-near-statio
     MatProgressSpinnerModule
   ],
   entryComponents: [
-    DialogComponent,LoaadingNearStationsComponent
+    DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

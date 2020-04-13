@@ -1,57 +1,75 @@
-
 <mat-accordion>
-  <mat-expansion-panel #map [expanded]=true>
+  <mat-expansion-panel #mapAccordeon [expanded]=true>
     <mat-expansion-panel-header>
       <mat-panel-title>
         Map
       </mat-panel-title>
     </mat-expansion-panel-header>
-<h3>Get stations near me</h3>
-<span style="color:red" *ngIf="errorNumberResults">Please, type an integer minor than 10</span>
-<div [formGroup]="positionCompositionForm"style="height: 50px;">
-  <mat-form-field appearance="outline">
-    <mat-label >Number of bike stations to be shown</mat-label>
-    <input matInput formControlName="numberOfResults">
-  </mat-form-field>
-  
-  <button mat-raised-button color="primary" (click)="getClosestStation()">Get bike stations near me</button>
+    <div class="map">
 
- Available bikes <mat-slide-toggle
-          class="example-margin"
-          [checked]="checked"
-          [disabled]="disabled" (change)="toggleSlide($event)">
-      </mat-slide-toggle> Free docks
-</div>
-<div class="map">
+      <div id="mapLeaflet"></div>
+    </div>
+    <h3>Get stations near me</h3>
+    <span style="color:red" *ngIf="errorNumberResults">Please, type an integer minor than 10</span>
+    <div style="width: 40%; display: table;">
+      <div [formGroup]="positionCompositionForm" style="display: table-cell;">
+        <mat-form-field appearance="outline">
+          <mat-label>Number of bike stations to be shown</mat-label>
+          <input matInput formControlName="numberOfResults">
+        </mat-form-field>
 
-  <div id="map"></div>
-</div>
-</mat-expansion-panel>
-<mat-expansion-panel #detail [expanded]=false>
-<mat-expansion-panel-header>
-<mat-panel-title>
-Detail
-</mat-panel-title>
-<mat-panel-description>
-</mat-panel-description>
-</mat-expansion-panel-header>
-<p-table [columns]="cols" [value]="nearestBikeStations" selectionMode="single" [(selection)]="selectedStation" dataKey="adress">
-    <ng-template pTemplate="header" let-columns>
+        <button mat-raised-button color="primary" (click)="getClosestStation()">Get bike stations near me</button>
+      </div>
+      <div style="display: table-cell;">
+        <div style="width: auto; display: table-cell;">
+        Available bikes <mat-slide-toggle class="example-margin" [checked]="checked" [disabled]="disabled"
+          (change)="toggleSlide($event)">
+        </mat-slide-toggle> Free docks
+      </div>
+      <div class="autocompletable" style="display: table-cell; padding: 20px;">
+        <form class="example-form" [formGroup]="myForm" style="display: table-cell;">
+          <mat-form-field class="example-full-width">
+            <input type="text" placeholder="Find address" aria-label="Number" matInput [formGroup]="myForm"  
+              [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="firstName">
+            <mat-autocomplete lass="autocompletable" #auto="matAutocomplete" (optionSelected)="onChangeStreet($event)">
+              <mat-option *ngFor="let street of filteredStreets | async" [value]="street.wholeAddress">
+                {{street.wholeAddress}}
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </form>
+      </div>
+      </div>
+      
+    </div>
+    
+  </mat-expansion-panel>
+  <mat-expansion-panel #detail [expanded]=false>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Detail
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <p-table [columns]="cols" [value]="nearestBikeStations" selectionMode="single" [(selection)]="selectedStation"
+      dataKey="adress">
+      <ng-template pTemplate="header" let-columns>
         <tr>
-            <th *ngFor="let col of columns">
-                {{col.header}}
-            </th>
+          <th *ngFor="let col of columns">
+            {{col.header}}
+          </th>
         </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr [pSelectableRow]="rowData">
-            <td *ngFor="let col of columns" (click)="findNearStations(rowData)">
-                {{rowData[col.field]}} 
-            </td>
-            <td>meters</td>
+          <td *ngFor="let col of columns" (click)="findNearStations(rowData)">
+            {{rowData[col.field]}}
+          </td>
+          <td>meters</td>
         </tr>
-    </ng-template>
-</p-table>
-<button mat-raised-button color="primary" (click)="getBackToMap()">Go back to map</button>
-</mat-expansion-panel>
+      </ng-template>
+    </p-table>
+    <button mat-raised-button color="primary" (click)="getBackToMap()">Go back to map</button>
+  </mat-expansion-panel>
 </mat-accordion>
