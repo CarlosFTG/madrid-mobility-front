@@ -121,8 +121,8 @@ export class MapComponent implements OnInit {
     let cleanStreet=streetWithOutNumber.substring(streetWithOutNumber.indexOf(' '),streetWithOutNumber.length)
     address=matches[0]+','+cleanStreet+',madrid,spain';
     
-    
-     this._http.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).subscribe(
+    //replace *****with you api key
+     this._http.get('https://www.mapquestapi.com/geocoding/v1/address?key=************&location=' + address).subscribe(
     res => {
 
       var myIcon = L.icon({
