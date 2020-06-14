@@ -13,6 +13,9 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { LoaadingNearStationsComponent } from './components/loaading-near-stations/loaading-near-stations.component';
 import { WelcomeDialogComponent } from './components/welcome-dialog/welcome-dialog.component';
+import { NomadriddialogComponent } from './components/nomadriddialog/nomadriddialog.component';
+import { ErrordialogComponent } from './components/errordialog/errordialog.component';
+import { BikeStationInfoComponent } from './components/bike-station-info/bike-station-info.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,6 +23,9 @@ import { WelcomeDialogComponent } from './components/welcome-dialog/welcome-dial
     DialogComponent,
     LoaadingNearStationsComponent,
     WelcomeDialogComponent,
+    NomadriddialogComponent,
+    ErrordialogComponent,
+    BikeStationInfoComponent,
   ],
   imports: [
     BrowserModule,
@@ -32,7 +38,8 @@ import { WelcomeDialogComponent } from './components/welcome-dialog/welcome-dial
     MatProgressSpinnerModule
   ],
   entryComponents: [
-    DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent
+    DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,
+    NomadriddialogComponent,ErrordialogComponent,BikeStationInfoComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,13 @@
+<h2>It seems that you are not located in Madrid</h2>
+<h3>To have a try to this app, choose any address to be used as your current position</h3>
+<mat-form-field>
+    <mat-label>Addresses</mat-label>
+    <mat-select>
+      <mat-option value="Calle Lope de Vega 8" (click)="setFakeUserPosition('40.41379,-3.69837')">
+        Calle Lope de Vega 9
+      </mat-option>
+      <mat-option value="Calle Palma 40"(click)="setFakeUserPosition(' 40.42652,-3.70524')" [mat-dialog-close]>
+        Calle Palma 40
+      </mat-option>
+    </mat-select>
+  </mat-form-field>

@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild, AfterContentInit, HostListener } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatExpansionPanel } from '@angular/material/expansion'
@@ -7,12 +7,18 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { LoaadingNearStationsComponent } from '../loaading-near-stations/loaading-near-stations.component';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { NomadriddialogComponent } from '../nomadriddialog/nomadriddialog.component';
+import { ErrordialogComponent } from '../errordialog/errordialog.component';
+import { BikeStationInfoComponent } from '../bike-station-info/bike-station-info.component';
 
 
 declare let L;
 var marker;
 let mapLeaflet;
-var globalLatlng
+//var globalLatlng
+var polygon
+var userCity;
+var legend
 
 
 @Component({
@@ -35,14 +41,12 @@ export class MapComponent implements OnInit {
   loadCompleted: boolean = false;
   //sliderPosition:boolean=true;
   filteredStreets: Observable<String[]>
-  /* geoCoderForm=new FormGroup({
-   addressAuto: new FormControl()
- })  */
   myForm: FormGroup;
   addressFinderControl = new FormControl();
+  globalLatlng: object = new Object();
   @ViewChild("mapAccordeon", { static: true }) mapAccordeon: MatExpansionPanel;
   @ViewChild("detail", { static: true }) detail: MatExpansionPanel;
-  
+  @ViewChild("noMadridDialog", { static: true }) noMadridDialog: NomadriddialogComponent;
 
   constructor(private _http: HttpClient, private fb: FormBuilder, public dialog: MatDialog) {
     this.filteredStreets = this.addressFinderControl.valueChanges
@@ -61,12 +65,13 @@ export class MapComponent implements OnInit {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapLeaflet);
+    L.control({position: 'bottomright'});
     this.getInfo();
     this.getStreets();
     this.createForm();
     this.createAddressForm();
     this.getUserPosition();
-    this.openDialog()
+    //this.openDialog();
 
     this.cols = [
       { field: 'address', header: 'Address' },
@@ -111,39 +116,37 @@ export class MapComponent implements OnInit {
     return (objectSelected && objectSelected.wholeAddress ? objectSelected.wholeAddress : '');
   }
 
-   onChangeStreet(event: any) {
-    let address=event.option.value;
+  onChangeStreet(event: any) {
+    let address = event.option.value;
     var matches = address.match(/(\d+)/);
-    //let indexOf=address.indexOf(matches[0])
-    let streetWithOutNumber=address.substring(0,matches.index).trim()+'+';
+    let streetWithOutNumber = address.substring(0, matches.index).trim() + '+';
     let addressSplitted = address.split(" ");
-    streetWithOutNumber+=addressSplitted[0]
-    let cleanStreet=streetWithOutNumber.substring(streetWithOutNumber.indexOf(' '),streetWithOutNumber.length)
-    address=matches[0]+','+cleanStreet+',madrid,spain';
-    
-    
-     this._http.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).subscribe(
-    res => {
+    streetWithOutNumber += addressSplitted[0]
+    let cleanStreet = streetWithOutNumber.substring(streetWithOutNumber.indexOf(' '), streetWithOutNumber.length)
+    address = matches[0] + ',' + cleanStreet + ',madrid,spain';
 
-      var myIcon = L.icon({
-        iconSize: [41, 51],
-        iconAnchor: [20, 51],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
 
-        shadowAnchor: [22, 94]
-      });
-      myIcon.options.iconUrl = 'assets/leaflet/point.png';
-      //@ts-ignore
-      marker = L.marker([res.results[0].locations[0].latLng.lat,res.results[0].locations[0].latLng.lng], {
-        icon: myIcon, clickable:
-          true, draggable: 'false'
-      }).addTo(mapLeaflet);
-      //@ts-ignore
-      mapLeaflet.setView([res.results[0].locations[0].latLng.lat,res.results[0].locations[0].latLng.lng], 22); 
-    }, err => {
-      console.log(err)
-    }
+    this._http.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).subscribe(
+      res => {
+
+        var myIcon = L.icon({
+          iconSize: [41, 51],
+          iconAnchor: [20, 51],
+          popupAnchor: [-3, -76],
+          shadowSize: [68, 95],
+
+          shadowAnchor: [22, 94]
+        });
+        myIcon.options.iconUrl = 'assets/leaflet/point.png';
+        //@ts-ignore
+        marker = L.marker([res.results[0].locations[0].latLng.lat, res.results[0].locations[0].latLng.lng], {
+          icon: myIcon, clickable:
+            true, draggable: 'false'
+        }).addTo(mapLeaflet);
+        //@ts-ignore
+        mapLeaflet.setView([res.results[0].locations[0].latLng.lat, res.results[0].locations[0].latLng.lng], 22);
+      }, err => {
+      }
     )
   }
 
@@ -154,7 +157,8 @@ export class MapComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
     });
-  }
+  };
+
 
   createForm() {
     this.positionCompositionForm = new FormGroup({
@@ -177,38 +181,97 @@ export class MapComponent implements OnInit {
   }
 
   getUserPosition() {
-
+    let http = this._http;
+    let dialog = this.dialog;
+    let lat;
+    let lng;
+    let globalLatlng = this.globalLatlng;
     navigator.geolocation.getCurrentPosition(function (location) {
       var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
 
-      var myIcon = L.icon({
-        iconSize: [41, 51],
-        iconAnchor: [20, 51],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
+      /*  
+        globalLatlng = latlng; */
+      http.get('http://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + latlng.lat + ',' + latlng.lng).subscribe(
+        res => {
+          //@ts-ignore
+          userCity = res.results[0].locations[0].adminArea5;
+          //userCity = 'Bcn'
+          if (userCity !== 'Madrid') {
+            const dialogRef = dialog.open(NomadriddialogComponent, {
+              width: '600px',
 
-        shadowAnchor: [22, 94]
-      });
-      myIcon.options.iconUrl = 'assets/leaflet/user.png';
-      var marker = L.marker(latlng, {
-        icon: myIcon, clickable:
-          true, draggable: false
-      }).addTo(mapLeaflet);
-      globalLatlng = latlng;
+            });
+            dialogRef.afterClosed().subscribe(result => {
+              let coords = result.split(',');
+              let coordsArray = new Array;
+              coordsArray.push(parseFloat(coords[0]));
+              coordsArray.push(parseFloat(coords[1]));
+              var myIcon = L.icon({
+                iconSize: [41, 51],
+                iconAnchor: [20, 51],
+                popupAnchor: [-3, -76],
+                shadowSize: [68, 95],
+
+                shadowAnchor: [22, 94]
+              });
+              myIcon.options.iconUrl = 'assets/leaflet/user.png';
+              //@ts-ignore
+              marker = L.marker(coordsArray, {
+                icon: myIcon, clickable:
+                  true, draggable: 'false'
+              }).addTo(mapLeaflet);
+              //@ts-ignore
+              mapLeaflet.setView(coordsArray, 22);
+              //@ts-ignore
+              globalLatlng.lng = coordsArray[0];
+              //@ts-ignore
+              globalLatlng.lat = coordsArray[1];
+              this.openDialog();
+
+            });
+          } else {
+
+            var myIcon = L.icon({
+              iconSize: [41, 51],
+              iconAnchor: [20, 51],
+              popupAnchor: [-3, -76],
+              shadowSize: [68, 95],
+
+              shadowAnchor: [22, 94]
+            });
+            myIcon.options.iconUrl = 'assets/leaflet/user.png';
+            var marker = L.marker(latlng, {
+              icon: myIcon, clickable:
+                true, draggable: false
+            }).addTo(mapLeaflet);
+
+            mapLeaflet.setView(latlng, 22);
+            //@ts-ignore
+            globalLatlng.lng = latlng.lat;
+            //@ts-ignore
+            globalLatlng.lat = latlng.lng;
+            this.openDialog();
+          }
+        }
+      )
+
+      return globalLatlng;
     });
   }
   async getClosestStation() {
-    this.openCalculatingNearStationsDialog()
     var re = new RegExp("^[1-9]\d*$");
     if (this.positionCompositionForm.get('numberOfResults').value != null && re.test(this.positionCompositionForm.get('numberOfResults').value)) {
       this.errorNumberResults = false;
       let params = {
         'numberOfResults': parseFloat(this.positionCompositionForm.get('numberOfResults').value),
-        'coordinates': 'POINT (' + globalLatlng.lng + ' ' + globalLatlng.lat + '),3857)'
+        //@ts-ignore
+        'coordinates': 'POINT (' + this.globalLatlng.lat + ' ' + this.globalLatlng.lng + '),3857)'
       }
       //const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
-      const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
-      if (data) {
+       const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
+      //@ts-ignore
+      if (data.length>0) {
+        this.openCalculatingNearStationsDialog()
         this.nearestBikeStations = data;
         let lat = this.nearestBikeStations[0].pointsList.coordinates.substring(0, this.nearestBikeStations[0].pointsList.coordinates.indexOf(" "));
         let lng = this.nearestBikeStations[0].pointsList.coordinates.substring(this.nearestBikeStations[0].pointsList.coordinates.indexOf(" ") + 1, this.nearestBikeStations[0].pointsList.coordinates.length);
@@ -218,7 +281,10 @@ export class MapComponent implements OnInit {
         this.dialogCalculatingNearStations.ngOnDestroy();
         this.detail.open();
       } else {
+        const dialogRef = this.dialog.open(LoaadingNearStationsComponent, {
 
+        }).close();
+        this.openErrorDialog();
       }
 
     } else {
@@ -226,6 +292,14 @@ export class MapComponent implements OnInit {
       this.positionCompositionForm.get('numberOfResults').reset();
     }
 
+  }
+  openErrorDialog() {
+    const dialogRef = this.dialog.open(ErrordialogComponent, {
+      width: '600px',
+
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 
   toggleSlide(event: any) {
@@ -288,7 +362,7 @@ export class MapComponent implements OnInit {
 
   getInfo() {
     //this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
-      this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
+       this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
       res => {
 
         var myIcon = L.icon({
@@ -319,10 +393,12 @@ export class MapComponent implements OnInit {
           marker = L.marker(coordsArray, {
             icon: myIcon, clickable:
               true, draggable: false
-          }).addTo(mapLeaflet);
+          }).addTo(mapLeaflet).bindPopup('<h3>Bike station info:</h3>'+
+          '<h4>Address:</h4>'+this.bikeStations[i].address+'<h4>Available bikes:</h4>'+this.bikeStations[i].availableBikes+
+          '<h4>Available docks:</h4>'+this.bikeStations[i].freeDocks+'<h4>Reservations:</h4>'+this.bikeStations[i].reservations);
         }
-        this.dialogRef.closeAll()
-        this.dialogRef.ngOnDestroy();
+        //this.dialogRef.closeAll()
+        //this.dialogRef.ngOnDestroy();
       }, err => {
       });
   }
@@ -332,5 +408,20 @@ export class MapComponent implements OnInit {
     const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
     this.streets = data;
 
+  }
+
+  @HostListener('window:beforeunload', ['$event'])
+  //@ts-ignore
+  beforeUnloadHandler(event) {
+    this._http.get('http://localhost:8081/api/EMTServices/deleteBikeStationRegisters').subscribe();
+  }
+
+  openInfoBikeStation() {
+    const dialogRef = this.dialog.open(BikeStationInfoComponent, {
+      width: '600px',
+
+    });
+    dialogRef.afterClosed().subscribe(result => {
+    });
   }
 }
