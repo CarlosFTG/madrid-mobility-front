@@ -121,32 +121,33 @@ export class MapComponent implements OnInit {
     var matches = address.match(/(\d+)/);
     let streetWithOutNumber = address.substring(0, matches.index).trim() + '+';
     let addressSplitted = address.split(" ");
-    streetWithOutNumber += addressSplitted[0]
-    let cleanStreet = streetWithOutNumber.substring(streetWithOutNumber.indexOf(' '), streetWithOutNumber.length)
-    address = matches[0] + ',' + cleanStreet + ',madrid,spain';
+    streetWithOutNumber+=addressSplitted[0]
+    let cleanStreet=streetWithOutNumber.substring(streetWithOutNumber.indexOf(' '),streetWithOutNumber.length)
+    address=matches[0]+','+cleanStreet+',madrid,spain';
+    
+    //replace *****with you api key
+     this._http.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).subscribe(
+    res => {
 
+      var myIcon = L.icon({
+        iconSize: [41, 51],
+        iconAnchor: [20, 51],
+        popupAnchor: [-3, -76],
+        shadowSize: [68, 95],
 
-    this._http.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).subscribe(
-      res => {
-
-        var myIcon = L.icon({
-          iconSize: [41, 51],
-          iconAnchor: [20, 51],
-          popupAnchor: [-3, -76],
-          shadowSize: [68, 95],
-
-          shadowAnchor: [22, 94]
-        });
-        myIcon.options.iconUrl = 'assets/leaflet/point.png';
-        //@ts-ignore
-        marker = L.marker([res.results[0].locations[0].latLng.lat, res.results[0].locations[0].latLng.lng], {
-          icon: myIcon, clickable:
-            true, draggable: 'false'
-        }).addTo(mapLeaflet);
-        //@ts-ignore
-        mapLeaflet.setView([res.results[0].locations[0].latLng.lat, res.results[0].locations[0].latLng.lng], 22);
-      }, err => {
-      }
+        shadowAnchor: [22, 94]
+      });
+      myIcon.options.iconUrl = 'assets/leaflet/point.png';
+      //@ts-ignore
+      marker = L.marker([res.results[0].locations[0].latLng.lat,res.results[0].locations[0].latLng.lng], {
+        icon: myIcon, clickable:
+          true, draggable: 'false'
+      }).addTo(mapLeaflet);
+      //@ts-ignore
+      mapLeaflet.setView([res.results[0].locations[0].latLng.lat,res.results[0].locations[0].latLng.lng], 22); 
+    }, err => {
+      console.log(err)
+    }
     )
   }
 
@@ -191,7 +192,7 @@ export class MapComponent implements OnInit {
 
       /*  
         globalLatlng = latlng; */
-      http.get('http://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + latlng.lat + ',' + latlng.lng).subscribe(
+      http.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + latlng.lat + ',' + latlng.lng).subscribe(
         res => {
           //@ts-ignore
           userCity = res.results[0].locations[0].adminArea5;
