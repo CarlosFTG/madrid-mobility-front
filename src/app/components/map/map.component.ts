@@ -196,6 +196,8 @@ export class MapComponent implements OnInit {
         res => {
           //@ts-ignore
           userCity = res.results[0].locations[0].adminArea5;
+          //http.post('http://localhost:8081/api/EMTServices/registerVisit',userCity).subscribe();
+         http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
           //userCity = 'Bcn'
           if (userCity !== 'Madrid') {
             const dialogRef = dialog.open(NomadriddialogComponent, {
@@ -268,7 +270,7 @@ export class MapComponent implements OnInit {
         //@ts-ignore
         'coordinates': 'POINT (' + this.globalLatlng.lat + ' ' + this.globalLatlng.lng + '),3857)'
       }
-      //const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
+     // const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
        const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
       //@ts-ignore
       if (data.length>0) {
@@ -411,18 +413,11 @@ export class MapComponent implements OnInit {
 
   }
 
-  @HostListener('window:beforeunload', ['$event'])
+ /*  @HostListener('window:beforeunload', ['$event'])
   //@ts-ignore
   beforeUnloadHandler(event) {
-    this._http.get('http://localhost:8081/api/EMTServices/deleteBikeStationRegisters').subscribe();
-  }
+    //this._http.get('http://localhost:8081/api/EMTServices/deleteBikeStationRegisters').subscribe();
+    this._http.get('floating-reef-24535.herokuapp.com/api/EMTServices/deleteBikeStationRegisters').subscribe();
+  } */
 
-  openInfoBikeStation() {
-    const dialogRef = this.dialog.open(BikeStationInfoComponent, {
-      width: '600px',
-
-    });
-    dialogRef.afterClosed().subscribe(result => {
-    });
-  }
 }
