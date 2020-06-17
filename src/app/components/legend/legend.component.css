@@ -1,0 +1,11 @@
+#container{
+    padding: 20px; background-color:white; border-left: black;
+}
+
+img{
+    float: left;
+}
+
+h3{
+    padding: 1px;
+}

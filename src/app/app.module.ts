@@ -16,6 +16,7 @@ import { WelcomeDialogComponent } from './components/welcome-dialog/welcome-dial
 import { NomadriddialogComponent } from './components/nomadriddialog/nomadriddialog.component';
 import { ErrordialogComponent } from './components/errordialog/errordialog.component';
 import { BikeStationInfoComponent } from './components/bike-station-info/bike-station-info.component';
+import { LegendComponent } from './components/legend/legend.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -26,6 +27,7 @@ import { BikeStationInfoComponent } from './components/bike-station-info/bike-st
     NomadriddialogComponent,
     ErrordialogComponent,
     BikeStationInfoComponent,
+    LegendComponent,
   ],
   imports: [
     BrowserModule,
@@ -41,7 +43,7 @@ import { BikeStationInfoComponent } from './components/bike-station-info/bike-st
     DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,
     NomadriddialogComponent,ErrordialogComponent,BikeStationInfoComponent
   ],
-  providers: [],
+  providers: [LegendComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

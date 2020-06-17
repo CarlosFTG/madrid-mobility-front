@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { NomadriddialogComponent } from '../nomadriddialog/nomadriddialog.component';
 import { ErrordialogComponent } from '../errordialog/errordialog.component';
-import { BikeStationInfoComponent } from '../bike-station-info/bike-station-info.component';
+import { LegendComponent } from '../legend/legend.component';
 
 
 declare let L;
@@ -47,7 +47,7 @@ export class MapComponent implements OnInit {
   @ViewChild("mapAccordeon", { static: true }) mapAccordeon: MatExpansionPanel;
   @ViewChild("detail", { static: true }) detail: MatExpansionPanel;
   @ViewChild("noMadridDialog", { static: true }) noMadridDialog: NomadriddialogComponent;
-
+  @ViewChild(LegendComponent, { static: true }) legendComponent: LegendComponent;
   constructor(private _http: HttpClient, private fb: FormBuilder, public dialog: MatDialog) {
     this.filteredStreets = this.addressFinderControl.valueChanges
       .pipe(
@@ -196,8 +196,8 @@ export class MapComponent implements OnInit {
         res => {
           //@ts-ignore
           userCity = res.results[0].locations[0].adminArea5;
-          //http.post('http://localhost:8081/api/EMTServices/registerVisit',userCity).subscribe();
-         http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
+          http.post('http://localhost:8081/api/EMTServices/registerVisit',userCity).subscribe();
+         //http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
           //userCity = 'Bcn'
           if (userCity !== 'Madrid') {
             const dialogRef = dialog.open(NomadriddialogComponent, {
@@ -270,11 +270,12 @@ export class MapComponent implements OnInit {
         //@ts-ignore
         'coordinates': 'POINT (' + this.globalLatlng.lat + ' ' + this.globalLatlng.lng + '),3857)'
       }
-     // const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
-       const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
+      const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
+      // const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
+      
+      this.openCalculatingNearStationsDialog();
       //@ts-ignore
       if (data.length>0) {
-        this.openCalculatingNearStationsDialog()
         this.nearestBikeStations = data;
         let lat = this.nearestBikeStations[0].pointsList.coordinates.substring(0, this.nearestBikeStations[0].pointsList.coordinates.indexOf(" "));
         let lng = this.nearestBikeStations[0].pointsList.coordinates.substring(this.nearestBikeStations[0].pointsList.coordinates.indexOf(" ") + 1, this.nearestBikeStations[0].pointsList.coordinates.length);
@@ -284,9 +285,7 @@ export class MapComponent implements OnInit {
         this.dialogCalculatingNearStations.ngOnDestroy();
         this.detail.open();
       } else {
-        const dialogRef = this.dialog.open(LoaadingNearStationsComponent, {
-
-        }).close();
+        
         this.openErrorDialog();
       }
 
@@ -331,6 +330,7 @@ export class MapComponent implements OnInit {
             true, draggable: false
         }).addTo(mapLeaflet);
       }
+      this.legendComponent.setBikeOrDot('docks');
     } else {
       for (let i = 0; i < this.bikeStations.length; i++) {
         var lat = this.bikeStations[i].pointsList.coordinates.substring(0, this.bikeStations[i].pointsList.coordinates.indexOf(','));
@@ -349,6 +349,7 @@ export class MapComponent implements OnInit {
             true, draggable: 'false'
         }).addTo(mapLeaflet);
       }
+      this.legendComponent.setBikeOrDot('bikes');
     }
   }
 
@@ -364,8 +365,8 @@ export class MapComponent implements OnInit {
   }
 
   getInfo() {
-    //this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
-       this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
+    this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
+     //  this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
       res => {
 
         var myIcon = L.icon({
@@ -407,8 +408,8 @@ export class MapComponent implements OnInit {
   }
 
   async getStreets() {
-    //const data = await this._http.get('http://localhost:8081/api/EMTServices/getStreets').toPromise();
-    const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
+    const data = await this._http.get('http://localhost:8081/api/EMTServices/getStreets').toPromise();
+    //const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
     this.streets = data;
 
   }

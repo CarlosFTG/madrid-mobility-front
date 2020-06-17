@@ -1,0 +1,10 @@
+<div id="container" >
+    <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img  src="../../../assets/leaflet/green_bike.png" width="20"
+        height="20"><h3>Available {{bikeOrDot}}</h3></div>
+     <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img  src="../../../assets/leaflet/red_bike.png" width="20"
+        height="20"><h3> No Available {{bikeOrDot}}</h3> </div>
+        <div *ngIf="bikeOrDot == 'docks'" id="elements"><img  src="../../../assets/leaflet/green_dot.jpg" width="20"
+            height="20"><h3>Available {{bikeOrDot}}</h3></div>
+         <div *ngIf="bikeOrDot == 'docks'" id="elements"><img  src="../../../assets/leaflet/red_dot.png" width="20"
+            height="20"><h3> No Available {{bikeOrDot}}</h3> </div> 
+</div>
