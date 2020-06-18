@@ -8,6 +8,8 @@ import {MatTableModule} from '@angular/material/table';
 import {MatDialogModule} from '@angular/material/dialog';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSelectModule} from '@angular/material/select';
+import {MatIconModule} from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @NgModule({
     exports:[
@@ -19,7 +21,9 @@ import {MatSelectModule} from '@angular/material/select';
         MatTableModule,
         MatDialogModule,
         MatAutocompleteModule,
-        MatSelectModule
+        MatSelectModule,
+        MatIconModule,
+        MatTooltipModule
     ]
 })
 export class MaterialModule{}

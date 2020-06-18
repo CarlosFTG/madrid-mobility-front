@@ -10,6 +10,7 @@
       <div id="mapLeaflet"><app-legend id="legend"></app-legend></div>
     </div>
     <h3>Get stations near me</h3>
+    <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
     <span style="color:red" *ngIf="errorNumberResults">Please, type an integer minor than 10</span>
     <div style="width: 40%; display: table;">
       <div [formGroup]="positionCompositionForm" style="display: table-cell;">

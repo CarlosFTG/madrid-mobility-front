@@ -197,7 +197,7 @@ export class MapComponent implements OnInit {
           //@ts-ignore
           userCity = res.results[0].locations[0].adminArea5;
           http.post('http://localhost:8081/api/EMTServices/registerVisit',userCity).subscribe();
-         //http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
+        // http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
           //userCity = 'Bcn'
           if (userCity !== 'Madrid') {
             const dialogRef = dialog.open(NomadriddialogComponent, {
@@ -271,7 +271,7 @@ export class MapComponent implements OnInit {
         'coordinates': 'POINT (' + this.globalLatlng.lat + ' ' + this.globalLatlng.lng + '),3857)'
       }
       const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
-      // const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
+     // const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
       
       this.openCalculatingNearStationsDialog();
       //@ts-ignore
@@ -328,7 +328,9 @@ export class MapComponent implements OnInit {
         marker = L.marker(coordsArray, {
           icon: myIcon, clickable:
             true, draggable: false
-        }).addTo(mapLeaflet);
+        }).addTo(mapLeaflet).bindPopup('<h3>Bike station info:</h3>'+
+        '<h4>Address:</h4>'+this.bikeStations[i].address+'<h4>Available bikes:</h4>'+this.bikeStations[i].availableBikes+
+        '<h4>Available docks:</h4>'+this.bikeStations[i].freeDocks+'<h4>Reservations:</h4>'+this.bikeStations[i].reservations);
       }
       this.legendComponent.setBikeOrDot('docks');
     } else {
@@ -347,7 +349,9 @@ export class MapComponent implements OnInit {
         marker = L.marker(coordsArray, {
           icon: myIcon, clickable:
             true, draggable: 'false'
-        }).addTo(mapLeaflet);
+        }).addTo(mapLeaflet).bindPopup('<h3>Bike station info:</h3>'+
+        '<h4>Address:</h4>'+this.bikeStations[i].address+'<h4>Available bikes:</h4>'+this.bikeStations[i].availableBikes+
+        '<h4>Available docks:</h4>'+this.bikeStations[i].freeDocks+'<h4>Reservations:</h4>'+this.bikeStations[i].reservations);
       }
       this.legendComponent.setBikeOrDot('bikes');
     }
@@ -366,7 +370,7 @@ export class MapComponent implements OnInit {
 
   getInfo() {
     this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
-     //  this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
+      // this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
       res => {
 
         var myIcon = L.icon({
@@ -409,7 +413,7 @@ export class MapComponent implements OnInit {
 
   async getStreets() {
     const data = await this._http.get('http://localhost:8081/api/EMTServices/getStreets').toPromise();
-    //const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
+   // const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
     this.streets = data;
 
   }
