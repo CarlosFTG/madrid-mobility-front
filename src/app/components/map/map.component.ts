@@ -14,11 +14,13 @@ import { LegendComponent } from '../legend/legend.component';
 
 declare let L;
 var marker;
+var polygon;
 let mapLeaflet;
 //var globalLatlng
 var polygon
 var userCity;
 var legend
+let maxBounds=[[[-3.8094818592,40.3347849588],[-3.5842621326,40.3347849588],[-3.5842621326,40.51042249],[-3.8094818592,40.51042249],[-3.8094818592,40.3347849588]]]
 
 
 @Component({
@@ -65,6 +67,7 @@ export class MapComponent implements OnInit {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapLeaflet);
+    
     L.control({position: 'bottomright'});
     this.getInfo();
     this.getStreets();
@@ -72,7 +75,7 @@ export class MapComponent implements OnInit {
     this.createAddressForm();
     this.getUserPosition();
     //this.openDialog();
-
+    this.getDistricts();
     this.cols = [
       { field: 'address', header: 'Address' },
       { field: 'availableBikes', header: 'Available bikes' },
@@ -83,6 +86,14 @@ export class MapComponent implements OnInit {
 
 
   }
+
+  /* getCoords(){
+
+    mapLeaflet.addEventListener('click', function(ev) {
+      console.log(ev)
+   });
+    
+  } */
 
   openWelcomeDialog(): void {
     const dialogRef = this.dialog.open(LoaadingNearStationsComponent, {
@@ -196,8 +207,8 @@ export class MapComponent implements OnInit {
         res => {
           //@ts-ignore
           userCity = res.results[0].locations[0].adminArea5;
-          http.post('http://localhost:8081/api/EMTServices/registerVisit',userCity).subscribe();
-        // http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
+        // http.post('http://localhost:8081/api/EMTServices/registerVisit',userCity).subscribe();
+         http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
           //userCity = 'Bcn'
           if (userCity !== 'Madrid') {
             const dialogRef = dialog.open(NomadriddialogComponent, {
@@ -270,8 +281,8 @@ export class MapComponent implements OnInit {
         //@ts-ignore
         'coordinates': 'POINT (' + this.globalLatlng.lat + ' ' + this.globalLatlng.lng + '),3857)'
       }
-      const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
-     // const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
+      //const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
+      const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
       
       this.openCalculatingNearStationsDialog();
       //@ts-ignore
@@ -369,8 +380,8 @@ export class MapComponent implements OnInit {
   }
 
   getInfo() {
-    this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
-      // this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
+  // this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
+       this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
       res => {
 
         var myIcon = L.icon({
@@ -412,11 +423,42 @@ export class MapComponent implements OnInit {
   }
 
   async getStreets() {
-    const data = await this._http.get('http://localhost:8081/api/EMTServices/getStreets').toPromise();
-   // const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
+    //const data = await this._http.get('http://localhost:8081/api/EMTServices/getStreets').toPromise();
+    const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
     this.streets = data;
 
   }
+
+getDistricts(){
+  this._http.get('http://localhost:8081/api/EMTServices/getDistricts').subscribe(
+    res=>{
+      //@ts-ignore
+      for(let i=0;i<res.length;i++){
+         var style = {
+          'color':'null'
+        }; 
+        if(res[i].totalBikes == 0){
+          style.color='grey'
+        }else if(res[i].totalBikes <= 50){
+          style.color='yellow'
+        }else{
+          style.color='blue'
+        } 
+       let polygonAllcoordsPair=new Array;
+       let geom=res[i].geom.substring(16,res[i].geom.length-3);
+      geom=geom.split(',');
+      for(let j=0;j<geom.length;j++){
+        let coordsPair=geom[j].trim().split(' ');
+        let coordsPairArray=new Array;
+        coordsPairArray.push(parseFloat(coordsPair[1]))
+        coordsPairArray.push(parseFloat(coordsPair[0]))
+        polygonAllcoordsPair.push(coordsPairArray)
+      } 
+      polygon=L.polygon(polygonAllcoordsPair,style).addTo(mapLeaflet);
+     } 
+    }
+  )
+}
 
  /*  @HostListener('window:beforeunload', ['$event'])
   //@ts-ignore

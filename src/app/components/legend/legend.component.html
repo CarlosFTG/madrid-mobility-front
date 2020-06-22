@@ -1,10 +1,24 @@
-<div id="container" >
-    <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img  src="assets/leaflet/green_bike.png" width="20"
-        height="20"><h3>Available {{bikeOrDot}}</h3></div>
-     <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img  src="assets/leaflet/red_bike.png" width="20"
-        height="20"><h3> No Available {{bikeOrDot}}</h3> </div>
-        <div *ngIf="bikeOrDot == 'docks'" id="elements"><img  src="assets/leaflet/green_dot.jpg" width="20"
-            height="20"><h3>Available {{bikeOrDot}}</h3></div>
-         <div *ngIf="bikeOrDot == 'docks'" id="elements"><img  src="assets/leaflet/red_dot.png" width="20"
-            height="20"><h3> No Available {{bikeOrDot}}</h3> </div> 
+<div id="container">
+   <strong> <a>Bike station info</a></strong>
+   <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img src="assets/leaflet/green_bike.png" width="20" height="20">
+      <h3>Available {{bikeOrDot}}</h3>
+   </div>
+   <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img src="assets/leaflet/red_bike.png" width="20" height="20">
+      <h3> No Available {{bikeOrDot}}</h3>
+   </div>
+   <div *ngIf="bikeOrDot == 'docks'" id="elements"><img src="assets/leaflet/green_dot.jpg" width="20" height="20">
+      <h3>Available {{bikeOrDot}}</h3>
+   </div>
+   <div *ngIf="bikeOrDot == 'docks'" id="elements"><img src="assets/leaflet/red_dot.png" width="20" height="20">
+      <h3> No Available {{bikeOrDot}}</h3>
+   </div>
+   <strong> <a>Districts info</a></strong><br>
+   <div>
+      <img src="assets/leaflet/grey_dot.png" width="20" height="20">
+      <h3>0 Bikes </h3>
+   </div>
+   <img src="assets/leaflet/yellow_dot.png" width="20" height="20">
+   <h3>Less than 50 bikes</h3>
+   <img src="assets/leaflet/blue_dot.png" width="20" height="20">
+   <h3>More than 50 bikes</h3>
 </div>
