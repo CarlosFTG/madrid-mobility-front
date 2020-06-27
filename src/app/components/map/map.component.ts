@@ -20,8 +20,7 @@ let mapLeaflet;
 var polygon
 var userCity;
 var legend
-let maxBounds=[[[-3.8094818592,40.3347849588],[-3.5842621326,40.3347849588],[-3.5842621326,40.51042249],[-3.8094818592,40.51042249],[-3.8094818592,40.3347849588]]]
-
+let maxBounds = [[[-3.8094818592, 40.3347849588], [-3.5842621326, 40.3347849588], [-3.5842621326, 40.51042249], [-3.8094818592, 40.51042249], [-3.8094818592, 40.3347849588]]]
 
 @Component({
   selector: 'app-map',
@@ -46,6 +45,9 @@ export class MapComponent implements OnInit {
   myForm: FormGroup;
   addressFinderControl = new FormControl();
   globalLatlng: object = new Object();
+  markers: any[] = new Array;
+  markerIcon: any;
+  markerGroup: any
   @ViewChild("mapAccordeon", { static: true }) mapAccordeon: MatExpansionPanel;
   @ViewChild("detail", { static: true }) detail: MatExpansionPanel;
   @ViewChild("noMadridDialog", { static: true }) noMadridDialog: NomadriddialogComponent;
@@ -67,14 +69,14 @@ export class MapComponent implements OnInit {
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(mapLeaflet);
-    
-    L.control({position: 'bottomright'});
+
+    L.control({ position: 'bottomright' });
     this.getInfo();
     this.getStreets();
     this.createForm();
     this.createAddressForm();
     this.getUserPosition();
-    //this.openDialog();
+    this.openDialog();
     this.getDistricts();
     this.cols = [
       { field: 'address', header: 'Address' },
@@ -132,33 +134,33 @@ export class MapComponent implements OnInit {
     var matches = address.match(/(\d+)/);
     let streetWithOutNumber = address.substring(0, matches.index).trim() + '+';
     let addressSplitted = address.split(" ");
-    streetWithOutNumber+=addressSplitted[0]
-    let cleanStreet=streetWithOutNumber.substring(streetWithOutNumber.indexOf(' '),streetWithOutNumber.length)
-    address=matches[0]+','+cleanStreet+',madrid,spain';
-    
+    streetWithOutNumber += addressSplitted[0]
+    let cleanStreet = streetWithOutNumber.substring(streetWithOutNumber.indexOf(' '), streetWithOutNumber.length)
+    address = matches[0] + ',' + cleanStreet + ',madrid,spain';
+
     //replace *****with you api key
-     this._http.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).subscribe(
-    res => {
+    this._http.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).subscribe(
+      res => {
 
-      var myIcon = L.icon({
-        iconSize: [41, 51],
-        iconAnchor: [20, 51],
-        popupAnchor: [-3, -76],
-        shadowSize: [68, 95],
+        var myIcon = L.icon({
+          iconSize: [41, 51],
+          iconAnchor: [20, 51],
+          popupAnchor: [-3, -76],
+          shadowSize: [68, 95],
 
-        shadowAnchor: [22, 94]
-      });
-      myIcon.options.iconUrl = 'assets/leaflet/point.png';
-      //@ts-ignore
-      marker = L.marker([res.results[0].locations[0].latLng.lat,res.results[0].locations[0].latLng.lng], {
-        icon: myIcon, clickable:
-          true, draggable: 'false'
-      }).addTo(mapLeaflet);
-      //@ts-ignore
-      mapLeaflet.setView([res.results[0].locations[0].latLng.lat,res.results[0].locations[0].latLng.lng], 22); 
-    }, err => {
-      console.log(err)
-    }
+          shadowAnchor: [22, 94]
+        });
+        myIcon.options.iconUrl = 'assets/leaflet/point.png';
+        //@ts-ignore
+        marker = L.marker([res.results[0].locations[0].latLng.lat, res.results[0].locations[0].latLng.lng], {
+          icon: myIcon, clickable:
+            true, draggable: 'false'
+        }).addTo(mapLeaflet);
+        //@ts-ignore
+        mapLeaflet.setView([res.results[0].locations[0].latLng.lat, res.results[0].locations[0].latLng.lng], 22);
+      }, err => {
+        console.log(err)
+      }
     )
   }
 
@@ -207,8 +209,8 @@ export class MapComponent implements OnInit {
         res => {
           //@ts-ignore
           userCity = res.results[0].locations[0].adminArea5;
-        // http.post('http://localhost:8081/api/EMTServices/registerVisit',userCity).subscribe();
-         http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
+          http.post('http://localhost:8081/api/EMTServices/registerVisit', userCity).subscribe();
+          // http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit',userCity).subscribe();
           //userCity = 'Bcn'
           if (userCity !== 'Madrid') {
             const dialogRef = dialog.open(NomadriddialogComponent, {
@@ -281,12 +283,12 @@ export class MapComponent implements OnInit {
         //@ts-ignore
         'coordinates': 'POINT (' + this.globalLatlng.lat + ' ' + this.globalLatlng.lng + '),3857)'
       }
-      //const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
-      const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
-      
+      const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
+      // const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
+
       this.openCalculatingNearStationsDialog();
       //@ts-ignore
-      if (data.length>0) {
+      if (data.length > 0) {
         this.nearestBikeStations = data;
         let lat = this.nearestBikeStations[0].pointsList.coordinates.substring(0, this.nearestBikeStations[0].pointsList.coordinates.indexOf(" "));
         let lng = this.nearestBikeStations[0].pointsList.coordinates.substring(this.nearestBikeStations[0].pointsList.coordinates.indexOf(" ") + 1, this.nearestBikeStations[0].pointsList.coordinates.length);
@@ -296,7 +298,7 @@ export class MapComponent implements OnInit {
         this.dialogCalculatingNearStations.ngOnDestroy();
         this.detail.open();
       } else {
-        
+
         this.openErrorDialog();
       }
 
@@ -339,9 +341,9 @@ export class MapComponent implements OnInit {
         marker = L.marker(coordsArray, {
           icon: myIcon, clickable:
             true, draggable: false
-        }).addTo(mapLeaflet).bindPopup('<h3>Bike station info:</h3>'+
-        '<h4>Address:</h4>'+this.bikeStations[i].address+'<h4>Available bikes:</h4>'+this.bikeStations[i].availableBikes+
-        '<h4>Available docks:</h4>'+this.bikeStations[i].freeDocks+'<h4>Reservations:</h4>'+this.bikeStations[i].reservations);
+        }).addTo(mapLeaflet).bindPopup('<h3>Bike station info:</h3>' +
+          '<h4>Address:</h4>' + this.bikeStations[i].address + '<h4>Available bikes:</h4>' + this.bikeStations[i].availableBikes +
+          '<h4>Available docks:</h4>' + this.bikeStations[i].freeDocks + '<h4>Reservations:</h4>' + this.bikeStations[i].reservations);
       }
       this.legendComponent.setBikeOrDot('docks');
     } else {
@@ -360,9 +362,9 @@ export class MapComponent implements OnInit {
         marker = L.marker(coordsArray, {
           icon: myIcon, clickable:
             true, draggable: 'false'
-        }).addTo(mapLeaflet).bindPopup('<h3>Bike station info:</h3>'+
-        '<h4>Address:</h4>'+this.bikeStations[i].address+'<h4>Available bikes:</h4>'+this.bikeStations[i].availableBikes+
-        '<h4>Available docks:</h4>'+this.bikeStations[i].freeDocks+'<h4>Reservations:</h4>'+this.bikeStations[i].reservations);
+        }).addTo(mapLeaflet).bindPopup('<h3>Bike station info:</h3>' +
+          '<h4>Address:</h4>' + this.bikeStations[i].address + '<h4>Available bikes:</h4>' + this.bikeStations[i].availableBikes +
+          '<h4>Available docks:</h4>' + this.bikeStations[i].freeDocks + '<h4>Reservations:</h4>' + this.bikeStations[i].reservations);
       }
       this.legendComponent.setBikeOrDot('bikes');
     }
@@ -380,8 +382,9 @@ export class MapComponent implements OnInit {
   }
 
   getInfo() {
-  // this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
-       this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
+    this.markerGroup = L.layerGroup().addTo(mapLeaflet);
+    this._http.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
+      // this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/checkAvaibility').subscribe(
       res => {
 
         var myIcon = L.icon({
@@ -391,80 +394,103 @@ export class MapComponent implements OnInit {
           shadowSize: [68, 95],
           shadowAnchor: [22, 94]
         });
-
-        //let bikeStations= new Array;
-
         for (let i = 0; i < 214; i++) {
           this.bikeStations.push(res[i]);
         }
-        for (let i = 0; i < this.bikeStations.length; i++) {
-          var lat = this.bikeStations[i].pointsList.coordinates.substring(0, this.bikeStations[i].pointsList.coordinates.indexOf(','));
-          var lng = this.bikeStations[i].pointsList.coordinates.substring(this.bikeStations[i].pointsList.coordinates.indexOf(',') + 1, this.bikeStations[i].pointsList.coordinates.length);
-
-
-          if (this.bikeStations[i].availableBikes > 0) {
-            myIcon.options.iconUrl = 'assets/leaflet/green_bike.png'
-          } else {
-            myIcon.options.iconUrl = 'assets/leaflet/red_bike.png'
-          }
-          var coordsArray = new Array;
-          coordsArray.push(lng); coordsArray.push(lat);
-          marker = L.marker(coordsArray, {
-            icon: myIcon, clickable:
-              true, draggable: false
-          }).addTo(mapLeaflet).bindPopup('<h3>Bike station info:</h3>'+
-          '<h4>Address:</h4>'+this.bikeStations[i].address+'<h4>Available bikes:</h4>'+this.bikeStations[i].availableBikes+
-          '<h4>Available docks:</h4>'+this.bikeStations[i].freeDocks+'<h4>Reservations:</h4>'+this.bikeStations[i].reservations);
-        }
-        //this.dialogRef.closeAll()
-        //this.dialogRef.ngOnDestroy();
+       this.putBikeStationsOnMap(myIcon);
+        //mapLeaflet.layers
+        this.dialogRef.closeAll()
+        this.dialogRef.ngOnDestroy();
       }, err => {
       });
   }
 
   async getStreets() {
-    //const data = await this._http.get('http://localhost:8081/api/EMTServices/getStreets').toPromise();
-    const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
+    const data = await this._http.get('http://localhost:8081/api/EMTServices/getStreets').toPromise();
+    //const data = await this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getStreets').toPromise();
     this.streets = data;
 
   }
 
-getDistricts(){
-  this._http.get('http://localhost:8081/api/EMTServices/getDistricts').subscribe(
-    res=>{
-      //@ts-ignore
-      for(let i=0;i<res.length;i++){
-         var style = {
-          'color':'null'
-        }; 
-        if(res[i].totalBikes == 0){
-          style.color='grey'
-        }else if(res[i].totalBikes <= 50){
-          style.color='yellow'
-        }else{
-          style.color='blue'
-        } 
-       let polygonAllcoordsPair=new Array;
-       let geom=res[i].geom.substring(16,res[i].geom.length-3);
-      geom=geom.split(',');
-      for(let j=0;j<geom.length;j++){
-        let coordsPair=geom[j].trim().split(' ');
-        let coordsPairArray=new Array;
-        coordsPairArray.push(parseFloat(coordsPair[1]))
-        coordsPairArray.push(parseFloat(coordsPair[0]))
-        polygonAllcoordsPair.push(coordsPairArray)
-      } 
-      polygon=L.polygon(polygonAllcoordsPair,style).addTo(mapLeaflet);
-     } 
-    }
-  )
-}
+  getDistricts() {
+    this._http.get('http://localhost:8081/api/EMTServices/getDistricts').subscribe(
+      // this._http.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getDistricts').subscribe(
+      res => {
+        //@ts-ignore
+        for (let i = 0; i < res.length; i++) {
+          var style = {
+            'color': 'null'
+          };
+          if (res[i].totalBikes == 0) {
+            style.color = 'grey'
+          } else if (res[i].totalBikes <= 50) {
+            style.color = 'yellow'
+          } else {
+            style.color = 'blue'
+          }
+          let polygonAllcoordsPair = new Array;
+          let geom = res[i].geom.substring(16, res[i].geom.length - 3);
+          geom = geom.split(',');
+          for (let j = 0; j < geom.length; j++) {
+            let coordsPair = geom[j].trim().split(' ');
+            let coordsPairArray = new Array;
+            coordsPairArray.push(parseFloat(coordsPair[1]))
+            coordsPairArray.push(parseFloat(coordsPair[0]))
+            polygonAllcoordsPair.push(coordsPairArray)
+          }
+          polygon = L.polygon(polygonAllcoordsPair, style).addTo(mapLeaflet);
+        }
+      }
+    )
+  }
 
- /*  @HostListener('window:beforeunload', ['$event'])
-  //@ts-ignore
-  beforeUnloadHandler(event) {
-    //this._http.get('http://localhost:8081/api/EMTServices/deleteBikeStationRegisters').subscribe();
-    this._http.get('floating-reef-24535.herokuapp.com/api/EMTServices/deleteBikeStationRegisters').subscribe();
-  } */
+  detectZoomChange() {
+    let zoomLevel = mapLeaflet.getZoom();
+    if (zoomLevel <= 15) {
+            this.markerGroup.clearLayers();
+            var myIcon = L.icon({
+              iconSize: [21, 31],
+              iconAnchor: [20, 51],
+              popupAnchor: [-3, -76],
+              shadowSize: [68, 95],
+              shadowAnchor: [22, 94]
+            });
+            this.putBikeStationsOnMap(myIcon);
+         
+    } else if (zoomLevel > 15) {
+      this.markerGroup.clearLayers();
+      var myIcon = L.icon({
+        iconSize: [41, 51],
+        iconAnchor: [20, 51],
+        popupAnchor: [-3, -76],
+        shadowSize: [68, 95],
+        shadowAnchor: [22, 94]
+      });
+      this.putBikeStationsOnMap(myIcon);
+    }
+  }
+
+  putBikeStationsOnMap(myIcon) {
+    for (let i = 0; i < this.bikeStations.length; i++) {
+      var lat = this.bikeStations[i].pointsList.coordinates.substring(0, this.bikeStations[i].pointsList.coordinates.indexOf(','));
+      var lng = this.bikeStations[i].pointsList.coordinates.substring(this.bikeStations[i].pointsList.coordinates.indexOf(',') + 1, this.bikeStations[i].pointsList.coordinates.length);
+
+
+      if (this.bikeStations[i].availableBikes > 0) {
+        myIcon.options.iconUrl = 'assets/leaflet/green_bike.png'
+      } else {
+        myIcon.options.iconUrl = 'assets/leaflet/red_bike.png'
+      }
+      var coordsArray = new Array;
+      coordsArray.push(lng); coordsArray.push(lat);
+      marker = L.marker(coordsArray, {
+        icon: myIcon, clickable:
+          true, draggable: false
+      }).addTo(this.markerGroup).bindPopup('<h3>Bike station info:</h3>' +
+        '<h4>Address:</h4>' + this.bikeStations[i].address + '<h4>Available bikes:</h4>' + this.bikeStations[i].availableBikes +
+        '<h4>Available docks:</h4>' + this.bikeStations[i].freeDocks + '<h4>Reservations:</h4>' + this.bikeStations[i].reservations);
+    }
+    var bikeStations = L.layerGroup(this.markers).addTo(mapLeaflet);
+  }
 
 }

@@ -8,7 +8,7 @@
     <div class="map">
       
       <!-- <div id="mapLeaflet" (click)="getCoords()"><app-legend id="legend"></app-legend></div> -->
-      <div id="mapLeaflet"><app-legend id="legend"></app-legend></div>
+      <div id="mapLeaflet" (mousewheel)="detectZoomChange()"><app-legend id="legend"></app-legend></div>
     </div>
     <h3>Get stations near me</h3>
     <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
