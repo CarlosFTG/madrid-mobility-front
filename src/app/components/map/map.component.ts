@@ -10,8 +10,6 @@ import { map, startWith } from 'rxjs/operators';
 import { NomadriddialogComponent } from '../nomadriddialog/nomadriddialog.component';
 import { ErrordialogComponent } from '../errordialog/errordialog.component';
 import { LegendComponent } from '../legend/legend.component';
-import { PanelComponent } from '../panel/panel.component';
-
 
 declare let L;
 var marker;
