@@ -1,27 +1,9 @@
-# MadridMobilityFront
+<h3>Madrid mobility front</h3>
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 9.0.6.
+This an app that displays on a Leaflet map BiciMad's bike stations info, such as available bikes or parking places in real time.
 
-## Development server
+Information is got through a call to the Back-End that I have running in Heroku. In here I use the API-REST service provided by MobilityLabs Madrid to retrieve BiciMad information to be sent to this app, and, at the shame time, to be stored in a DB in order to make PostGis queries to know the closers bike stations to the user or know the amount of available bikes by district.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+More functionalities will be added to this app.
 
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+To have a look to the global project, please visit https://carlosftg.github.io/madrid-mobility
