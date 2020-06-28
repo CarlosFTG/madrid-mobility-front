@@ -1,4 +1,4 @@
-div{
+/* div{
     height: 500px;
     width: 100%;
     z-index: 1;
@@ -13,5 +13,53 @@ div{
   position:absolute;
 }
 
+#panel{
+  border: 1px solid #000000;
+  padding: 10px;
+  width: 100%;
+  height: 50%;
+  display: table;
+  
+}
+
 md-autocomplete.autocompletable{ width: 500px; }
-  .autocompletable-contents{ }
+  .autocompletable-contents{ } */
+
+  #mapLeaflet{
+    height: 1000px;
+    width: 100%;
+    z-index: 1;
+    position: relative;
+}
+
+#legend{
+  float:right;
+  width: 200px;
+  padding: 50px;
+  
+  z-index: 5;
+  position:absolute;
+}
+
+#panel{
+  margin-left: 25px;
+  margin-bottom: 10px;
+  float:left;
+  width: 92%;
+  padding: 50px;
+  background-color:white;
+  z-index: 5;
+  position:absolute;
+  bottom: 10px;
+}
+
+#getStationsForm{
+  display: inline-block;
+    float: left;
+}
+
+#toggle{
+  padding: 30px;
+  display: inline-block;
+    float: rigth;
+}
