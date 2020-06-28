@@ -18,6 +18,7 @@ import { ErrordialogComponent } from './components/errordialog/errordialog.compo
 import { BikeStationInfoComponent } from './components/bike-station-info/bike-station-info.component';
 import { LegendComponent } from './components/legend/legend.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { TabledetailComponent } from './components/tabledetail/tabledetail.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +30,8 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     ErrordialogComponent,
     BikeStationInfoComponent,
     LegendComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    TabledetailComponent
   ],
   imports: [
     BrowserModule,
@@ -43,7 +45,8 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
   ],
   entryComponents: [
     DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,
-    NomadriddialogComponent,ErrordialogComponent,BikeStationInfoComponent
+    NomadriddialogComponent,ErrordialogComponent,BikeStationInfoComponent,
+    TabledetailComponent
   ],
   providers: [LegendComponent],
   bootstrap: [AppComponent]

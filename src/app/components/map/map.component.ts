@@ -10,6 +10,7 @@ import { map, startWith } from 'rxjs/operators';
 import { NomadriddialogComponent } from '../nomadriddialog/nomadriddialog.component';
 import { ErrordialogComponent } from '../errordialog/errordialog.component';
 import { LegendComponent } from '../legend/legend.component';
+import {TabledetailComponent} from '../tabledetail/tabledetail.component'
 
 declare let L;
 var marker;
@@ -33,7 +34,7 @@ export class MapComponent implements OnInit {
   nearestBikeStations: any = new Array;
   streets: any = new Array;
   selectedStation: any;
-  cols: any[];
+  
   checked = false;
   disabled = false;
   bikeStations = new Array;
@@ -49,9 +50,11 @@ export class MapComponent implements OnInit {
   markerGroup: any;
   iconSize: any;
   showDocks: boolean = false;
+  zoomButtontext: String = 'Zoom to my position'
   /* @ViewChild("mapAccordeon", { static: true }) mapAccordeon: MatExpansionPanel;
   @ViewChild("detail", { static: true }) detail: MatExpansionPanel; */
   @ViewChild("noMadridDialog", { static: true }) noMadridDialog: NomadriddialogComponent;
+  @ViewChild("tabledetailComponent", { static: true }) tabledetailComponent: TabledetailComponent;
   @ViewChild(LegendComponent, { static: true }) legendComponent: LegendComponent;
   constructor(private _http: HttpClient, private fb: FormBuilder, public dialog: MatDialog) {
     this.filteredStreets = this.addressFinderControl.valueChanges
@@ -80,13 +83,7 @@ export class MapComponent implements OnInit {
     this.getUserPosition();
     this.openDialog();
     this.getDistricts();
-    this.cols = [
-      { field: 'address', header: 'Address' },
-      { field: 'availableBikes', header: 'Available bikes' },
-      { field: 'freeDocks', header: 'Free docks' },
-      { field: 'reservations', header: 'Reservations' },
-      { field: 'distance', header: 'Distance' }
-    ];
+    
     this.iconSize = [20, 51];
 
   }
@@ -101,7 +98,7 @@ export class MapComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      //disableClose: true, 
+      disableClose: true, 
       width: '600px',
 
     });
@@ -124,7 +121,7 @@ export class MapComponent implements OnInit {
   openCalculatingNearStationsDialog(): void {
     const dialogRef = this.dialog.open(LoaadingNearStationsComponent, {
       width: '600px',
-
+      disableClose: true,
     });
     dialogRef.afterClosed().subscribe(result => {
     });
@@ -178,8 +175,6 @@ export class MapComponent implements OnInit {
               globalLatlng.lng = coordsArray[0];
               //@ts-ignore
               globalLatlng.lat = coordsArray[1];
-              this.openDialog();
-
             });
           } else {
 
@@ -202,7 +197,6 @@ export class MapComponent implements OnInit {
             globalLatlng.lng = latlng.lat;
             //@ts-ignore
             globalLatlng.lat = latlng.lng;
-            this.openDialog();
           }
         }
       )
@@ -219,19 +213,28 @@ export class MapComponent implements OnInit {
         //@ts-ignore
         'coordinates': 'POINT (' + this.globalLatlng.lat + ' ' + this.globalLatlng.lng + '),3857)'
       }
-      const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
-      // const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
+      //const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
+       const data = await this._http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/findClosestStations', params).toPromise();
 
       this.openCalculatingNearStationsDialog();
       //@ts-ignore
       if (data.length > 0) {
         this.nearestBikeStations = data;
+        let nearestBikeStations = JSON.stringify(this.nearestBikeStations);
+        sessionStorage.setItem('nearBikeStations',nearestBikeStations)
         let lat = this.nearestBikeStations[0].pointsList.coordinates.substring(0, this.nearestBikeStations[0].pointsList.coordinates.indexOf(" "));
         let lng = this.nearestBikeStations[0].pointsList.coordinates.substring(this.nearestBikeStations[0].pointsList.coordinates.indexOf(" ") + 1, this.nearestBikeStations[0].pointsList.coordinates.length);
 
         this.positionCompositionForm.get('numberOfResults').reset();
         this.dialogCalculatingNearStations.closeAll();
         this.dialogCalculatingNearStations.ngOnDestroy();
+        const dialogRef = this.dialog.open(TabledetailComponent, {
+          width: '600px',
+    
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(result)
+        });
         //this.detail.open();
       } else {
 
@@ -272,17 +275,6 @@ export class MapComponent implements OnInit {
       this.putBikeStationsOnMap(myIcon);
       this.legendComponent.setBikeOrDot('bikes');
     }
-  }
-
-  async findNearStations(select: any) {
-    let lat = select.pointsList.coordinates.substring(0, select.pointsList.coordinates.indexOf(" "));
-    let lng = select.pointsList.coordinates.substring(select.pointsList.coordinates.indexOf(" ") + 1, select.pointsList.coordinates.length);
-    mapLeaflet.setView([lng, lat], 20);
-    //this.mapAccordeon.open();
-  }
-
-  getBackToMap() {
-    //this.mapAccordeon.open()
   }
 
   _filterAdress(value: string): any[] {
@@ -438,6 +430,11 @@ export class MapComponent implements OnInit {
         }).addTo(mapLeaflet);
         //@ts-ignore
         mapLeaflet.setView([res.results[0].locations[0].latLng.lat, res.results[0].locations[0].latLng.lng], 22);
+        //@ts-ignore
+        this.globalLatlng.lat=res.results[0].locations[0].latLng.lat;
+        //@ts-ignore
+        this.globalLatlng.lng=res.results[0].locations[0].latLng.lng;
+        console.log(this.globalLatlng)
       }, err => {
         console.log(err)
       }
@@ -455,7 +452,7 @@ export class MapComponent implements OnInit {
         } else {
           myIcon.options.iconUrl = 'assets/leaflet/red_bike.png'
         }
-      }else{
+      } else {
         if (this.bikeStations[i].freeDocks > 0) {
           myIcon.options.iconUrl = 'assets/leaflet/green_dot.jpg'
         } else {
@@ -474,5 +471,16 @@ export class MapComponent implements OnInit {
     }
     var bikeStations = L.layerGroup(this.markers).addTo(mapLeaflet);
   }
+  zoomTo() {
+    
 
+    if(this.zoomButtontext === 'Zoom to my position'){
+      this.zoomButtontext = 'Zoom global'
+      //@ts-ignore
+      mapLeaflet.setView([this.globalLatlng.lng,this.globalLatlng.lat ], 22);
+    }else{
+      this.zoomButtontext = 'Zoom to my position'
+      mapLeaflet.setView([40.4167754, -3.7037902], 13);
+    }
+  }
 }

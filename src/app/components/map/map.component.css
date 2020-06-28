@@ -61,5 +61,17 @@ md-autocomplete.autocompletable{ width: 500px; }
 #toggle{
   padding: 30px;
   display: inline-block;
+    float: left;
+}
+
+#addressFinder{
+  padding: 30px;
+  display: inline-block;
+    float: left;
+}
+
+#zoomButton{
+  padding: 30px;
+  display: inline-block;
     float: rigth;
 }

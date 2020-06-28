@@ -1,0 +1,21 @@
+
+    <p-table [columns]="cols" [value]="nearestBikeStations" selectionMode="single" [(selection)]="selectedStation"
+      dataKey="adress">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th *ngFor="let col of columns">
+            {{col.header}}
+          </th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr [pSelectableRow]="rowData">
+          <td *ngFor="let col of columns" (click)="findNearStations(rowData)">
+            {{rowData[col.field]}}
+          </td>
+          <td>meters</td>
+        </tr>
+      </ng-template>
+    </p-table>
+    <button mat-raised-button color="primary"  [mat-dialog-close]>Close</button>
+  
