@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import {GlobalService} from '../../services/global.service';
 
 @Component({
   selector: 'app-legend',
@@ -8,13 +9,23 @@ import { Component, OnInit } from '@angular/core';
 export class LegendComponent implements OnInit {
 
   bikeOrDot:string = 'bikes';
-  constructor() { }
+  checked = false;
+  disabled = false;
+  constructor(private globalService : GlobalService) { }
 
   ngOnInit(): void {
   }
 
   setBikeOrDot(bikeOrDot: string){
     this.bikeOrDot=bikeOrDot;
-  } 
+  }
+
+  toggleSlide(event){
+    if(event.checked){
+      this.globalService.showHeatMap();
+    }else{
+      this.globalService.hideHeatMap();
+    }
+  }
 
 }

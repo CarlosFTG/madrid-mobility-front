@@ -48,7 +48,7 @@ import { TabledetailComponent } from './components/tabledetail/tabledetail.compo
     NomadriddialogComponent,ErrordialogComponent,BikeStationInfoComponent,
     TabledetailComponent
   ],
-  providers: [LegendComponent],
+  providers: [LegendComponent, MapComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

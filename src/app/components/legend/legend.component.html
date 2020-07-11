@@ -1,24 +1,51 @@
-<div id="container">
-   <strong> <a>Bike station info</a></strong>
-   <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img src="assets/leaflet/green_bike.png" width="20" height="20">
-      <h3>Available {{bikeOrDot}}</h3>
+<div id="container" class="container-fluid">
+   <div class="row">
+      <strong> <a class="element">Bike station info</a></strong>
    </div>
-   <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img src="assets/leaflet/red_bike.png" width="20" height="20">
-      <h3> No Available {{bikeOrDot}}</h3>
+   <div class="row">
+      <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img src="assets/leaflet/green_bike.png" width="20" height="20" class="element">
+         <span>Available {{bikeOrDot}}</span>
+      </div>
    </div>
-   <div *ngIf="bikeOrDot == 'docks'" id="elements"><img src="assets/leaflet/green_dot.jpg" width="20" height="20">
-      <h3>Available {{bikeOrDot}}</h3>
+   <div class="row">
+      <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img src="assets/leaflet/red_bike.png" width="20" height="20" class="element">
+         <span> No Available {{bikeOrDot}}</span>
+      </div>
    </div>
-   <div *ngIf="bikeOrDot == 'docks'" id="elements"><img src="assets/leaflet/red_dot.png" width="20" height="20">
-      <h3> No Available {{bikeOrDot}}</h3>
+   <div class="row">
+      <div *ngIf="bikeOrDot == 'docks'" id="elements"><img src="assets/leaflet/green_dot.jpg" width="20" height="20" class="element">
+         <span>Available {{bikeOrDot}}</span>
+      </div>
    </div>
-   <strong> <a>Districts info</a></strong><br>
-   <div>
-      <img src="assets/leaflet/grey_dot.png" width="20" height="20">
-      <h3>0 Bikes </h3>
+
+   <div *ngIf="bikeOrDot == 'docks'" id="elements"><img src="assets/leaflet/red_dot.png" width="20" height="20" class="element">
+      <span> No Available {{bikeOrDot}}</span>
    </div>
-   <img src="assets/leaflet/yellow_dot.png" width="20" height="20">
-   <h3>Less than 50 bikes</h3>
-   <img src="assets/leaflet/blue_dot.png" width="20" height="20">
-   <h3>More than 50 bikes</h3>
+   <div class="row">
+      <strong> <a>Districts info</a></strong><br>
+   </div>
+   <div class="row">
+      <div>
+         <img src="assets/leaflet/grey_dot.png" width="20" height="20" class="element">
+         <span>0 Bikes </span>
+      </div>
+   </div>
+   <div class="row">
+      <img src="assets/leaflet/yellow_dot.png" width="20" height="20" class="element">
+      <span>Less than 50 bikes</span>
+   </div>
+   <div class="row">
+      <img src="assets/leaflet/blue_dot.png" width="20" height="20" class="element">
+      <span>More than 50 bikes</span>
+   </div>
+   <div class="row">
+   <div id="toggle" class="element" >
+      <div >
+        See bikes accidents heat map <mat-slide-toggle class="example-margin" [checked]="checked" [disabled]="disabled"
+          (change)="toggleSlide($event)">
+        </mat-slide-toggle> 
+      </div>
+    </div>
+   </div>
 </div>
+

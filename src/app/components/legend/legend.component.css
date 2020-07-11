@@ -9,3 +9,12 @@ img{
 h3{
     padding: 1px;
 }
+
+.element{
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 15px;
+}
+span{
+    font-size: 15px;
+}

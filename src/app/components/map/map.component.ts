@@ -11,6 +11,7 @@ import { NomadriddialogComponent } from '../nomadriddialog/nomadriddialog.compon
 import { ErrordialogComponent } from '../errordialog/errordialog.component';
 import { LegendComponent } from '../legend/legend.component';
 import {TabledetailComponent} from '../tabledetail/tabledetail.component'
+import {BikeAccidentService} from '../../services/bike-accident.service'
 
 declare let L;
 var marker;
@@ -51,12 +52,14 @@ export class MapComponent implements OnInit {
   iconSize: any;
   showDocks: boolean = false;
   zoomButtontext: String = 'Zoom to my position'
+  accidentsLocationArray = new Array;
+  accidentsheatMap: any;
   /* @ViewChild("mapAccordeon", { static: true }) mapAccordeon: MatExpansionPanel;
   @ViewChild("detail", { static: true }) detail: MatExpansionPanel; */
   @ViewChild("noMadridDialog", { static: true }) noMadridDialog: NomadriddialogComponent;
   @ViewChild("tabledetailComponent", { static: true }) tabledetailComponent: TabledetailComponent;
   @ViewChild(LegendComponent, { static: true }) legendComponent: LegendComponent;
-  constructor(private _http: HttpClient, private fb: FormBuilder, public dialog: MatDialog) {
+  constructor(private _http: HttpClient, private fb: FormBuilder, public dialog: MatDialog, private bikeAccidentService:BikeAccidentService) {
     this.filteredStreets = this.addressFinderControl.valueChanges
       .pipe(
         startWith(''),
@@ -70,19 +73,22 @@ export class MapComponent implements OnInit {
 
   ngOnInit() {
     mapLeaflet = L.map('mapLeaflet').setView([40.4167754, -3.7037902], 13);
+
+   // L.tileLayer('https://wms.qgiscloud.com/CarlosFTG/accidents_heatmap/').addTo(mapLeaflet);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
       minZoom: 13
     }).addTo(mapLeaflet);
 
     L.control({ position: 'bottomright' });
+    //this.getBikeAccidents();
     this.getInfo();
     this.getStreets();
     this.createForm();
     this.createAddressForm();
     this.getUserPosition();
     this.openDialog();
-    this.getDistricts();
+    //this.getDistricts();
     
     this.iconSize = [20, 51];
 
@@ -98,7 +104,7 @@ export class MapComponent implements OnInit {
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogComponent, {
-      disableClose: true, 
+      //disableClose: true, 
       width: '600px',
 
     });
@@ -482,5 +488,32 @@ export class MapComponent implements OnInit {
       this.zoomButtontext = 'Zoom to my position'
       mapLeaflet.setView([40.4167754, -3.7037902], 13);
     }
+  }
+
+  getBikeAccidents(){
+    this.bikeAccidentService.getBikeAccidents().subscribe(
+      data =>{
+        //@ts-ignore
+        for(let i=0; i < data.length;i++){
+          let coordsArray = new Array;
+          let lng =parseFloat( data[i].accidentPoint.substring(7,15).trim());
+          let lat = parseFloat( data[i].accidentPoint.substring(15,data[i].accidentPoint.length-1).trim());
+          coordsArray.push(lat);
+          coordsArray.push(lng);
+          coordsArray.push(25);
+         this. accidentsLocationArray.push(coordsArray);
+        }
+      this.accidentsheatMap =  L.heatLayer(this.accidentsLocationArray, {
+          blur: 20, 
+         // maxZoom: 19, 
+         // gradient: {0.1: 'blue', 0.2: 'lime', 0.4: 'yellow', 0.6: 'yellow', 1: 'red'}
+        }).addTo(mapLeaflet);
+      }
+    )
+  }
+
+  hideHeatMap(){
+    mapLeaflet.removeLayer(this.accidentsheatMap);
+    
   }
 }
