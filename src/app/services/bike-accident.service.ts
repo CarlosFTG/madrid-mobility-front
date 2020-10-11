@@ -2,7 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
-
+import { IBikeAccident } from '../models/interfaces';
+import { BikeAccident } from '../models/models';
+import {map} from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -25,7 +27,7 @@ export class BikeAccidentService {
     return throwError(errorMessage);
   }
 
-  public getBikeAccidents(){
+  public getBikeAccidents(): Observable<any>{
     return this.httpClient.get(this.REST_API_SERVER+'getBikeAccidents').pipe(catchError(this.handleError));
   }
 }

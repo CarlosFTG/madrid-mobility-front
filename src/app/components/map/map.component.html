@@ -1,65 +1,6 @@
-<!-- <mat-accordion>
-  <mat-expansion-panel #mapAccordeon [expanded]=true>
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Map
-      </mat-panel-title>
-    </mat-expansion-panel-header> -->
-<!-- <div class="map"> -->
-
-<!-- <div id="mapLeaflet" (click)="getCoords()"><app-legend id="legend"></app-legend></div> -->
 <div class="container-fluid">
   <div id="mapLeaflet" (mousewheel)="detectZoomChange()" class="row">
     <app-legend id="legend"></app-legend>
-    <!-- <app-panel id="panel" [globalLatlng]="globalLatlng"></app-panel> -->
-    <div id="panel" class="container">
-      <!-- <span style="color:red" *ngIf="errorNumberResults">Please, type an integer minor than 10</span> -->
-      <div class="row">
-        <div id="getStationsForm" >
-          <span>Get bike stations near me</span>
-          <!-- <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon> -->
-          <div [formGroup]="positionCompositionForm" style="display: table-cell;">
-            <mat-form-field appearance="outline">
-              <mat-label>Number of bike stations to be shown</mat-label>
-              <input matInput formControlName="numberOfResults">
-            </mat-form-field>
-            
-          </div>
-          <div  class="col-sm" style="float: right;">
-            <button mat-raised-button color="primary" (click)="getClosestStation()">Get bike stations near
-              me</button><br>
-            <span style="color:red" *ngIf="errorNumberResults">Please, type an integer minor than 10</span>
-          </div>
-
-        </div>
-        <!-- <div id="toggle" style="display: table-cell;" class="col-sm">
-          <div style="width: auto; display: table-cell;">
-            Available bikes <mat-slide-toggle class="example-margin" [checked]="checked" [disabled]="disabled"
-              (change)="toggleSlide($event)">
-            </mat-slide-toggle> Free docks
-          </div>
-        </div> -->
-        <div id="addressFinder" class="autocompletable">
-          <span>Type an address and use as your current position</span>
-          <form class="example-form" [formGroup]="myForm" style="display: table-cell;">
-            <mat-form-field class="example-full-width">
-              <input type="text" placeholder="Find address" aria-label="Number" matInput [formGroup]="myForm"
-                [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="firstName">
-              <mat-autocomplete lass="autocompletable" #auto="matAutocomplete" (optionSelected)="onChangeStreet($event)">
-                <mat-option *ngFor="let street of filteredStreets | async" [value]="street.wholeAddress">
-                  {{street.wholeAddress}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
-        </div>
-        <div id="zoomButton">
-          <button mat-raised-button color="primary" (click)="zoomTo()">{{zoomButtontext}}</button><br>
-        </div>
-      </div>
-      
-      
-    </div>
+    <app-info-card id="panel"></app-info-card>
   </div>
 </div>
-<!-- </div> -->

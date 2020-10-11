@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { InfoCardService } from '../../info-card/services/info-card.service';
 
 @Component({
   selector: 'app-tabledetail',
@@ -9,10 +10,16 @@ export class TabledetailComponent implements OnInit {
   nearestBikeStations: any = new Array;
   cols: any[];
   selectedStation: any;
-  constructor() { }
+  closetsStation: any;
+  constructor(private infoCardService: InfoCardService) { }
 
   ngOnInit(): void {
-    this.nearestBikeStations = JSON.parse(sessionStorage.getItem('nearBikeStations')) ;
+    this.infoCardService.sendClosestsStationsToMap$.subscribe(closetsStations => {
+      if (closetsStations != null) {
+        // console.log(closetsStations)
+         this.closetsStation = closetsStations;
+      }
+    });
     this.cols = [
       { field: 'address', header: 'Address' },
       { field: 'availableBikes', header: 'Available bikes' },

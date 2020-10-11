@@ -19,6 +19,7 @@ import { BikeStationInfoComponent } from './components/bike-station-info/bike-st
 import { LegendComponent } from './components/legend/legend.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { TabledetailComponent } from './components/tabledetail/tabledetail.component';
+import { InfoCardModule } from './info-card/info-card.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,7 +42,8 @@ import { TabledetailComponent } from './components/tabledetail/tabledetail.compo
     BrowserAnimationsModule,
     MaterialModule,
     TableModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    InfoCardModule
   ],
   entryComponents: [
     DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,
