@@ -16,10 +16,10 @@ import { WelcomeDialogComponent } from './components/welcome-dialog/welcome-dial
 import { NomadriddialogComponent } from './components/nomadriddialog/nomadriddialog.component';
 import { ErrordialogComponent } from './components/errordialog/errordialog.component';
 import { BikeStationInfoComponent } from './components/bike-station-info/bike-station-info.component';
-import { LegendComponent } from './components/legend/legend.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
 import { TabledetailComponent } from './components/tabledetail/tabledetail.component';
 import { InfoCardModule } from './info-card/info-card.module';
+import { LegendModule } from './legend/legend.module';
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +30,6 @@ import { InfoCardModule } from './info-card/info-card.module';
     NomadriddialogComponent,
     ErrordialogComponent,
     BikeStationInfoComponent,
-    LegendComponent,
     WelcomeComponent,
     TabledetailComponent
   ],
@@ -43,14 +42,16 @@ import { InfoCardModule } from './info-card/info-card.module';
     MaterialModule,
     TableModule,
     MatProgressSpinnerModule,
-    InfoCardModule
+    InfoCardModule,
+    LegendModule
   ],
   entryComponents: [
     DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,
     NomadriddialogComponent,ErrordialogComponent,BikeStationInfoComponent,
     TabledetailComponent
   ],
-  providers: [LegendComponent, MapComponent],
+  providers: [
+     MapComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

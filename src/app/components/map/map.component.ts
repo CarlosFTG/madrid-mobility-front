@@ -8,7 +8,6 @@ import { LoaadingNearStationsComponent } from '../loaading-near-stations/loaadin
 
 import { NomadriddialogComponent } from '../nomadriddialog/nomadriddialog.component';
 import { ErrordialogComponent } from '../errordialog/errordialog.component';
-import { LegendComponent } from '../legend/legend.component';
 import { TabledetailComponent } from '../tabledetail/tabledetail.component'
 import { BikeAccidentService } from '../../services/bike-accident.service'
 import { InfoCardService } from '../../info-card/services/info-card.service';
@@ -60,7 +59,7 @@ export class MapComponent implements OnInit {
   //@ViewChild("detail", { static: true }) detail: MatExpansionPanel; 
   @ViewChild("noMadridDialog", { static: true }) noMadridDialog: NomadriddialogComponent;
   @ViewChild("tabledetailComponent", { static: true }) tabledetailComponent: TabledetailComponent;
-  @ViewChild(LegendComponent, { static: true }) legendComponent: LegendComponent;
+  //@ViewChild(LegendComponent, { static: true }) legendComponent: LegendComponent;
 
   constructor(private _http: HttpClient, public dialog: MatDialog,
     private bikeAccidentService: BikeAccidentService,
@@ -246,12 +245,12 @@ export class MapComponent implements OnInit {
       this.showDocks = true;
       this.markerGroup.clearLayers();
       this.putBikeStationsOnMap(myIcon);
-      this.legendComponent.setBikeOrDot('docks');
+      //this.legendComponent.setBikeOrDot('docks');
     } else {
       this.showDocks = false;
       this.markerGroup.clearLayers();
       this.putBikeStationsOnMap(myIcon);
-      this.legendComponent.setBikeOrDot('bikes');
+      //this.legendComponent.setBikeOrDot('bikes');
     }
   }
 
