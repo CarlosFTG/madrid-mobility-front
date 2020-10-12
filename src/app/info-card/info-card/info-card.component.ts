@@ -25,6 +25,7 @@ export class InfoCardComponent implements OnInit {
   addressFinderControl = new FormControl();
   zoomButtontext: String = 'Zoom to my position';
   userPosition;
+  mobile: boolean;
 
   constructor(private infoCardService: InfoCardService,
     private mapService: MapService) {
@@ -44,6 +45,11 @@ export class InfoCardComponent implements OnInit {
 
     this.mapService.sendUserPositionToInfoCard$.subscribe(userPosition => {
       this.userPosition = userPosition;
+    });
+
+    this.mapService.sendDevice$.subscribe(mobile => {
+      console.log(mobile)
+      this.mobile = mobile;
     });
   }
 

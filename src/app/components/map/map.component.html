@@ -1,6 +1,4 @@
-<div class="container-fluid">
-  <div id="mapLeaflet" (mousewheel)="detectZoomChange()" class="row">
+  <div id="mapLeaflet" (mousewheel)="detectZoomChange()" style="border: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 100%; width: 100%;">
     <app-legend id="legend"></app-legend>
-    <app-info-card id="panel"></app-info-card>
+    <app-info-card id="panel" class="container"></app-info-card>
   </div>
-</div>

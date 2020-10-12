@@ -1,0 +1,12 @@
+.small-button{
+    width: 150px!important;
+      min-width: 100px!important;
+      font-size: 70%;
+}
+
+.regular-button{
+    width: 200px!important;
+      min-width: 100px!important;
+      font-size: 100%;
+}
+

@@ -1,8 +1,13 @@
-#container{
-    padding: 20px; background-color:white; border-left: black;
+.legend-container{
+    background-color:white; 
+    border-left: black;
 }
 
-img{
+.row{
+    padding: 2%;
+}
+
+/* img{
     float: left;
 }
 
@@ -17,4 +22,4 @@ h3{
 }
 span{
     font-size: 15px;
-}
+} */
