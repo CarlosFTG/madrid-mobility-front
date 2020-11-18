@@ -14,7 +14,7 @@ export class InfoCardService {
   private iconOut = new BehaviorSubject<any[]>(null);
   private zoomToOut = new BehaviorSubject<any[]>(null);
 
-  sendClosestsStationsToMap$ = this.closetsStationsListOut.asObservable();
+  notifyClosestsStations$ = this.closetsStationsListOut.asObservable();
   sendFoundAdressIconToMap$ = this.iconOut.asObservable();
   zoomTo$ = this.zoomToOut.asObservable();
 
@@ -33,9 +33,7 @@ export class InfoCardService {
     return throwError(errorMessage);
   }
 
-  getStreets(): Observable<any>{
-    return this.httpClient.get(this.REST_API_SERVER+'getStreets').pipe(catchError(this.handleError));
-  }
+  
 
   getClosestsStations(params): Observable<any> {
     return this.httpClient.post(this.REST_API_SERVER+'findClosestStations', params).pipe(catchError(this.handleError));
@@ -45,7 +43,7 @@ export class InfoCardService {
     return this.httpClient.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).pipe(catchError(this.handleError));
   }
 
-  sendClosestsStationsToMap(closetsStations: any) {
+  notifyClosestStations(closetsStations: any) {
     this.closetsStationsListOut.next(closetsStations);
   }
 

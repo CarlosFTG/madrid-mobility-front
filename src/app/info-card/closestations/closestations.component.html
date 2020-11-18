@@ -1,0 +1,13 @@
+<div class="box p-5" style="margin-left: 5%;">
+    <div class="text-base font-bold leading-8 mt-6">Get bike stations near me</div>
+    <div class="text-base text-gray-600 mt-1">
+        <div [formGroup]="positionCompositionForm" style="display: table-cell;">
+        <mat-form-field appearance="outline">
+          <mat-label>Number of bike stations to be shown</mat-label>
+          <input matInput formControlName="numberOfResults">
+        </mat-form-field>
+        </div>
+    </div>
+    <div class="text-base text-gray-600 mt-1"><button mat-raised-button color="primary" (click)="getClosestStation()"
+        >Get nearests bike stations </button><br></div>
+</div>

@@ -1,0 +1,16 @@
+<div class="box p-5" style="margin-left: 5%;">
+    <div class="text-base font-bold leading-8 mt-6">Address finder</div>
+    <div class="text-base text-gray-600 mt-1">
+        <form class="example-form" [formGroup]="addressFinderForm" style="display: table-cell;">
+            <mat-form-field style="width: 300px;">
+              <input type="text" placeholder="Find address" aria-label="Number" matInput [formGroup]="addressFinderForm"
+                [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="addressToFind" panelWidth=5>
+              <mat-autocomplete lass="autocompletable" #auto="matAutocomplete" (optionSelected)="onChangeStreet($event)">
+                <mat-option *ngFor="let street of filteredStreets | async" [value]="street.wholeAddress">
+                  {{street.wholeAddress}}
+                </mat-option>
+              </mat-autocomplete>
+            </mat-form-field>
+          </form>
+    </div>
+</div>

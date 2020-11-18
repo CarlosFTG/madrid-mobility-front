@@ -10,3 +10,12 @@
       font-size: 100%;
 }
 
+.info-card{
+  margin-left: 25%;
+  margin-top: 35%;
+  /* margin-bottom: 2%; */
+  /* height: 20%;  */
+  z-index: 5;
+  position: absolute;
+  /* width: 50%; */
+ }

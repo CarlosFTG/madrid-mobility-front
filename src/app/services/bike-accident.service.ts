@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, shareReplay } from 'rxjs/operators';
-import { IBikeAccident } from '../models/interfaces';
-import { BikeAccident } from '../models/models';
+//import { IBikeAccident } from '../models/interfaces';
+//mport { BikeAccident } from '../models/models';
 @Injectable({
   providedIn: 'root'
 })

@@ -9,10 +9,10 @@ export class GlobalService {
   constructor(private mapComponent : MapComponent) { }
 
   showHeatMap(){
-    this.mapComponent.getBikeAccidents();
+    //this.mapComponent.getBikeAccidents();
   }
 
   hideHeatMap(){
-    this.mapComponent.hideHeatMap();
+    //this.mapComponent.hideHeatMap();
   }
 }

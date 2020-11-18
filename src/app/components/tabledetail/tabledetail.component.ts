@@ -14,7 +14,7 @@ export class TabledetailComponent implements OnInit {
   constructor(private infoCardService: InfoCardService) { }
 
   ngOnInit(): void {
-    this.infoCardService.sendClosestsStationsToMap$.subscribe(closetsStations => {
+    this.infoCardService.notifyClosestsStations$.subscribe(closetsStations => {
       if (closetsStations != null) {
         // console.log(closetsStations)
          this.closetsStation = closetsStations;

@@ -17,31 +17,19 @@ declare let L;
 export class InfoCardComponent implements OnInit {
 
   streets: any = new Array;
-  filteredStreets: Observable<String[]>
   myForm: FormGroup;
-  positionCompositionForm: FormGroup;
   errorNumberResults = false;
-  nearestBikeStations: any = new Array;
-  addressFinderControl = new FormControl();
   zoomButtontext: String = 'Zoom to my position';
   userPosition;
   mobile: boolean;
 
   constructor(private infoCardService: InfoCardService,
     private mapService: MapService) {
-    this.filteredStreets = this.addressFinderControl.valueChanges
-      .pipe(
-        startWith(''),
-        map(value => this._filterAdress(value))
-
-      );
   }
 
   ngOnInit(): void {
 
-    this.getStreets();
     this.createAddressForm();
-    this.createForm();
 
     this.mapService.sendUserPositionToInfoCard$.subscribe(userPosition => {
       this.userPosition = userPosition;
@@ -59,52 +47,6 @@ export class InfoCardComponent implements OnInit {
     });
   }
 
-  createForm() {
-    this.positionCompositionForm = new FormGroup({
-      'numberOfResults': new FormControl(),
-    });
-  }
-
-  async getStreets() {
-    this.infoCardService.getStreets().subscribe(
-      data => {
-        this.streets = data;
-      }
-    );
-
-  }
-
-  getClosestStation() {
-    var re = new RegExp("^[1-9]\d*$");
-    if (this.positionCompositionForm.get('numberOfResults').value != null && re.test(this.positionCompositionForm.get('numberOfResults').value)) {
-      this.errorNumberResults = false;
-
-      let params = {
-        'numberOfResults': parseFloat(this.positionCompositionForm.get('numberOfResults').value),
-        //@ts-ignore
-        'coordinates': 'POINT (' + this.userPosition.lat + ' ' + this.userPosition.lng + '),3857)'
-      }
-      //const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
-      this.nearestBikeStations = this.infoCardService.getClosestsStations(params).subscribe(
-        data => {
-          this.nearestBikeStations = data;
-          //@ts-ignore
-          if (this.nearestBikeStations.length > 0) {
-            this.infoCardService.sendClosestsStationsToMap(this.nearestBikeStations);
-             this.positionCompositionForm.get('numberOfResults').reset();
-          } else {
-
-          }
-        }
-      );
-
-
-    } else {
-      this.errorNumberResults = true;
-      this.positionCompositionForm.get('numberOfResults').reset();
-    }
-
-  }
 
   zoomTo() {
 

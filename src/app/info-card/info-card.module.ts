@@ -3,10 +3,12 @@ import { CommonModule } from '@angular/common';
 import { InfoCardComponent } from './info-card/info-card.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material-module';
+import { ClosestationsComponent } from './closestations/closestations.component';
+import { AdressFinderComponent } from './adress-finder/adress-finder.component';
 
 
 @NgModule({
-  declarations: [InfoCardComponent],
+  declarations: [InfoCardComponent, ClosestationsComponent, AdressFinderComponent],
   imports: [
     CommonModule,ReactiveFormsModule, MaterialModule
   ],
