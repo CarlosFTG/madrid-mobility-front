@@ -77,6 +77,8 @@ export class BikesLayerService {
         let bikeStationFeature = new Feature({
           geometry: new Point(bikeStationCoords)
         });
+
+        bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks });
   
         this.styleService.applyStyleToMarker(bikeStationFeature,bikeStation);
         this.bikeStationsCollection.push(bikeStationFeature);

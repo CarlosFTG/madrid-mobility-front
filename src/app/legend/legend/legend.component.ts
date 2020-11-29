@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GlobalService } from '../../services/global.service';
+import { StyleService } from 'src/app/services/style.service';
 @Component({
   selector: 'app-legend',
   templateUrl: './legend.component.html',
@@ -7,25 +7,33 @@ import { GlobalService } from '../../services/global.service';
 })
 export class LegendComponent implements OnInit {
 
-  bikeOrDot:string = 'bikes';
+  bikesOrSlots:string = 'bikes';
   checked = false;
   disabled = false;
 
-  constructor(private globalService: GlobalService) { }
+  constructor(private styleService: StyleService) { }
 
   ngOnInit(): void {
   }
 
   setBikeOrDot(bikeOrDot: string){
-    this.bikeOrDot=bikeOrDot;
-  }
-
-  toggleSlide(event){
-    if(event.checked){
-      this.globalService.showHeatMap();
+    
+    //@ts-ignore
+    if(bikeOrDot.checked){
+      this.bikesOrSlots='slots';
+      this.styleService.changeBikeMarkerStyle( 'slot');
     }else{
-      this.globalService.hideHeatMap();
+      this.bikesOrSlots='bikes';
+      this.styleService.changeBikeMarkerStyle( 'bikes');
     }
   }
+
+  // toggleSlide(event){
+  //   if(event.checked){
+  //     this.globalService.showHeatMap();
+  //   }else{
+  //     this.globalService.hideHeatMap();
+  //   }
+  // }
 
 }
