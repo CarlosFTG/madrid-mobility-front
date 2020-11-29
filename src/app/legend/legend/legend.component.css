@@ -1,25 +1,14 @@
 .legend-container{
-    background-color:white; 
-    border-left: black;
+    margin-left: 80%;
+  margin-top: 5%;
+  background: white;
+  border-radius: 5%;
+  z-index: 5;
+  position: absolute;
+  padding: 2%;
+  width: 18%;
 }
 
 .row{
     padding: 2%;
 }
-
-/* img{
-    float: left;
-}
-
-h3{
-    padding: 1px;
-}
-
-.element{
-    margin-top: 5px;
-    margin-bottom: 5px;
-    font-size: 15px;
-}
-span{
-    font-size: 15px;
-} */

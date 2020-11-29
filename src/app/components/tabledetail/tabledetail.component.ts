@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MapService } from 'src/app/services/map.service';
+import { RoutesService } from 'src/app/services/routes.service';
 import { InfoCardService } from '../../info-card/services/info-card.service';
 
 @Component({
@@ -11,12 +13,11 @@ export class TabledetailComponent implements OnInit {
   cols: any[];
   selectedStation: any;
   closetsStation: any;
-  constructor(private infoCardService: InfoCardService) { }
+  constructor(private infoCardService: InfoCardService, private mapService : MapService, private routeService: RoutesService) { }
 
   ngOnInit(): void {
     this.infoCardService.notifyClosestsStations$.subscribe(closetsStations => {
       if (closetsStations != null) {
-        // console.log(closetsStations)
          this.closetsStation = closetsStations;
       }
     });
@@ -29,10 +30,11 @@ export class TabledetailComponent implements OnInit {
     ];
   }
   async findNearStations(select: any) {
-    /* let lat = select.pointsList.coordinates.substring(0, select.pointsList.coordinates.indexOf(" "));
+    let lat = select.pointsList.coordinates.substring(0, select.pointsList.coordinates.indexOf(" "));
     let lng = select.pointsList.coordinates.substring(select.pointsList.coordinates.indexOf(" ") + 1, select.pointsList.coordinates.length);
-    mapLeaflet.setView([lng, lat], 20); */
-    //this.mapAccordeon.open();
+    let setViewPoint = 'POINT(' + lat + ' ' + lng+ ')';
+    this.routeService.getRoute(select.address);
+    this.mapService.updateMapViewCenter(setViewPoint);
   }
 
   getBackToMap() {

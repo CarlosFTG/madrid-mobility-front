@@ -56,6 +56,7 @@ export class BikesLayerService {
 
   getBikeStations(){
     this.httpClient.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
+    //this.httpClient.get(this.REST_API_SERVER+'checkAvaibility').subscribe(
       res =>{
         this.response = res;
         this.createBikeStationsFeatures();

@@ -10,7 +10,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">
         <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns" (click)="findNearStations(rowData)" role="button">
+          <td *ngFor="let col of columns" (click)="findNearStations(rowData)" role="button" [mat-dialog-close]>
             {{rowData[col.field]}}
           </td>
           <td>meters</td>

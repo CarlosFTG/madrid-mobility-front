@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 
 @Component({
@@ -7,4 +8,12 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'madrid-mobility-front';
+
+  constructor(private httpClient: HttpClient){
+
+  }
+
+  ngOnInit(): void {
+    this.httpClient.get('http://localhost:8081/api/EMTServices/login').subscribe();
+  }
 }

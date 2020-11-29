@@ -14,6 +14,7 @@ import { InfoCardService } from '../../info-card/services/info-card.service';
 import { MapService } from '../../services/map.service';
 import { BikesLayerService } from 'src/app/services/bikes-layer.service';
 import { UserService } from 'src/app/services/user.service';
+import { DistrictsService } from 'src/app/services/districts.service';
 
 declare let L;
 var marker;
@@ -32,7 +33,7 @@ let maxBounds = [[[-3.8094818592, 40.3347849588], [-3.5842621326, 40.3347849588]
 })
 export class MapComponent implements OnInit {
 
-  constructor(private mapService: MapService, private bikesLayerService: BikesLayerService, private userService:UserService){
+  constructor(private mapService: MapService, private bikesLayerService: BikesLayerService, private userService:UserService, private districtsService: DistrictsService){
 
   }
 

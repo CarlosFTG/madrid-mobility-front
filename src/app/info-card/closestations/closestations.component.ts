@@ -79,6 +79,7 @@ export class ClosestationsComponent implements OnInit {
        width: '600px',
      });
      dialogRef.afterClosed().subscribe(result => {
+       console.log(result)
         });
    }
 

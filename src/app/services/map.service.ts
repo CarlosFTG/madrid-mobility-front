@@ -83,7 +83,6 @@ export class MapService {
     this.viewCoordinates = new String;
     
     this.viewCoordinates = viewCoordinates;
-    console.log(this.viewCoordinates)
     this.view = new View({
       center: this.format.readFeature(this.viewCoordinates, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).getGeometry().getCoordinates(),
       zoom: 17,

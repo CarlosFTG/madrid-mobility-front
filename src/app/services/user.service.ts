@@ -36,24 +36,27 @@ export class UserService {
 
   getUserPosition() {
     let http = this.httpClient;
-    //let dialog = this.dialog;
-    let lat;
-    let lng;
     let userCity = this.userCity;
-    //let globalLatlng = this.globalLatlng;
     let mapService = this.mapService;
     let format = this.format;
     let assets_base = this.assets_base;
     let notifyUserPosition = this.notifyUserPosition;
-    let userPosition;
     navigator.geolocation.getCurrentPosition(function (location) {
-      //var latlng = new L.LatLng(location.coords.latitude, location.coords.longitude);
+      var lat = location.coords.latitude;
+      var lng = location.coords.longitude;
+      
 
+      let locationObj = {
+        'lat:':lat,
+        'lng': lng
+      }
       /*  
         globalLatlng = latlng; */
       http.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + location.coords.latitude + ',' + location.coords.longitude).subscribe(
         res => {
           let markerStyle = [];
+          //@ts-ignore
+          localStorage.setItem('userLocationAddress',res.results[0].locations[0].street)
           //@ts-ignore
           mapService.sendUserPositionToInfoCard(res.results[0].providedLocation.latLng);
 
@@ -94,6 +97,16 @@ export class UserService {
                 width: 0
               })
             })
+          }),
+          new Style({
+            image: new IconStyle(({
+              anchor: [16, 70],
+              anchorXUnits: 'pixels',
+              anchorYUnits: 'pixels',
+              opacity: 1,
+              src: 'assets/img/iconmonstr-user-6-32.png',
+              snapToPixel: false
+            }))
           })
           );
 
@@ -158,11 +171,7 @@ export class UserService {
         }
       )
 
-      //return globalLatlng;
+      return locationObj;
     });
-  }
-
-  addLocationToMap() {
-
   }
 }

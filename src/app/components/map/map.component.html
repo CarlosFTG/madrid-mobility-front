@@ -2,8 +2,7 @@
   <div #mapElement id="map" class="map"
   style="border: none; position: absolute; top: 0; left: 0; right: 0; bottom: 0; height: 100%; width: 100%;"
   (click)="selectOnMap($event)" (mousewheel)="detectZoomChange()">
-  <!-- <div > -->
-    <app-info-card class="app"></app-info-card>
-  <!-- </div> -->
+  <app-legend></app-legend>
+    <app-info-card></app-info-card>
 </div>
 </div>

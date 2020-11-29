@@ -103,6 +103,19 @@ export class StyleService {
           })
         )
       }
+      markerStyle.push(
+        new Style({
+          image: new IconStyle(({
+            anchor: [16, 70],
+            anchorXUnits: 'pixels',
+            anchorYUnits: 'pixels',
+            opacity: 1,
+            src: this.assets_base + 'iconmonstr-bicycle-1-32.png',
+            snapToPixel: false
+          }))
+        })
+      );
+      
       bikeStationFeature.setStyle(markerStyle);
     }
 
@@ -160,16 +173,6 @@ export class StyleService {
               offsetY: 4,
             })
           }),
-          // new Style({
-          //   image: new IconStyle(({
-          //     anchor: [21, 70],
-          //     anchorXUnits: 'pixels',
-          //     anchorYUnits: 'pixels',
-          //     opacity: 1,
-          //     src: this.assets_base + 'bike_icon.jpg',
-          //     snapToPixel: false
-          //   }))
-          // })
         )
       
       foundAddressFeature.setStyle(markerStyle);
