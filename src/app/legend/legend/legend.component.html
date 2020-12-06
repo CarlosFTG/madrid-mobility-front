@@ -3,24 +3,24 @@
        <strong> <a class="element">Bike station info</a></strong>
     </div>
     <div class="row">
-       <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img src="assets/leaflet/green_bike.png" width="20" height="20" class="element">
-          <span>Available {{bikeOrDot}}</span>
+       <div  id="elements"><img src="assets/img/vehicle_color_1.png" width="20" height="20" class="element">
+          <span>Available {{bikesOrSlots}}</span>
        </div>
     </div>
     <div class="row">
-       <div *ngIf="bikeOrDot == 'bikes'" id="elements"><img src="assets/leaflet/red_bike.png" width="20" height="20" class="element">
-          <span> No Available {{bikeOrDot}}</span>
+       <div  id="elements"><img src="assets/img/vehicle_color_2.png" width="20" height="20" class="element">
+          <span> No Available {{bikesOrSlots}}</span>
        </div>
     </div>
     <div class="row">
-       <div *ngIf="bikeOrDot == 'docks'" id="elements"><img src="assets/leaflet/green_dot.jpg" width="20" height="20" class="element">
-          <span>Available {{bikeOrDot}}</span>
+      <div id="toggle" class="element" >
+         <div >
+           Watch available {{bikesOrSlots}} <mat-slide-toggle class="example-margin" [checked]="checked" [disabled]="disabled"
+             (change)="setBikeOrDot($event)">
+           </mat-slide-toggle> 
+         </div>
        </div>
-    </div>
- 
-    <div *ngIf="bikeOrDot == 'docks'" id="elements"><img src="assets/leaflet/red_dot.png" width="20" height="20" class="element">
-       <span> No Available {{bikeOrDot}}</span>
-    </div>
+      </div>
     <div class="row">
        <strong> <a>Districts info</a></strong><br>
     </div>
@@ -48,13 +48,5 @@
      </div>
     </div> -->
 
-    <div class="row">
-      <div id="toggle" class="element" >
-         <div >
-           Watch available {{bikesOrSlots}} <mat-slide-toggle class="example-margin" [checked]="checked" [disabled]="disabled"
-             (change)="setBikeOrDot($event)">
-           </mat-slide-toggle> 
-         </div>
-       </div>
-      </div>
+    
  </div>

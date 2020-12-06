@@ -64,7 +64,7 @@ export class BikesLayerService {
     )
   }
 
-  createBikeStationsFeatures(){
+  createBikeStationsFeatures(bikeOrSlot?: string){
     this.response.forEach(bikeStation =>{
 
       let splitCoords = bikeStation.pointsList.coordinates.split(',');
@@ -80,7 +80,12 @@ export class BikesLayerService {
 
         bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks });
   
-        this.styleService.applyStyleToMarker(bikeStationFeature,bikeStation);
+        if(bikeOrSlot === undefined){
+          this.styleService.applyStyleToMarker(bikeStationFeature,bikeStation);
+        }else{
+          this.styleService.applyStyleToMarker(bikeStationFeature,bikeStation, bikeOrSlot);
+        }
+        
         this.bikeStationsCollection.push(bikeStationFeature);
     })
 

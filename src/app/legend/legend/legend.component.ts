@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BikesLayerService } from 'src/app/services/bikes-layer.service';
 import { StyleService } from 'src/app/services/style.service';
 @Component({
   selector: 'app-legend',
@@ -11,7 +12,7 @@ export class LegendComponent implements OnInit {
   checked = false;
   disabled = false;
 
-  constructor(private styleService: StyleService) { }
+  constructor(private styleService: StyleService, private bikesLayerService: BikesLayerService) { }
 
   ngOnInit(): void {
   }
@@ -21,10 +22,10 @@ export class LegendComponent implements OnInit {
     //@ts-ignore
     if(bikeOrDot.checked){
       this.bikesOrSlots='slots';
-      this.styleService.changeBikeMarkerStyle( 'slot');
+      this.bikesLayerService.createBikeStationsFeatures('slots')
     }else{
       this.bikesOrSlots='bikes';
-      this.styleService.changeBikeMarkerStyle( 'bikes');
+      this.bikesLayerService.createBikeStationsFeatures('bikes')
     }
   }
 

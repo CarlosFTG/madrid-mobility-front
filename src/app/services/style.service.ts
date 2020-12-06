@@ -169,7 +169,7 @@ export class StyleService {
     }
   }
 
-  applyStyleToMarker(bikeStationFeature,bikeStation){
+  applyStyleToMarker(bikeStationFeature,bikeStation, bikeOrSlot?){
 
     let markerStyle = [];
       markerStyle.push(
@@ -201,78 +201,146 @@ export class StyleService {
         })
       })
       );
-  
-      if(bikeStation.availableBikes > 5){
-        markerStyle.push(
-          new Style({
-            image: new IconStyle(({
-              anchor: [21, 70],
-              anchorXUnits: 'pixels',
-              anchorYUnits: 'pixels',
-              opacity: 1,
-              src: this.assets_base + 'vehicle_color_1.png',
-              snapToPixel: false
-            })),
-            //Vehicle Label
-            text: new Text({
-              // text:
-              textAlign: 'center',
-              font: '11px Arial',
-              textBaseline: 'top',
-              fill: new Fill({ color: 'lightCyan' }),
-              stroke: new Stroke({ color: 'MediumBlue', width: 1 }),
-              offsetX: 0,
-              offsetY: 4,
+
+
+      if(bikeOrSlot === undefined || bikeOrSlot === 'bikes'){
+        if(bikeStation.availableBikes > 5){
+          markerStyle.push(
+            new Style({
+              image: new IconStyle(({
+                anchor: [21, 70],
+                anchorXUnits: 'pixels',
+                anchorYUnits: 'pixels',
+                opacity: 1,
+                src: this.assets_base + 'vehicle_color_1.png',
+                snapToPixel: false
+              })),
+              //Vehicle Label
+              text: new Text({
+                // text:
+                textAlign: 'center',
+                font: '11px Arial',
+                textBaseline: 'top',
+                fill: new Fill({ color: 'lightCyan' }),
+                stroke: new Stroke({ color: 'MediumBlue', width: 1 }),
+                offsetX: 0,
+                offsetY: 4,
+              })
+            }),
+            new Style({
+              image: new IconStyle(({
+                anchor: [16, 70],
+                anchorXUnits: 'pixels',
+                anchorYUnits: 'pixels',
+                opacity: 1,
+                src: this.assets_base + 'iconmonstr-bicycle-1-32.png',
+                snapToPixel: false
+              }))
             })
-          }),
-          // new Style({
-          //   image: new IconStyle(({
-          //     anchor: [21, 70],
-          //     anchorXUnits: 'pixels',
-          //     anchorYUnits: 'pixels',
-          //     opacity: 1,
-          //     src: this.assets_base + 'bike_icon.jpg',
-          //     snapToPixel: false
-          //   }))
-          // })
-        )
+          )
+        }else{
+          markerStyle.push(
+            new Style({
+              image: new IconStyle(({
+                anchor: [21, 70],
+                anchorXUnits: 'pixels',
+                anchorYUnits: 'pixels',
+                opacity: 1,
+                src: this.assets_base + 'vehicle_color_2.png',
+                snapToPixel: false
+              })),
+              //Vehicle Label
+              text: new Text({
+                // text:
+                textAlign: 'center',
+                font: '11px Arial',
+                textBaseline: 'top',
+                fill: new Fill({ color: 'lightCyan' }),
+                stroke: new Stroke({ color: 'MediumBlue', width: 1 }),
+                offsetX: 0,
+                offsetY: 4,
+              })
+            }),
+              new Style({
+                image: new IconStyle(({
+                  anchor: [16, 70],
+                  anchorXUnits: 'pixels',
+                  anchorYUnits: 'pixels',
+                  opacity: 1,
+                  src: this.assets_base + 'iconmonstr-bicycle-1-32.png',
+                  snapToPixel: false
+                }))
+              })
+            
+          )
+        }
       }else{
-        markerStyle.push(
-          new Style({
-            image: new IconStyle(({
-              anchor: [21, 70],
-              anchorXUnits: 'pixels',
-              anchorYUnits: 'pixels',
-              opacity: 1,
-              src: this.assets_base + 'vehicle_color_2.png',
-              snapToPixel: false
-            })),
-            //Vehicle Label
-            text: new Text({
-              // text:
-              textAlign: 'center',
-              font: '11px Arial',
-              textBaseline: 'top',
-              fill: new Fill({ color: 'lightCyan' }),
-              stroke: new Stroke({ color: 'MediumBlue', width: 1 }),
-              offsetX: 0,
-              offsetY: 4,
-            })
-          })
-        )
-      }
-      markerStyle.push(
-        new Style({
+
+        let less2Slots = new Style({
           image: new IconStyle(({
-            anchor: [16, 70],
+            anchor: [21, 70],
             anchorXUnits: 'pixels',
             anchorYUnits: 'pixels',
             opacity: 1,
-            src: this.assets_base + 'iconmonstr-bicycle-1-32.png',
+            src: this.assets_base + 'vehicle_color_2.png',
+            snapToPixel: false
+          })),
+          //Vehicle Label
+          text: new Text({
+            // text:
+            textAlign: 'center',
+            font: '11px Arial',
+            textBaseline: 'top',
+            fill: new Fill({ color: 'lightCyan' }),
+            stroke: new Stroke({ color: 'MediumBlue', width: 1 }),
+            offsetX: 0,
+            offsetY: 4,
+          })
+        })
+    
+        let slotSymbol = new Style({
+          image: new IconStyle(({
+            anchor: [16, 65],
+            anchorXUnits: 'pixels',
+            anchorYUnits: 'pixels',
+            opacity: 1,
+            src: this.assets_base + 'iconmonstr-car-21-32.png',
             snapToPixel: false
           }))
         })
-      );
+    
+        let more2Slots = new Style({
+          image: new IconStyle(({
+            anchor: [21, 70],
+            anchorXUnits: 'pixels',
+            anchorYUnits: 'pixels',
+            opacity: 1,
+            src: this.assets_base + 'vehicle_color_1.png',
+            snapToPixel: false
+          })),
+          //Vehicle Label
+          text: new Text({
+            // text:
+            textAlign: 'center',
+            font: '11px Arial',
+            textBaseline: 'top',
+            fill: new Fill({ color: 'lightCyan' }),
+            stroke: new Stroke({ color: 'MediumBlue', width: 1 }),
+            offsetX: 0,
+            offsetY: 4,
+          })
+        })
+        if(bikeStation.availableSlots <= 1){
+          markerStyle.push(less2Slots)
+          markerStyle.push(slotSymbol)
+        }else{
+          markerStyle.push(more2Slots)
+          markerStyle.push(slotSymbol)
+        }
+        
+
+        markerStyle.push()
+      }
       
       bikeStationFeature.setStyle(markerStyle);
     }
