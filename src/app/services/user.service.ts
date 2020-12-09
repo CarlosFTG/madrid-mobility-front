@@ -12,6 +12,7 @@ import WKT from 'ol/format/WKT';
 import { InfoCardService } from '../info-card/services/info-card.service';
 
 import { Observable, throwError,BehaviorSubject } from 'rxjs';
+import { stringify } from 'querystring';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,7 @@ export class UserService {
     let format = this.format;
     let assets_base = this.assets_base;
     let notifyUserPosition = this.notifyUserPosition;
+
     navigator.geolocation.getCurrentPosition(function (location) {
       var lat = location.coords.latitude;
       var lng = location.coords.longitude;
@@ -50,6 +52,9 @@ export class UserService {
         'lat:':lat,
         'lng': lng
       }
+
+      sessionStorage.setItem('userLat',String(lat));
+      sessionStorage.setItem('userLng',String(lng));
       /*  
         globalLatlng = latlng; */
       http.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + location.coords.latitude + ',' + location.coords.longitude).subscribe(

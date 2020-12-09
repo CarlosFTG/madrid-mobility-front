@@ -1,22 +1,46 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { catchError } from 'rxjs/operators';
+import { Observable } from 'rxjs/internal/Observable';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusesService {
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {
+    //unavailable by now
+    //this.getBusStops();
+    this.getBusStopsAroundUser();
+   }
 
   getBusStops(){
 
-    let headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'accessToken': this.basic });
-      let options = { headers: headers };
+    this.httpClient.get('http://localhost:8081/api/EMTServices/getBusStops').subscribe(
+      res=>{
+        console.log(res)
+      }
+    )
 
-    this.httpClient.post('https://openapi.emtmadrid.es/v1/transport/busemtmad/stops/list/', null, options
-    
+  }
+
+  getBusStopsAroundUser(){
+
+    let lng = sessionStorage.getItem('userLng');
+    let lat = sessionStorage.getItem('userLat');
+
+    this.httpClient.get('http://localhost:8081/api/EMTServices/getBusStopsAroundUser', {
+      params: {
+        'lngStr': lng,
+        'latStr': lat,
+      }
+    }).subscribe(
+      res=>{
+
+      },
+      err =>{
+        console.log(err)
+      }
     )
 
   }
