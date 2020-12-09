@@ -10,6 +10,7 @@ import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatSelectModule} from '@angular/material/select';
 import {MatIconModule} from '@angular/material/icon';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatTabsModule} from '@angular/material/tabs';
 
 @NgModule({
     exports:[
@@ -23,7 +24,8 @@ import {MatTooltipModule} from '@angular/material/tooltip';
         MatAutocompleteModule,
         MatSelectModule,
         MatIconModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatTabsModule
     ]
 })
 export class MaterialModule{}

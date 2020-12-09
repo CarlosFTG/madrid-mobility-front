@@ -12,3 +12,9 @@
 .row{
     padding: 2%;
 }
+
+::ng-deep.mat-tab-label, ::ng-deep.mat-tab-label-active{
+  min-width: 0!important;
+  padding: 5px!important;
+  margin: 5px!important;
+ }

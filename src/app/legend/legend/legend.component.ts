@@ -8,33 +8,10 @@ import { StyleService } from 'src/app/services/style.service';
 })
 export class LegendComponent implements OnInit {
 
-  bikesOrSlots:string = 'bikes';
-  checked = false;
-  disabled = false;
+  
 
-  constructor(private styleService: StyleService, private bikesLayerService: BikesLayerService) { }
+  constructor() { }
 
   ngOnInit(): void {
   }
-
-  setBikeOrDot(bikeOrDot: string){
-    
-    //@ts-ignore
-    if(bikeOrDot.checked){
-      this.bikesOrSlots='slots';
-      this.bikesLayerService.createBikeStationsFeatures('slots')
-    }else{
-      this.bikesOrSlots='bikes';
-      this.bikesLayerService.createBikeStationsFeatures('bikes')
-    }
-  }
-
-  // toggleSlide(event){
-  //   if(event.checked){
-  //     this.globalService.showHeatMap();
-  //   }else{
-  //     this.globalService.hideHeatMap();
-  //   }
-  // }
-
 }

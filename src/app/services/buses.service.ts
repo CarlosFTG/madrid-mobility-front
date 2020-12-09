@@ -2,11 +2,15 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BusesService {
+
+  private busesListOut = new BehaviorSubject<any[]>(null);
+  notifyBuses$ = this.busesListOut.asObservable();
 
   constructor(private httpClient: HttpClient) {
     //unavailable by now
@@ -36,12 +40,15 @@ export class BusesService {
       }
     }).subscribe(
       res=>{
-
+        this.notifyBuses(res);
       },
       err =>{
-        console.log(err)
       }
     )
 
+  }
+
+  notifyBuses(busStops: any) {
+    this.busesListOut.next(busStops);
   }
 }
