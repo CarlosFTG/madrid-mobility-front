@@ -17,4 +17,19 @@ export class AuthService {
       console.log(err)
     });
   }
+
+  doLoginUser(loginParams){
+    this.httpClient.get('http://localhost:8081/api/EMTServices/loginUser', {
+      params: {
+        'email': loginParams.email,
+        'password': loginParams.password
+      }
+    }).subscribe(
+      res=>{
+      console.log(res)
+    },
+    err =>{
+      console.log(err)
+    });
+  }
 }

@@ -20,6 +20,7 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
 import { TabledetailComponent } from './components/tabledetail/tabledetail.component';
 import { InfoCardModule } from './info-card/info-card.module';
 import { LegendModule } from './legend/legend.module';
+import { UpperBarModule } from './upper-bar/upper-bar.module';
 
 import { TokenInterceptor } from './auth-module/token.interceptor';
 @NgModule({
@@ -45,7 +46,8 @@ import { TokenInterceptor } from './auth-module/token.interceptor';
     TableModule,
     //MatProgressSpinnerModule,
     InfoCardModule,
-    LegendModule
+    LegendModule,
+    UpperBarModule
   ],
   entryComponents: [
     DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,

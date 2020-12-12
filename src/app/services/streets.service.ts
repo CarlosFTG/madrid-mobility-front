@@ -34,7 +34,8 @@ export class StreetsService {
   }
 
   getStreets(): Observable<any>{
-    return this.httpClient.get(this.REST_API_SERVER+'getStreets').pipe(catchError(this.handleError));
+    return this.httpClient.get('http://localhost:8081/api/EMTServices/getStreets').pipe(catchError(this.handleError));
+    //return this.httpClient.get(this.REST_API_SERVER+'getStreets').pipe(catchError(this.handleError));
   }
 
   notifyStreets(streets){

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
-import { AuthService } from './auth-module/auth.service';
+import { AuthService } from './auth-module/services/auth.service';
 
 @Component({
   selector: 'app-root',
