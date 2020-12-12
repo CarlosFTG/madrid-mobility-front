@@ -1,4 +1,9 @@
 <div>
     <strong> <a class="element">Bus stops in 100 meters</a></strong>
-    <p *ngFor="let busStop of busStops">{{busStop.name}}</p>
+    <div *ngFor="let busStop of busStops" class="bus-stop">
+        <p>{{busStop.name}}</p>
+        <div class="row" style="padding: 10%;">
+            <div class="line-container" *ngFor="let busLineBean of busStop.busLineBeanList">{{busLineBean.line}}</div>
+        </div>
+    </div>
 </div>

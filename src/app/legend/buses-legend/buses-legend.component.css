@@ -1,0 +1,12 @@
+.bus-stop{
+    background-color:gainsboro;
+    border-radius: 10%;
+    padding: 5%;
+}
+
+.line-container{
+    background-color:black;
+    border-radius: 10%;
+    padding: 3%;
+    color: chartreuse;
+}
