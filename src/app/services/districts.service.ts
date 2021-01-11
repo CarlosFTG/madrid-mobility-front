@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 
 import * as olProj from 'ol/proj';
 import Polygon from 'ol/geom/Polygon';
+import MultiPolygon from 'ol/geom/MultiPolygon';
 import Feature from 'ol/Feature';
 import Collection from 'ol/Collection';
 import VectorLayer from 'ol/layer/Vector';
@@ -10,6 +11,7 @@ import { Vector as VectorSource } from 'ol/source';
 import { Style, Icon as IconStyle, Text, Fill, Stroke, Circle as CircleStyle } from 'ol/style';
 
 import { MapService } from './map.service';
+import { StyleService } from './style.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,53 +20,74 @@ export class DistrictsService {
 
   response: any;
   districtsFeaturesCollection = new Collection;
-
-  constructor(private httpClient: HttpClient, private mapService: MapService) {
+  
+  constructor(private httpClient: HttpClient, private mapService: MapService, private styleService: StyleService) {
     this.getDistricts()
   }
 
   getDistricts() {
-    this.httpClient.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getDistricts').subscribe(
+    //this.httpClient.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getDistricts').subscribe(
+      this.httpClient.get('http://localhost:8081/api/EMTServices/getDistricts').subscribe(
       res => {
         this.response = res;
         this.createDistrictsFeatures()
+      },
+      err=>{
+        console.log(err)
       }
     )
   }
 
   createDistrictsFeatures() {
-    let districtsArray = new Array;
+
+    let totalBikes = 0;
+    let districtsArrayCoords = new Array;
+    let districtsArrayInfo = new Array;
+
+    
     for (let i = 0; i < this.response.length; i++) {
       let pair = this.response[i].geom.substring(16, this.response[i].geom.length - 3).split(',')
       let coordsDistrictArray = new Array;
+      let districtObj = {
+        'totalBikes':null,
+        'districtName':null
+      }
+    
       for (let j = 0; j < pair.length; j++) {
         let coordsPair = new Array;
         pair[j].trim();
         let split = pair[j].trim().split(' ')
-        let lng = split[0]
-        let lat = split[1]
+        let lat = split[0]
+        let lng = split[1]
         coordsPair.push(parseFloat(lat));
         coordsPair.push(parseFloat(lng));
         coordsDistrictArray.push(coordsPair);
       }
-      districtsArray.push(coordsDistrictArray)
+      districtsArrayCoords.push(coordsDistrictArray)
+      districtObj.totalBikes = this.response[i].totalBikes;
+      districtObj.districtName = this.response[i].name;
+      districtsArrayInfo.push(districtObj)
     }
-    for (let i = 0; i < districtsArray.length; i++) {
-      let coorsTranform = districtsArray.map((coordinate) => {
-        return olProj.transform([coordinate[0], coordinate[1]], 'EPSG:4326', 'EPSG:3857');
-      });
-
-      let feature = new Feature({
-
-        geometry: new Polygon([
-          coorsTranform
-        ])
-      });
-
-       this.applyStyleToDistrict(feature);
-      // feature.setId(coordsArray[i].name);
-
-      this.districtsFeaturesCollection.push(feature)
+    for (let i = 0; i < districtsArrayCoords.length; i++) {
+      //for(let j = 0; j < districtsArrayCoords[i].length; j++){
+        let coorsTranform = districtsArrayCoords[i].map((coordinate) => {
+          return olProj.transform([coordinate[0], coordinate[1]], 'EPSG:4326', 'EPSG:3857');
+        });
+        let feature = new Feature({
+  
+          geometry: new Polygon([
+            coorsTranform
+          ])
+        });
+  
+        feature.setProperties({'totalBikes':districtsArrayInfo[i]})
+  
+         this.styleService.applyStyleToDistricts(feature);
+        // feature.setId(coordsArray[i].name);
+    
+        this.districtsFeaturesCollection.push(feature)
+     // }
+      
     }
 
     let districtsLayer = new VectorLayer({
@@ -74,6 +97,7 @@ export class DistrictsService {
 			})
     })
     this.mapService.map$.addLayer(districtsLayer);
+    console.log(this.mapService.map$.getLayers().getArray()[3].getProperties())
   }
 
   applyStyleToDistrict(feature){

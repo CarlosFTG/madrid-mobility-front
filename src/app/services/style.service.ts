@@ -403,4 +403,99 @@ export class StyleService {
       
       foundAddressFeature.setStyle(markerStyle);
     }
+
+    applyStyleToDistricts(feature){
+      let plots_styles = [];
+
+      let totalBikes = feature.getProperties().totalBikes;
+      let districtName = totalBikes.districtName;
+      console.log(districtName);
+
+      let noBikes = new Style({
+        fill: new Fill({
+          color: [131, 145, 146, 0.5]
+        }),
+        text: new Text({
+             textAlign: 'center',
+             font: '9px',
+             textBaseline: 'top',
+              text: districtName,
+             scale: 1.5,
+             offsetX: 0,
+             offsetY: 4,
+              fill: new Fill({
+                color: 'black'
+              }),
+             
+             stroke: new Stroke({
+               width: 2
+             })
+           })
+      })
+
+      let lessThan50Bikes = new Style({
+        fill: new Fill({
+          color: [247, 220, 111, 0.5]
+        }),
+        text: new Text({
+             textAlign: 'center',
+             font: '9px',
+             textBaseline: 'top',
+             text: districtName,
+             scale: 1.5,
+             offsetX: 0,
+             offsetY: 4,
+              fill: new Fill({
+                color: 'black'
+              }),
+             
+             stroke: new Stroke({
+               width: 2
+             })
+           })
+      })
+
+      let moreThan50Bikes = new Style({
+        fill: new Fill({
+          color: [36, 113, 163, 0.5]
+        }),
+        text: new Text({
+             textAlign: 'center',
+             font: '9px',
+             textBaseline: 'top',
+             text: districtName,
+             scale: 1.5,
+             offsetX: 0,
+             offsetY: 4,
+              fill: new Fill({
+                color: 'black'
+              }),
+             
+             stroke: new Stroke({
+               width: 2
+             })
+           })
+      })
+
+       if(totalBikes.totalBikes <1){
+         plots_styles.push(
+  
+           noBikes
+           );
+       }else if(totalBikes.totalBikes <50 && totalBikes.totalBikes > 0){
+         plots_styles.push(
+  
+           lessThan50Bikes
+           );
+       }else{
+        
+         plots_styles.push(
+  
+           moreThan50Bikes
+           );
+       }
+      
+     
+      feature.setStyle(plots_styles);
+    }
 }

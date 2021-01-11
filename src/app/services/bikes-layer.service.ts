@@ -21,7 +21,8 @@ import { StyleService } from './style.service';
 })
 export class BikesLayerService {
 
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
+  //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
+  private REST_API_SERVER = "http://localhost:8081/api/EMTServices/";
 
   biciMadAPIStatus;
   accesToken;
@@ -51,6 +52,7 @@ export class BikesLayerService {
   }
 
   getClosestsStations(params): Observable<any> {
+    console.log(params)
     return this.httpClient.post(this.REST_API_SERVER+'findClosestStations', params).pipe(catchError(this.handleError));
   }
 
