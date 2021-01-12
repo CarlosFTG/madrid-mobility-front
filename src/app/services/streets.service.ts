@@ -8,6 +8,8 @@ import { catchError } from 'rxjs/operators';
 })
 export class StreetsService {
 
+  private streets;
+
   private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
 
   private streetsListOut = new BehaviorSubject<any[]>(null);
@@ -34,8 +36,9 @@ export class StreetsService {
   }
 
   getStreets(): Observable<any>{
-    return this.httpClient.get('http://localhost:8081/api/EMTServices/getStreets').pipe(catchError(this.handleError));
+   this. streets=  this.httpClient.get('http://localhost:8081/api/EMTServices/getStreets').pipe(catchError(this.handleError));
     //return this.httpClient.get(this.REST_API_SERVER+'getStreets').pipe(catchError(this.handleError));
+    return this.streets;
   }
 
   notifyStreets(streets){
