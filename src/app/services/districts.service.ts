@@ -12,6 +12,7 @@ import { Style, Icon as IconStyle, Text, Fill, Stroke, Circle as CircleStyle } f
 
 import { MapService } from './map.service';
 import { StyleService } from './style.service';
+import { BikesLayerService } from './bikes-layer.service';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,14 @@ export class DistrictsService {
   response: any;
   districtsFeaturesCollection = new Collection;
   
-  constructor(private httpClient: HttpClient, private mapService: MapService, private styleService: StyleService) {
-    this.getDistricts()
+  constructor(private httpClient: HttpClient, private mapService: MapService, private styleService: StyleService, private bikesService: BikesLayerService) {
+    
+    this.bikesService.bikes$.subscribe(bikes=>{
+      if(bikes ){
+        this.getDistricts()
+      }
+      
+    })
   }
 
   getDistricts() {
@@ -97,7 +104,6 @@ export class DistrictsService {
 			})
     })
     this.mapService.map$.addLayer(districtsLayer);
-    console.log(this.mapService.map$.getLayers().getArray()[3].getProperties())
   }
 
   applyStyleToDistrict(feature){
