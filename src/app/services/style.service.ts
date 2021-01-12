@@ -409,11 +409,15 @@ export class StyleService {
 
       let totalBikes = feature.getProperties().totalBikes;
       let districtName = totalBikes.districtName;
-      console.log(districtName);
 
       let noBikes = new Style({
         fill: new Fill({
           color: [131, 145, 146, 0.5]
+        }),
+        stroke:new Stroke({ 
+          color: 'black',
+          width: 1,
+          zIndex: 1
         }),
         text: new Text({
              textAlign: 'center',
@@ -437,6 +441,11 @@ export class StyleService {
         fill: new Fill({
           color: [247, 220, 111, 0.5]
         }),
+        stroke:new Stroke({ 
+          color: 'black',
+          width: 1,
+          zIndex: 1
+        }),
         text: new Text({
              textAlign: 'center',
              font: '9px',
@@ -450,7 +459,8 @@ export class StyleService {
               }),
              
              stroke: new Stroke({
-               width: 2
+               width: 2,
+               color: 'black'
              })
            })
       })
@@ -458,6 +468,11 @@ export class StyleService {
       let moreThan50Bikes = new Style({
         fill: new Fill({
           color: [36, 113, 163, 0.5]
+        }),
+        stroke:new Stroke({ 
+          color: 'black',
+          width: 1,
+          zIndex: 1
         }),
         text: new Text({
              textAlign: 'center',
