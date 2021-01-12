@@ -13,13 +13,23 @@ import Collection from 'ol/Collection';
 import WKT from 'ol/format/WKT';
 import { MapService } from './map.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { throwError } from 'rxjs';
+import { throwError,BehaviorSubject } from 'rxjs';
 import { StyleService } from './style.service';
+import { AuthModuleModule } from '../auth-module/auth-module.module';
+import { AuthService } from '../auth-module/services/auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BikesLayerService {
+
+  bikeStations;
+
+  token: string;
+
+  private bikesOut = new BehaviorSubject<boolean>(null);
+
+  bikes$ = this.bikesOut.asObservable();
 
   //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
   private REST_API_SERVER = "http://localhost:8081/api/EMTServices/";
@@ -33,9 +43,17 @@ export class BikesLayerService {
 
   constructor(private httpClient: HttpClient, 
     private mapService : MapService,
-    private styleService: StyleService) {
-  
-    this.getBikeStations();
+    private styleService: StyleService,
+    private authService: AuthService) {
+    
+      this.authService.emtToken$.subscribe(token=>{
+        if(token != null){
+          this.token = token;
+          this.bikeStations= this.getBikeStations();
+          console.log(this.bikeStations)
+        }
+      })
+    //
   }
 
   handleError(error: HttpErrorResponse) {
@@ -56,9 +74,17 @@ export class BikesLayerService {
     return this.httpClient.post(this.REST_API_SERVER+'findClosestStations', params).pipe(catchError(this.handleError));
   }
 
+
+
   getBikeStations(){
-    this.httpClient.get('http://localhost:8081/api/EMTServices/checkAvaibility').subscribe(
     //this.httpClient.get(this.REST_API_SERVER+'checkAvaibility').subscribe(
+    this.httpClient.get('http://localhost:8081/api/EMTServices/checkAvaibility',
+    {
+          params: {
+            'emtToken': this.token,
+          }
+        }
+    ).subscribe(
       res =>{
         this.response = res;
         this.createBikeStationsFeatures();
@@ -98,7 +124,12 @@ export class BikesLayerService {
 			})
 		})
 
-		this.mapService.map$.addLayer(bikeStationsLayer);
+    this.mapService.map$.addLayer(bikeStationsLayer);
+    this.notifyBikes(true);
+  }
+
+  notifyBikes(bikesLoaded){
+    this.bikesOut.next(bikesLoaded)
   }
 
 }
