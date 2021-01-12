@@ -1,4 +1,4 @@
-<div  style="margin-left: 5%;">
+<div *ngIf="streetsList.length >0" style="margin-left: 5%;">
     <div >Address finder</div>
     <div >
         <form class="example-form" [formGroup]="addressFinderForm" style="display: table-cell;">
@@ -13,4 +13,9 @@
             </mat-form-field>
           </form>
     </div>
+</div>
+
+<div *ngIf="streetsList.length < 1"  style="margin-left: 5%;">
+  <div >Address finder</div>
+    <p>Address finder is temporarily disabled</p>
 </div>
