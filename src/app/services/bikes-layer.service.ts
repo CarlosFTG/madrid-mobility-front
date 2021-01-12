@@ -31,8 +31,8 @@ export class BikesLayerService {
 
   bikes$ = this.bikesOut.asObservable();
 
-  //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
-  private REST_API_SERVER = "http://localhost:8081/api/EMTServices/";
+  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
+  //private REST_API_SERVER = "http://localhost:8081/api/EMTServices/";
 
   biciMadAPIStatus;
   accesToken;
@@ -77,13 +77,16 @@ export class BikesLayerService {
 
 
   getBikeStations(){
-    //this.httpClient.get(this.REST_API_SERVER+'checkAvaibility').subscribe(
-    this.httpClient.get('http://localhost:8081/api/EMTServices/checkAvaibility',
-    {
-          params: {
-            'emtToken': this.token,
-          }
-        }
+    this.httpClient.get(this.REST_API_SERVER+'checkAvaibility',{
+      params: {
+        'emtToken': this.token,
+      }
+    }
+   // this.httpClient.get('http://localhost:8081/api/EMTServices/checkAvaibility',
+//    params: {
+//     'emtToken': this.token,
+//   }
+// }
     ).subscribe(
       res =>{
         this.response = res;
@@ -122,9 +125,16 @@ export class BikesLayerService {
 			source: new VectorSource({
 				features: this.bikeStationsCollection
 			})
-		})
+    })
 
+
+  for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
+    if(this.mapService.map$.getLayers().getArray()[i].getProperties().name === 'bikeStations'){
+      this.mapService.map$.removeLayer(this.mapService.map$.getLayers().getArray()[i]);
+    }
+  } 
     this.mapService.map$.addLayer(bikeStationsLayer);
+    
     this.notifyBikes(true);
   }
 

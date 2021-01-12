@@ -21,20 +21,22 @@ export class DistrictsService {
 
   response: any;
   districtsFeaturesCollection = new Collection;
+  alreadyDistricts: boolean = false;
   
   constructor(private httpClient: HttpClient, private mapService: MapService, private styleService: StyleService, private bikesService: BikesLayerService) {
     
     this.bikesService.bikes$.subscribe(bikes=>{
-      if(bikes ){
+      if(bikes && !this.alreadyDistricts){
         this.getDistricts()
+        this.alreadyDistricts = true;
       }
       
     })
   }
 
   getDistricts() {
-    //this.httpClient.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getDistricts').subscribe(
-      this.httpClient.get('http://localhost:8081/api/EMTServices/getDistricts').subscribe(
+    this.httpClient.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getDistricts').subscribe(
+      //this.httpClient.get('http://localhost:8081/api/EMTServices/getDistricts').subscribe(
       res => {
         this.response = res;
         this.createDistrictsFeatures()
