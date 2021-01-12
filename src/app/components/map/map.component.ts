@@ -16,6 +16,7 @@ import { BikesLayerService } from 'src/app/services/bikes-layer.service';
 import { UserService } from 'src/app/services/user.service';
 import { DistrictsService } from 'src/app/services/districts.service';
 import { BusesService } from 'src/app/services/buses.service';
+import { MatDialog } from '@angular/material/dialog';
 
 declare let L;
 var marker;
@@ -34,13 +35,19 @@ let maxBounds = [[[-3.8094818592, 40.3347849588], [-3.5842621326, 40.3347849588]
 })
 export class MapComponent implements OnInit {
 
-  constructor(private mapService: MapService, private bikesLayerService: BikesLayerService, private userService:UserService, private districtsService: DistrictsService, private busesService: BusesService){
+  constructor(private mapService: MapService, 
+    private bikesLayerService: BikesLayerService, 
+    private userService:UserService, 
+    private districtsService: DistrictsService, 
+    private busesService: BusesService,
+    public dialog: MatDialog){
 
   }
 
   ngOnInit() {
     this.mapService.renderMap();
     //console.log(this.mapService.map$)
+    this.openLoading();
   }
 
   detectZoomChange(){
@@ -49,5 +56,14 @@ export class MapComponent implements OnInit {
 
   selectOnMap(event){
     
+  }
+
+  openLoading() {
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+       });
   }
 }
