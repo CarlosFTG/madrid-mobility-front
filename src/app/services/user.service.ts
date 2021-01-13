@@ -16,6 +16,7 @@ import { stringify } from 'querystring';
 import { TabledetailComponent } from '../components/tabledetail/tabledetail.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NomadriddialogComponent } from '../components/nomadriddialog/nomadriddialog.component';
+import { StyleService } from './style.service';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,7 @@ export class UserService {
   userPosition$ = this.userPositionOut.asObservable();
 
   constructor(private httpClient: HttpClient, private mapService: MapService, 
-    private infoCardService: InfoCardService,public dialog: MatDialog) {
+    private infoCardService: InfoCardService,public dialog: MatDialog, private styleService: StyleService) {
     this.getUserPosition();
   }
 
@@ -47,6 +48,7 @@ export class UserService {
     let assets_base = this.assets_base;
     let notifyUserPosition = this.notifyUserPosition;
     let dialog = this.dialog;
+    let styleService= this.styleService;
 
     navigator.geolocation.getCurrentPosition(function (location) {
       var lat = location.coords.latitude;
@@ -83,47 +85,7 @@ export class UserService {
               geometry: new Point(userPositionCoords)
             });
 
-            markerStyle.push(
-              new Style({
-                image: new IconStyle({
-                  anchor: [0.5, 1],
-                  anchorXUnits: 'fraction',
-                  anchorYUnits: 'fraction',
-                  opacity: 1,
-                  src: assets_base + 'vehicle_pin.png',
-                  snapToPixel: false
-                }),
-                //Text Style
-                text: new Text({
-                  textAlign: 'center',
-                  font: '9px',
-                  textBaseline: 'top',
-                  //text: vehicleInfo.name,
-                  scale: 1.5,
-                  offsetX: 0,
-                  offsetY: 4,
-                  // fill: new Fill({
-                  //   color: textoVehiculo_color
-                  // })
-                  // ,
-                  stroke: new Stroke({
-                    width: 0
-                  })
-                })
-              }),
-              new Style({
-                image: new IconStyle(({
-                  anchor: [16, 70],
-                  anchorXUnits: 'pixels',
-                  anchorYUnits: 'pixels',
-                  opacity: 1,
-                  src: 'assets/img/iconmonstr-user-6-32.png',
-                  snapToPixel: false
-                }))
-              })
-            );
-
-            userPositionFeature.setStyle(markerStyle);
+            styleService.applyStyleToUser(userPositionFeature);
 
             let userPositionCollection = new Collection;
 
@@ -158,5 +120,9 @@ export class UserService {
 
       return locationObj;
     });
+  }
+
+  createUserFeature(){
+    
   }
 }
