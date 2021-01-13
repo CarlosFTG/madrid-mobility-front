@@ -106,7 +106,21 @@ export class DistrictsService {
 			})
     })
     this.mapService.map$.addLayer(districtsLayer);
+
+    let bikeStationsLayer;
+
+    //putting pins over districts layer
+    for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
+      if(this.mapService.map$.getLayers().getArray()[i].getProperties().name === 'bikeStations'){
+        console.log(this.mapService.map$.getLayers().getArray()[i].getProperties().name )
+         bikeStationsLayer = this.mapService.map$.getLayers().getArray()[i];
+        this.mapService.map$.removeLayer(this.mapService.map$.getLayers().getArray()[i]);
+      }
+    } 
+    this.mapService.map$.addLayer(bikeStationsLayer);
   }
+
+  
 
   applyStyleToDistrict(feature){
 
