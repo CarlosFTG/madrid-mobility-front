@@ -1,5 +1,6 @@
 import { Component, OnInit,Inject } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MapService } from 'src/app/services/map.service';
 
 export interface DialogData {
   fakeAddress: string;
@@ -14,14 +15,15 @@ export class NomadriddialogComponent implements OnInit {
   value:any;
   constructor(
     public dialogRef: MatDialogRef<NomadriddialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) {}
+    @Inject(MAT_DIALOG_DATA) public data: DialogData, private mapService: MapService) {}
 
   ngOnInit(): void {
   }
 
   setFakeUserPosition(fakeAddress){
-    /* let data: DialogData;
-   data.fakeAddress=fakeAddress; */
+
+    let fakeAddressCoords= 'POINT('+fakeAddress+')';
+    this.mapService.updateMapViewCenter(fakeAddressCoords);
    this.dialogRef.close(fakeAddress);
   }
 
