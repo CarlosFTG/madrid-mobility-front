@@ -1,21 +1,35 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
 
-    <p-table [columns]="cols" [value]="closetsStation" selectionMode="single" [(selection)]="selectedStation"
-      dataKey="adress">
-      <ng-template pTemplate="header" let-columns>
-        <tr>
-          <th *ngFor="let col of columns">
-            {{col.header}}
-          </th>
-        </tr>
-      </ng-template>
-      <ng-template pTemplate="body" let-rowData let-columns="columns">
-        <tr [pSelectableRow]="rowData">
-          <td *ngFor="let col of columns" (click)="findNearStations(rowData)" role="button" [mat-dialog-close]>
-            {{rowData[col.field]}}
-          </td>
-          <td>meters</td>
-        </tr>
-      </ng-template>
-    </p-table>
-    <button mat-raised-button color="primary"  [mat-dialog-close]>Close</button>
-  
+  <!-- Position Column -->
+  <ng-container matColumnDef="address">
+    <th mat-header-cell *matHeaderCellDef> Address </th>
+    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.address}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.name}} </td>
+  </ng-container>
+
+  <!-- Weight Column -->
+  <ng-container matColumnDef="availableBikes">
+    <th mat-header-cell *matHeaderCellDef> Available bikes </th>
+    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.availableBikes}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="freeDocks">
+    <th mat-header-cell *matHeaderCellDef> Free docks </th>
+    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.freeDocks}} </td>
+  </ng-container>
+
+  <!-- Symbol Column -->
+  <ng-container matColumnDef="distance">
+    <th mat-header-cell *matHeaderCellDef> Distance (mts) </th>
+    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.distance}} </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>

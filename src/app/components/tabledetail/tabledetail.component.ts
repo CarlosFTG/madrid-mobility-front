@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MapService } from 'src/app/services/map.service';
 import { RoutesService } from 'src/app/services/routes.service';
 import { InfoCardService } from '../../info-card/services/info-card.service';
@@ -9,32 +10,34 @@ import { InfoCardService } from '../../info-card/services/info-card.service';
   styleUrls: ['./tabledetail.component.css']
 })
 export class TabledetailComponent implements OnInit {
-  nearestBikeStations: any = new Array;
-  cols: any[];
+  displayedColumns: string[] = ['address', 'name', 'availableBikes', 'freeDocks','distance'];
   selectedStation: any;
   closetsStation: any;
-  constructor(private infoCardService: InfoCardService, private mapService : MapService, private routeService: RoutesService) { }
+  dataSource;
+  constructor(private infoCardService: InfoCardService,
+     private mapService : MapService, 
+    private routeService: RoutesService,
+    public dialogRef: MatDialogRef<TabledetailComponent>) { }
 
   ngOnInit(): void {
     this.infoCardService.notifyClosestsStations$.subscribe(closetsStations => {
       if (closetsStations != null) {
          this.closetsStation = closetsStations;
+         this.dataSource = closetsStations;
       }
     });
-    this.cols = [
-      { field: 'address', header: 'Address' },
-      { field: 'availableBikes', header: 'Available bikes' },
-      { field: 'freeDocks', header: 'Free docks' },
-      { field: 'reservations', header: 'Reservations' },
-      { field: 'distance', header: 'Distance' }
-    ];
   }
   async findNearStations(select: any) {
     let lat = select.pointsList.coordinates.substring(0, select.pointsList.coordinates.indexOf(" "));
     let lng = select.pointsList.coordinates.substring(select.pointsList.coordinates.indexOf(" ") + 1, select.pointsList.coordinates.length);
     let setViewPoint = 'POINT(' + lat + ' ' + lng+ ')';
     this.routeService.getRoute(select.address);
+    this.closeDialog();
     this.mapService.updateMapViewCenter(setViewPoint);
+  }
+
+  closeDialog() {
+    this.dialogRef.close();
   }
 
   getBackToMap() {

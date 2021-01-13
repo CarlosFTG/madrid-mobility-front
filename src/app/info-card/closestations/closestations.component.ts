@@ -53,14 +53,11 @@ export class ClosestationsComponent implements OnInit {
         //@ts-ignore
         'coordinates': 'POINT (' + this.userPosition.lng + ' ' + this.userPosition.lat + '),3857)'
       }
-      //const data = await this._http.post('http://localhost:8081/api/EMTServices/findClosestStations', params).toPromise();
       this.bikesLayerService.getClosestsStations(params).subscribe(
         data => {
           this.nearestBikeStations = data;
           this.openTableDetail();
-          //@ts-ignore
           if (this.nearestBikeStations.length > 0) {
-            //this.infoCardService.sendClosestsStationsToMap(this.nearestBikeStations);
              this.positionCompositionForm.get('numberOfResults').reset();
           } else {
 
