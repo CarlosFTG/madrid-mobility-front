@@ -17,7 +17,7 @@ import { NomadriddialogComponent } from './components/nomadriddialog/nomadriddia
 import { ErrordialogComponent } from './components/errordialog/errordialog.component';
 import { BikeStationInfoComponent } from './components/bike-station-info/bike-station-info.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
-import { TabledetailComponent } from './components/tabledetail/tabledetail.component';
+import { TabledetailComponent  } from './components/tabledetail/tabledetail.component';
 import { InfoCardModule } from './info-card/info-card.module';
 import { LegendModule } from './legend/legend.module';
 import { UpperBarModule } from './upper-bar/upper-bar.module';

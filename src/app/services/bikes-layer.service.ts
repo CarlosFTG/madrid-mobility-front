@@ -50,10 +50,8 @@ export class BikesLayerService {
         if(token != null){
           this.token = token;
           this.bikeStations= this.getBikeStations();
-          console.log(this.bikeStations)
         }
       })
-    //
   }
 
   handleError(error: HttpErrorResponse) {
