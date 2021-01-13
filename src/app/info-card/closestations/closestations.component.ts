@@ -18,21 +18,29 @@ export class ClosestationsComponent implements OnInit {
   positionCompositionForm: FormGroup;
   errorNumberResults = false;
   nearestBikeStations: any = new Array;
-  userPosition = {'lat':null, 'lng':null};
+  userPosition = { 'lat': null, 'lng': null };
 
-  constructor(private bikesLayerService: BikesLayerService, 
-    private infoCardService:InfoCardService, 
+  constructor(private bikesLayerService: BikesLayerService,
+    private infoCardService: InfoCardService,
     private mapService: MapService,
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.createForm();
-    this.mapService.sendUserPositionToInfoCard$.subscribe(data =>{
-      if(data != null){
-        //@ts-ignore
-        this.userPosition.lat = data.lat;
-        //@ts-ignore
-        this.userPosition.lng = data.lng;
+    this.mapService.sendUserPositionToInfoCard$.subscribe(data => {
+      if (data != null) {
+        if (typeof (data) === 'object') {
+          //@ts-ignore
+          this.userPosition.lat = data.lat;
+          //@ts-ignore
+          this.userPosition.lng = data.lng;
+        } else {
+          let fakeAddressSplt = String(data).split(' ');
+          //@ts-ignore
+          this.userPosition.lat = fakeAddressSplt[1];
+          //@ts-ignore
+          this.userPosition.lng = fakeAddressSplt[0];
+        }
       }
     })
   }
@@ -43,7 +51,7 @@ export class ClosestationsComponent implements OnInit {
     });
   }
 
-  getClosestStation(){
+  getClosestStation() {
     var re = new RegExp("^[1-9]\d*$");
     if (this.positionCompositionForm.get('numberOfResults').value != null && re.test(this.positionCompositionForm.get('numberOfResults').value)) {
       this.errorNumberResults = false;
@@ -58,7 +66,7 @@ export class ClosestationsComponent implements OnInit {
           this.nearestBikeStations = data;
           this.openTableDetail();
           if (this.nearestBikeStations.length > 0) {
-             this.positionCompositionForm.get('numberOfResults').reset();
+            this.positionCompositionForm.get('numberOfResults').reset();
           } else {
 
           }
@@ -70,14 +78,14 @@ export class ClosestationsComponent implements OnInit {
     }
   }
 
-   openTableDetail() {
-     this.infoCardService.notifyClosestStations(this.nearestBikeStations);
-     const dialogRef = this.dialog.open(TabledetailComponent, {
-       width: '600px',
-     });
-     dialogRef.afterClosed().subscribe(result => {
-       console.log(result)
-        });
-   }
+  openTableDetail() {
+    this.infoCardService.notifyClosestStations(this.nearestBikeStations);
+    const dialogRef = this.dialog.open(TabledetailComponent, {
+      width: '600px',
+    });
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(result)
+    });
+  }
 
 }

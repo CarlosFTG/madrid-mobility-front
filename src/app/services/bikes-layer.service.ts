@@ -40,11 +40,31 @@ export class BikesLayerService {
   format = new WKT();
   //bikeStations: any[] = new Array;
   bikeStationsCollection = new Collection;
+  userPosition = { 'lat': null, 'lng': null };
 
   constructor(private httpClient: HttpClient, 
     private mapService : MapService,
     private styleService: StyleService,
     private authService: AuthService) {
+
+      this.mapService.sendUserPositionToInfoCard$.subscribe(data => {
+        if (data != null) {
+          if (typeof (data) === 'object') {
+            //@ts-ignore
+            this.userPosition.lat = data.lat;
+            //@ts-ignore
+            this.userPosition.lng = data.lng;
+            this.bikeStations= this.getBikeStations();
+          } else {
+            let fakeAddressSplt = String(data).split(' ');
+            //@ts-ignore
+            this.userPosition.lat = fakeAddressSplt[1];
+            //@ts-ignore
+            this.userPosition.lng = fakeAddressSplt[0];
+            this.bikeStations= this.getBikeStations();
+          }
+        }
+      })
     
       this.authService.emtToken$.subscribe(token=>{
         if(token != null){
@@ -75,22 +95,25 @@ export class BikesLayerService {
 
 
   getBikeStations(){
-    this.httpClient.get(this.REST_API_SERVER+'checkAvaibility',{
-      params: {
-        'emtToken': this.token,
+    if(this.token != undefined && this.userPosition.lng != undefined){
+      this.httpClient.get(this.REST_API_SERVER+'checkAvaibility',{
+        params: {
+          'emtToken': this.token,
+        }
       }
+     // this.httpClient.get('http://localhost:8081/api/EMTServices/checkAvaibility',
+  //    params: {
+  //     'emtToken': this.token,
+  //   }
+  // }
+      ).subscribe(
+        res =>{
+          this.response = res;
+          this.createBikeStationsFeatures();
+        }
+      )
     }
-   // this.httpClient.get('http://localhost:8081/api/EMTServices/checkAvaibility',
-//    params: {
-//     'emtToken': this.token,
-//   }
-// }
-    ).subscribe(
-      res =>{
-        this.response = res;
-        this.createBikeStationsFeatures();
-      }
-    )
+    
   }
 
   createBikeStationsFeatures(bikeOrSlot?: string){

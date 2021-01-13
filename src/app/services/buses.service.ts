@@ -4,6 +4,7 @@ import { catchError } from 'rxjs/operators';
 import { Observable } from 'rxjs/internal/Observable';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../auth-module/services/auth.service';
+import { MapService } from './map.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,16 +16,36 @@ export class BusesService {
 
   token: string;
 
+  userPosition = { 'lat': null, 'lng': null };
+
   private busesListOut = new BehaviorSubject<any[]>(null);
   notifyBuses$ = this.busesListOut.asObservable();
 
-  constructor(private httpClient: HttpClient,private authService: AuthService) {
+  constructor(private httpClient: HttpClient,private authService: AuthService, private mapService: MapService) {
     //unavailable by now
     //this.getBusStops();
     this.authService.emtToken$.subscribe(token=>{
       if(token != null){
         this.token = token;
         this.getBusStopsAroundUser();
+      }
+    });
+    this.mapService.sendUserPositionToInfoCard$.subscribe(data => {
+      if (data != null) {
+        if (typeof (data) === 'object') {
+          //@ts-ignore
+          this.userPosition.lat = data.lat;
+          //@ts-ignore
+          this.userPosition.lng = data.lng;
+          this.getBusStopsAroundUser();
+        } else {
+          let fakeAddressSplt = String(data).split(' ');
+          //@ts-ignore
+          this.userPosition.lat = fakeAddressSplt[1];
+          //@ts-ignore
+          this.userPosition.lng = fakeAddressSplt[0];
+          this.getBusStopsAroundUser();
+        }
       }
     })
    }
@@ -42,23 +63,24 @@ export class BusesService {
 
   getBusStopsAroundUser(){
 
-    let lng = sessionStorage.getItem('userLng');
-    let lat = sessionStorage.getItem('userLat');
-
-    this.httpClient.get(this.REST_API_SERVER+'getBusStopsAroundUser', {
-      params: {
-        'emtToken':this.token,
-        'lng': lng,
-        'lat': lat,
-      }
-    }).subscribe(
-      res=>{
-        this.notifyBuses(res);
-      },
-      err =>{
-      }
-    )
-
+    if(this.token != undefined && this.userPosition.lng != undefined){
+      let lng = this.userPosition.lng;
+      let lat = this.userPosition.lat;
+  
+      this.httpClient.get(this.REST_API_SERVER+'getBusStopsAroundUser', {
+        params: {
+          'emtToken':this.token,
+          'lng': lng,
+          'lat': lat,
+        }
+      }).subscribe(
+        res=>{
+          this.notifyBuses(res);
+        },
+        err =>{
+        }
+      )
+    }
   }
 
   notifyBuses(busStops: any) {

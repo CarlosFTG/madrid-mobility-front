@@ -31,8 +31,8 @@ export class UserService {
 
   userPosition$ = this.userPositionOut.asObservable();
 
-  constructor(private httpClient: HttpClient, private mapService: MapService, 
-    private infoCardService: InfoCardService,public dialog: MatDialog, private styleService: StyleService) {
+  constructor(private httpClient: HttpClient, private mapService: MapService,
+    private infoCardService: InfoCardService, public dialog: MatDialog, private styleService: StyleService) {
     this.getUserPosition();
   }
 
@@ -48,7 +48,7 @@ export class UserService {
     let assets_base = this.assets_base;
     let notifyUserPosition = this.notifyUserPosition;
     let dialog = this.dialog;
-    let styleService= this.styleService;
+    let styleService = this.styleService;
 
     navigator.geolocation.getCurrentPosition(function (location) {
       var lat = location.coords.latitude;
@@ -60,8 +60,8 @@ export class UserService {
         'lng': lng
       }
 
-      sessionStorage.setItem('userLat', String(lat));
-      sessionStorage.setItem('userLng', String(lng));
+      // sessionStorage.setItem('userLat', String(lat));
+      // sessionStorage.setItem('userLng', String(lng));
       /*  
         globalLatlng = latlng; */
       http.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + location.coords.latitude + ',' + location.coords.longitude).subscribe(
@@ -69,14 +69,17 @@ export class UserService {
           let markerStyle = [];
           //@ts-ignore
           localStorage.setItem('userLocationAddress', res.results[0].locations[0].street)
-          //@ts-ignore
-          mapService.sendUserPositionToInfoCard(res.results[0].providedLocation.latLng);
+
 
 
           //@ts-ignore
           if (res.results[0].locations[0].adminArea5 === 'Madrid') {
             //@ts-ignore
             let formatCoords = 'POINT(' + res.results[0].providedLocation.latLng.lng + ' ' + res.results[0].providedLocation.latLng.lat + " 216.7" + ')';
+            //@ts-ignore
+            let formatCoords2 = 'POINT(' + res.results[0].providedLocation.latLng.lng + ' ' + res.results[0].providedLocation.latLng.lat + ')';
+
+            mapService.updateMapViewCenter(formatCoords2);
 
             let userPositionCoords = format.readFeature(formatCoords.replace(
               /[\W]*\S+[\W]*$/, '') + ')', { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).getGeometry().getCoordinates();
@@ -84,6 +87,9 @@ export class UserService {
             let userPositionFeature = new Feature({
               geometry: new Point(userPositionCoords)
             });
+
+            //@ts-ignore
+            mapService.sendUserPositionToInfoCard(res.results[0].providedLocation.latLng);
 
             styleService.applyStyleToUser(userPositionFeature);
 
@@ -108,13 +114,16 @@ export class UserService {
 
             dialogRef.afterClosed().subscribe(result => {
               console.log(result)
-               });
+            });
 
           }
 
 
           http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit', userCity).subscribe();
 
+        }, err =>{
+          alert(err)
+          console.log(err)
         }
       )
 
@@ -122,7 +131,7 @@ export class UserService {
     });
   }
 
-  createUserFeature(){
-    
+  createUserFeature() {
+
   }
 }
