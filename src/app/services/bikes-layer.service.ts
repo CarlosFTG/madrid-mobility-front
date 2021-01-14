@@ -17,6 +17,7 @@ import { throwError,BehaviorSubject } from 'rxjs';
 import { StyleService } from './style.service';
 import { AuthModuleModule } from '../auth-module/auth-module.module';
 import { AuthService } from '../auth-module/services/auth.service';
+import { TabledetailService } from '../components/tabledetail/services/tabledetail.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,7 +33,7 @@ export class BikesLayerService {
   bikes$ = this.bikesOut.asObservable();
 
   private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/bikes/EMTServices/";
-  //private REST_API_SERVER = "http://localhost:8081/api/EMTServices/";
+  //private REST_API_SERVER = "http://localhost:8081/api/bikes/EMTServices/";
 
   biciMadAPIStatus;
   accesToken;
@@ -40,12 +41,15 @@ export class BikesLayerService {
   format = new WKT();
   //bikeStations: any[] = new Array;
   bikeStationsCollection = new Collection;
+  selectedBikeStationCollection = new Collection;
   userPosition = { 'lat': null, 'lng': null };
+  stationId;
 
   constructor(private httpClient: HttpClient, 
     private mapService : MapService,
     private styleService: StyleService,
-    private authService: AuthService) {
+    private authService: AuthService,
+    private tabledetailService:TabledetailService) {
 
       this.mapService.sendUserPositionToInfoCard$.subscribe(data => {
         if (data != null) {
@@ -72,6 +76,13 @@ export class BikesLayerService {
           this.bikeStations= this.getBikeStations();
         }
       })
+
+      this.tabledetailService.selectedStationId$.subscribe(stationId=>{
+        if(stationId != null){
+          this.stationId = stationId;
+          this.addSelected();
+        }
+      })
   }
 
   handleError(error: HttpErrorResponse) {
@@ -88,7 +99,6 @@ export class BikesLayerService {
   }
 
   getClosestsStations(params): Observable<any> {
-    console.log(params)
     return this.httpClient.post(this.REST_API_SERVER+'findClosestStations', params).pipe(catchError(this.handleError));
   }
 
@@ -130,7 +140,9 @@ export class BikesLayerService {
           geometry: new Point(bikeStationCoords)
         });
 
-        bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks });
+        bikeStationFeature.setId(bikeStation.stationId);
+
+        bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks, 'stationId':bikeStation.stationId });
   
         if(bikeOrSlot === undefined){
           this.styleService.applyStyleToMarker(bikeStationFeature,bikeStation);
@@ -161,6 +173,34 @@ export class BikesLayerService {
 
   notifyBikes(bikesLoaded){
     this.bikesOut.next(bikesLoaded)
+  }
+
+  addSelected(){
+    for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
+      if(this.mapService.map$.getLayers().getArray()[i].getProperties().name === 'bikeStations'){
+        let selectedFeature = this.mapService.map$.getLayers().getArray()[i].getSource().getFeatureById(this.stationId);
+        let selectedFeatureCoords =  selectedFeature.getGeometry().getCoordinates();
+        let bikeStationFeature = new Feature({
+          geometry: new Point(selectedFeatureCoords)
+        });
+
+        bikeStationFeature.setId(this.stationId.stationId);
+
+        //bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks, 'stationId':bikeStation.stationId });
+        this.styleService.applyStyleToSelectedFeature(bikeStationFeature);
+
+        this.selectedBikeStationCollection.push(bikeStationFeature);
+
+        let selectedbikeStationLayer = new VectorLayer({
+          name: 'selectedBikeStation',
+          source: new VectorSource({
+            features: this.selectedBikeStationCollection
+          })
+        })
+
+        this.mapService.map$.addLayer(selectedbikeStationLayer);
+      }
+    } 
   }
 
 }

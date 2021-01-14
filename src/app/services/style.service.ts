@@ -22,7 +22,7 @@ export class StyleService {
         anchorXUnits: 'pixels',
         anchorYUnits: 'pixels',
         opacity: 1,
-        src: this.assets_base + 'vehicle_color_2.png',
+        src: this.assets_base + 'less.png',
         snapToPixel: false
       })),
       //Vehicle Label
@@ -77,7 +77,7 @@ export class StyleService {
         anchorXUnits: 'pixels',
         anchorYUnits: 'pixels',
         opacity: 1,
-        src: this.assets_base + 'vehicle_color_2.png',
+        src: this.assets_base + 'less.png',
         snapToPixel: false
       })),
       //Vehicle Label
@@ -246,7 +246,7 @@ export class StyleService {
                 anchorXUnits: 'pixels',
                 anchorYUnits: 'pixels',
                 opacity: 1,
-                src: this.assets_base + 'vehicle_color_2.png',
+                src: this.assets_base + 'less.png',
                 snapToPixel: false
               })),
               //Vehicle Label
@@ -282,7 +282,7 @@ export class StyleService {
             anchorXUnits: 'pixels',
             anchorYUnits: 'pixels',
             opacity: 1,
-            src: this.assets_base + 'vehicle_color_2.png',
+            src: this.assets_base + 'less.png',
             snapToPixel: false
           })),
           //Vehicle Label
@@ -557,5 +557,50 @@ export class StyleService {
       );
 
       userPositionFeature.setStyle(markerStyle);
+    }
+
+    applyStyleToSelectedFeature(feature){
+      let markerStyleSelectedFeature = [];
+      markerStyleSelectedFeature.push(
+        new Style({
+          image: new IconStyle({
+            anchor: [0.5, 1],
+            anchorXUnits: 'fraction',
+            anchorYUnits: 'fraction',
+            opacity: 1,
+            src: this.assets_base + 'vehicle_pin.png',
+            snapToPixel: false
+          }),
+          //Text Style
+          text: new Text({
+            textAlign: 'center',
+            font: '9px',
+            textBaseline: 'top',
+            //text: vehicleInfo.name,
+            scale: 1.5,
+            offsetX: 0,
+            offsetY: 4,
+            // fill: new Fill({
+            //   color: textoVehiculo_color
+            // })
+            // ,
+            stroke: new Stroke({
+              width: 0
+            })
+          })
+        }),
+        new Style({
+          image: new IconStyle(({
+            anchor: [16, 70],
+            anchorXUnits: 'pixels',
+            anchorYUnits: 'pixels',
+            opacity: 1,
+            src: 'assets/img/vehicle_color_3.png',
+            snapToPixel: false
+          }))
+        })
+      );
+
+      feature.setStyle(markerStyleSelectedFeature);
     }
 }
