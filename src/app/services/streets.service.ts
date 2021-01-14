@@ -10,8 +10,8 @@ export class StreetsService {
 
   private streets;
 
-  //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
-  private REST_API_SERVER = "http://localhost:8081/api/urban/EMTServices/";
+  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/urban/EMTServices/";
+  //private REST_API_SERVER = "http://localhost:8081/api/urban/EMTServices/";
 
   private streetsListOut = new BehaviorSubject<any[]>(null);
 
@@ -33,13 +33,13 @@ export class StreetsService {
       errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
     }
     window.alert(errorMessage);
+    console.log(errorMessage)
     return throwError(errorMessage);
   }
 
   getStreets(): Observable<any>{
    //this. streets=  this.httpClient.get('http://localhost:8081/api/EMTServices/getStreets').pipe(catchError(this.handleError));
-    return this.httpClient.get(this.REST_API_SERVER+'getStreets').pipe(catchError(this.handleError));
-    return this.streets;
+    return this.streets = this.httpClient.get(this.REST_API_SERVER+'getStreets').pipe(catchError(this.handleError));
   }
 
   notifyStreets(streets){
