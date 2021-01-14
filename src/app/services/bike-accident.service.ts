@@ -1,19 +1,33 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry, shareReplay } from 'rxjs/operators';
-//import { IBikeAccident } from '../models/interfaces';
-//mport { BikeAccident } from '../models/models';
+
+import Heatmap from 'ol/layer/Heatmap';
+import { Vector as VectorSource } from 'ol/source';
+import VectorLayer from 'ol/layer/Vector';
+import Collection from 'ol/Collection';
+import Feature from 'ol/Feature';
+import WKT from 'ol/format/WKT';
+import Point from 'ol/geom/Point';
+import { MapService } from './map.service';
 @Injectable({
   providedIn: 'root'
 })
 export class BikeAccidentService {
 
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
+  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/bikes/EMTServices/";
+  //private REST_API_SERVER = "http://localhost:8081/api/bikes/EMTServices/";
 
-  private bikeAccidents;
+  private bikeAccidents: any;
 
-  constructor(private httpClient: HttpClient) { }
+  bikeAccidentsCollection = new Collection;
+
+  format = new WKT();
+
+  constructor(private httpClient: HttpClient, private mapService: MapService) {
+    this.getBikeAccidents();
+  }
 
   handleError(error: HttpErrorResponse) {
     let errorMessage = 'Unknown error!';
@@ -28,25 +42,43 @@ export class BikeAccidentService {
     return throwError(errorMessage);
   }
 
-  public getBikeAccidents(): Observable<any[]>{
+  public getBikeAccidents(): Observable<any[]> {
 
-    if(!this.bikeAccidents){
-      this.bikeAccidents =this.httpClient.get(this.REST_API_SERVER+'getBikeAccidents').pipe(
-        shareReplay({ bufferSize: 1, refCount: true }),
-        catchError(this.handleError));
-    }
+    this.httpClient.get(this.REST_API_SERVER + 'getBikeAccidents').subscribe(
+      res => {
+        this.createHeatMap(res)
+      }, err => {
+
+      }
+    )
     return this.bikeAccidents;
   }
 
-//   getGitProjects(): void {
-//     this.projects$ = this.http.get<GitProject[]>(this.gitBaseUrl).pipe(
-//       map(projects =>
-//         projects.filter(project => this.gitProjects.includes(project.name))
-//       ),
-//       // publishReplay(1),
-//       // refCount(),
-//       shareReplay({ bufferSize: 1, refCount: true }),
-//       catchError(error => captureException(error))
-//     ) as Observable<GitProject[]>
-// }
+  createHeatMap(res) {
+
+    res.forEach(bikeAccident => {
+
+      let bikeAccidentCoords = this.format.readFeature(bikeAccident.accidentPoint, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).getGeometry().getCoordinates()
+
+
+      let bikeAccidentFeature = new Feature({
+        geometry: new Point(bikeAccidentCoords)
+      });
+      this.bikeAccidentsCollection.push(bikeAccidentFeature);
+    });
+
+    let bikeAccidentsLayer = new VectorLayer({
+      name: 'bikeAccidents',
+      source: new VectorSource({
+        features: this.bikeAccidentsCollection
+      })
+    })
+    let heatmap = new Heatmap({
+      source: bikeAccidentsLayer
+    });
+
+    //this.mapService.map$.addLayer(heatmap);
+
+  }
+
 }
