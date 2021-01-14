@@ -35,8 +35,8 @@ export class DistrictsService {
   }
 
   getDistricts() {
-    this.httpClient.get('https://floating-reef-24535.herokuapp.com/api/EMTServices/getDistricts').subscribe(
-      //this.httpClient.get('http://localhost:8081/api/EMTServices/getDistricts').subscribe(
+    this.httpClient.get('https://floating-reef-24535.herokuapp.com/api/urban/EMTServices/getDistricts').subscribe(
+     // this.httpClient.get('http://localhost:8081/api/urban/EMTServices/getDistricts').subscribe(
       res => {
         this.response = res;
         this.createDistrictsFeatures()
