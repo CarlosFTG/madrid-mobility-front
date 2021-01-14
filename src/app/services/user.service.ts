@@ -31,6 +31,8 @@ export class UserService {
 
   userPosition$ = this.userPositionOut.asObservable();
 
+  private REST_API_SERVER = "http://localhost:8081/api/auth/EMTServices/";
+
   constructor(private httpClient: HttpClient, private mapService: MapService,
     private infoCardService: InfoCardService, public dialog: MatDialog, private styleService: StyleService) {
     this.getUserPosition();
@@ -49,6 +51,7 @@ export class UserService {
     let notifyUserPosition = this.notifyUserPosition;
     let dialog = this.dialog;
     let styleService = this.styleService;
+    let REST_API_SERVER = this.REST_API_SERVER;
 
     navigator.geolocation.getCurrentPosition(function (location) {
       var lat = location.coords.latitude;
@@ -59,18 +62,26 @@ export class UserService {
         'lat:': lat,
         'lng': lng
       }
-
-      // sessionStorage.setItem('userLat', String(lat));
-      // sessionStorage.setItem('userLng', String(lng));
-      /*  
-        globalLatlng = latlng; */
       http.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + location.coords.latitude + ',' + location.coords.longitude).subscribe(
         res => {
           let markerStyle = [];
           //@ts-ignore
           localStorage.setItem('userLocationAddress', res.results[0].locations[0].street)
 
+          //@ts-ignore
+          userCity=res.results[0].locations[0].adminArea5;
 
+          http.get(REST_API_SERVER+'registerVisit',{
+            params: {
+              'userCity': userCity,
+            }
+          }
+          ).subscribe(
+            res =>{
+            },
+            err=>{
+            }
+          )
 
           //@ts-ignore
           if (res.results[0].locations[0].adminArea5 === 'Madrid') {
@@ -118,9 +129,6 @@ export class UserService {
 
           }
 
-
-          http.post('https://floating-reef-24535.herokuapp.com/api/EMTServices/registerVisit', userCity).subscribe();
-
         }, err =>{
           alert(err)
           console.log(err)
@@ -131,7 +139,8 @@ export class UserService {
     });
   }
 
-  createUserFeature() {
-
+  registerUserCity() {
+        
+      
   }
 }

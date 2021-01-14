@@ -11,8 +11,8 @@ import { MapService } from './map.service';
 })
 export class BusesService {
 
-  //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
-  private REST_API_SERVER = "http://localhost:8081/api/buses/EMTServices/";
+  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/buses/EMTServices/";
+  //private REST_API_SERVER = "http://localhost:8081/api/buses/EMTServices/";
 
   token: string;
 
