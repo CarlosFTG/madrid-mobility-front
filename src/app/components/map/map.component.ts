@@ -40,13 +40,13 @@ export class MapComponent implements OnInit {
     private userService:UserService, 
     private districtsService: DistrictsService, 
     private busesService: BusesService,
+    private bikeAccidents: BikeAccidentService,
     public dialog: MatDialog){
 
   }
 
   ngOnInit() {
     this.mapService.renderMap();
-    //console.log(this.mapService.map$)
     this.openLoading();
   }
 
