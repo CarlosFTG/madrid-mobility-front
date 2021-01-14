@@ -7,6 +7,9 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class AuthService {
 
+  //private REST_API_SERVER = "http://localhost:8081/api/auth/EMTServices/";
+  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/auth/EMTServices/";
+
   constructor(private httpClient: HttpClient) { }
 
   private emtTokenOut = new BehaviorSubject<string>(null);
@@ -14,7 +17,7 @@ export class AuthService {
   emtToken$ = this.emtTokenOut.asObservable();
 
   doLogin(){
-    this.httpClient.get('http://localhost:8081/api/EMTServices/login').subscribe(
+    this.httpClient.get(this.REST_API_SERVER+'login').subscribe(
       res=>{
       //@ts-ignore
       if(res.token != null && res.token != undefined){
