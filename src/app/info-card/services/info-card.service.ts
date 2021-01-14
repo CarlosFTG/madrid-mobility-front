@@ -8,7 +8,8 @@ import { catchError, retry } from 'rxjs/operators';
 })
 export class InfoCardService {
 
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
+  //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/EMTServices/";
+  private REST_API_SERVER = "https://localhost:8081/api/bikes/EMTServices/";
 
   private closetsStationsListOut = new BehaviorSubject<any[]>(null);
   private iconOut = new BehaviorSubject<any[]>(null);
