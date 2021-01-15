@@ -7,6 +7,8 @@ import { UserService } from 'src/app/services/user.service';
 
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { InfoCardService } from '../services/info-card.service';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-closestations',
@@ -23,7 +25,11 @@ export class ClosestationsComponent implements OnInit {
   constructor(private bikesLayerService: BikesLayerService,
     private infoCardService: InfoCardService,
     private mapService: MapService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer) { 
+      
+    }
 
   ngOnInit(): void {
     this.createForm();
@@ -84,7 +90,6 @@ export class ClosestationsComponent implements OnInit {
       width: '600px',
     });
     dialogRef.afterClosed().subscribe(result => {
-      console.log(result)
     });
   }
 

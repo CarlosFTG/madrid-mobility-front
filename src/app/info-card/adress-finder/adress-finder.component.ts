@@ -13,6 +13,8 @@ import Collection from 'ol/Collection';
 import WKT from 'ol/format/WKT';
 import { StyleService } from 'src/app/services/style.service';
 import { MapService } from 'src/app/services/map.service';
+import { MatIconRegistry } from '@angular/material/icon';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-adress-finder',
@@ -31,13 +33,20 @@ export class AdressFinderComponent implements OnInit {
   constructor(private streetsService: StreetsService,
     private infoCardService: InfoCardService,
     private styleService: StyleService,
-    private mapService: MapService) {
+    private mapService: MapService,
+    iconRegistry: MatIconRegistry,
+    sanitizer: DomSanitizer) {
+      
     this.filteredStreets = this.addressFinderControl.valueChanges
       .pipe(
         startWith(''),
         map(value => this._filterAdress(value))
 
       );
+
+      iconRegistry.addSvgIcon(
+        'thumbs-up',
+        sanitizer.bypassSecurityTrustResourceUrl('assets/img/iconmonstr-plus-3.svg'));
   }
 
   ngOnInit(): void {
