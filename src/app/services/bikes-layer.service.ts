@@ -18,6 +18,7 @@ import { StyleService } from './style.service';
 import { AuthModuleModule } from '../auth-module/auth-module.module';
 import { AuthService } from '../auth-module/services/auth.service';
 import { TabledetailService } from '../components/tabledetail/services/tabledetail.service';
+import { clear } from 'console';
 
 @Injectable({
   providedIn: 'root'
@@ -176,7 +177,9 @@ export class BikesLayerService {
   }
 
   addSelected(){
+    this.removeSelectedBikeStation();
     for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
+      
       if(this.mapService.map$.getLayers().getArray()[i].getProperties().name === 'bikeStations'){
         let selectedFeature = this.mapService.map$.getLayers().getArray()[i].getSource().getFeatureById(this.stationId);
         let selectedFeatureCoords =  selectedFeature.getGeometry().getCoordinates();
@@ -189,6 +192,7 @@ export class BikesLayerService {
         //bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks, 'stationId':bikeStation.stationId });
         this.styleService.applyStyleToSelectedFeature(bikeStationFeature);
 
+        this.selectedBikeStationCollection = new Collection;
         this.selectedBikeStationCollection.push(bikeStationFeature);
 
         let selectedbikeStationLayer = new VectorLayer({
@@ -199,8 +203,18 @@ export class BikesLayerService {
         })
 
         this.mapService.map$.addLayer(selectedbikeStationLayer);
+        break;
       }
+      
     } 
+  }
+
+  removeSelectedBikeStation(){
+    for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
+      
+      if(this.mapService.map$.getLayers().getArray()[i].getProperties().name === 'selectedBikeStation'){
+        this.mapService.map$.removeLayer(this.mapService.map$.getLayers().getArray()[i]);
+      }}
   }
 
 }
