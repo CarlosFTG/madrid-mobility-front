@@ -18,7 +18,6 @@ import { StyleService } from './style.service';
 import { AuthModuleModule } from '../auth-module/auth-module.module';
 import { AuthService } from '../auth-module/services/auth.service';
 import { TabledetailService } from '../components/tabledetail/services/tabledetail.service';
-import { clear } from 'console';
 
 @Injectable({
   providedIn: 'root'
