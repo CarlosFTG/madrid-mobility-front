@@ -2,11 +2,18 @@
     background-color:gainsboro;
     border-radius: 10%;
     padding: 5%;
+    height: 10%;
+    margin-top: 2%;
 }
 
 .line-container{
     background-color:black;
     border-radius: 10%;
-    padding: 3%;
+    padding: 5%;
     color: chartreuse;
+    
+}
+
+.bus-stop-container{
+  padding: 5%;
 }

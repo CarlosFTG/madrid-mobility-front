@@ -81,6 +81,7 @@ export class ClosestationsComponent implements OnInit {
 
 
     } else {
+      this.errorNumberResults = true;
     }
   }
 

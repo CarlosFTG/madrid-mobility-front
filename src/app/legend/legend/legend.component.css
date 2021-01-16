@@ -1,12 +1,13 @@
 .legend-container{
-    margin-left: 80%;
+    margin-left: 78%;
   margin-top: 5%;
   background: white;
   border-radius: 5%;
   z-index: 5;
   position: absolute;
   padding: 2%;
-  width: 18%;
+  width: 20%;
+  height: 40%;
 }
 
 .row{

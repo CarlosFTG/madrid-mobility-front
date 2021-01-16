@@ -9,16 +9,17 @@ import { UpperBarService } from 'src/app/upper-bar/services/upper-bar.service';
 })
 export class LegendComponent implements OnInit {
 
-  openLogin: boolean = false;
+  showInLegend: string = 'legend';
 
   constructor(private upperBarService: UpperBarService) { 
     this.upperBarService.uopenLogin$.subscribe(
       data=>{
-        this.openLogin= data;
+        this.showInLegend= data;
       }
     )
   }
 
   ngOnInit(): void {
+    this.showInLegend = 'legend';
   }
 }
