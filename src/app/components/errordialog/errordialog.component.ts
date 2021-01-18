@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { BikesLayerService } from 'src/app/services/bikes-layer.service';
 import { DialogData } from '../nomadriddialog/nomadriddialog.component';
 
 @Component({
@@ -12,7 +13,7 @@ export class ErrordialogComponent implements OnInit {
   error: string
 
   constructor(public dialogRef: MatDialogRef<ErrordialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData, private bikesLayerService:BikesLayerService) { }
 
   ngOnInit(): void {
     this.setError();
@@ -29,6 +30,10 @@ export class ErrordialogComponent implements OnInit {
       this.error = 'An error has occurred retrieving your location, please, try again in a few seconds'
     }
     
+  }
+
+  notify(){
+    this.bikesLayerService.notifyBikes(true);
   }
 
 }
