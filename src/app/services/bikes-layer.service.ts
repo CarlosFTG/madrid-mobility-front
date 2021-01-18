@@ -127,9 +127,10 @@ export class BikesLayerService {
   }
 
   createBikeStationsFeatures(bikeOrSlot?: string){
+    this.bikeStationsCollection = new Collection;
     this.response.forEach(bikeStation =>{
 
-      let splitCoords = bikeStation.pointsList.coordinates.split(',');
+      let splitCoords = bikeStation.pointsList.coordinates.split(' ');
 
       let formatCoords= 'POINT('+splitCoords[0]+ ' '+ splitCoords[1]+" 216.7"+')';
 
