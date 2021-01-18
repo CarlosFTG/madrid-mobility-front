@@ -17,6 +17,7 @@ import { TabledetailComponent } from '../components/tabledetail/tabledetail.comp
 import { MatDialog } from '@angular/material/dialog';
 import { NomadriddialogComponent } from '../components/nomadriddialog/nomadriddialog.component';
 import { StyleService } from './style.service';
+import { ErrordialogComponent } from '../components/errordialog/errordialog.component';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class UserService {
 
   userPosition$ = this.userPositionOut.asObservable();
 
-  private REST_API_SERVER = "http://localhost:8081/api/auth/EMTServices/";
+  //private REST_API_SERVER = "http://localhost:8081/api/auth/EMTServices/";
+  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/auth/EMTServices/";
 
   constructor(private httpClient: HttpClient, private mapService: MapService,
     private infoCardService: InfoCardService, public dialog: MatDialog, private styleService: StyleService) {
@@ -80,6 +82,7 @@ export class UserService {
             res =>{
             },
             err=>{
+              
             }
           )
 
@@ -130,8 +133,10 @@ export class UserService {
           }
 
         }, err =>{
-          alert(err)
-          console.log(err)
+          const dialogRef = dialog.open(ErrordialogComponent, {
+            width: '600px',
+            data: {err:err}
+          });
         }
       )
 
