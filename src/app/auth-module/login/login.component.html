@@ -1,16 +1,22 @@
-<div>
-    <div [formGroup]="loginForm" >
+<div *ngIf="loginOrRegister">
+  <div>
+    <div [formGroup]="loginForm">
       <mat-form-field appearance="outline">
-      <mat-label>Login</mat-label>
-      <input matInput formControlName="email">
-      <!-- <input matInput formControlName="password" type="password"> -->
+        <mat-label>Login</mat-label>
+        <input matInput formControlName="email">
       </mat-form-field>
       <mat-form-field appearance="outline">
         <mat-label>Password</mat-label>
         <input matInput formControlName="password" type="password">
-        </mat-form-field>
+      </mat-form-field>
     </div>
   </div>
-<div style="width: 25%;">
-    <button mat-raised-button color="primary" (click)="login()" >Login </button><br>
+  <a role="button" (click)="showRegister()">Haven´t an account yet?</a>
+  <div style="width: 25%;">
+    <button mat-raised-button color="primary" (click)="login()">Login </button><br>
+    <button mat-raised-button color="primary" (click)="getBack()">Get back to legend </button><br>
   </div>
+</div>
+<div *ngIf="!loginOrRegister">
+  <app-register></app-register>
+</div>

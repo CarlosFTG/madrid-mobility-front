@@ -1,8 +1,15 @@
 <mat-toolbar>
-    <div >
+    <div *ngIf="userName === undefined">
         <div style="padding: 2%;">
             MadridMobility
-            <a role="button" (click)="openLogin()">login</a>
+             <a role="button" (click)="openLogin()">login</a>
+        </div>
+        
+    </div>
+    <div *ngIf="userName !== undefined">
+        <div style="padding: 2%;">
+            MadridMobility
+             <p>Hola {{userName}}</p>
         </div>
         
     </div>

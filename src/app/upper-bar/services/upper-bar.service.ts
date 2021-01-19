@@ -6,13 +6,13 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class UpperBarService {
 
-  private openLoginOut = new BehaviorSubject<boolean>(null);
+  private openLoginOut = new BehaviorSubject<string>(null);
 
   uopenLogin$ = this.openLoginOut.asObservable();
 
   constructor() { }
 
-  openLogin(openLogin: boolean){
+  openLogin(openLogin: string){
     this.openLoginOut.next(openLogin);
   }
 }
