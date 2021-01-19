@@ -60,14 +60,7 @@ export class AuthService {
   }
 
   registerUser(registerParams){
-    this.httpClient.get('http://localhost:8081/api/EMTServices/registerUser', {
-      params: {
-        'name':registerParams.name,
-        'surname':registerParams.surname,
-        'email': registerParams.email,
-        'password': registerParams.password
-      }
-    }).subscribe(
+    this.httpClient.post('http://localhost:8082/api/register', registerParams).subscribe(
       res=>{
       console.log(res)
     },

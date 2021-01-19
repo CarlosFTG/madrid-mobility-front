@@ -12,7 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommonModule, MaterialModule,ReactiveFormsModule
   ],
   exports:[
-    LoginComponent
+    LoginComponent,RegisterComponent
   ]
 })
 export class AuthModuleModule { }
