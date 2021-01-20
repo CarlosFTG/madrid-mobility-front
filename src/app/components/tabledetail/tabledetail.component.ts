@@ -15,6 +15,7 @@ export class TabledetailComponent implements OnInit {
   selectedStation: any;
   closetsStation: any;
   dataSource;
+  updatedAt: Date;
   constructor(private infoCardService: InfoCardService,
      private mapService : MapService, 
     private routeService: RoutesService,
@@ -26,6 +27,7 @@ export class TabledetailComponent implements OnInit {
       if (closetsStations != null) {
          this.closetsStation = closetsStations;
          this.dataSource = closetsStations;
+         this.updatedAt = this.dataSource[0].updatedAt
       }
     });
   }
