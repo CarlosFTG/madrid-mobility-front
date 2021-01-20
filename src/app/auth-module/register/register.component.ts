@@ -34,7 +34,8 @@ export class RegisterComponent implements OnInit {
         'name': this.registerForm.get('name').value,
         'surname': this.registerForm.get('surname').value,
         'email': this.registerForm.get('email').value,
-        'password': this.registerForm.get('password').value
+        'password': this.registerForm.get('password').value,
+        'app': 'madrid-mobility'
       }
       this.authService.registerUser(registerParams);
     }else{
