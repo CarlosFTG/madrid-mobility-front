@@ -23,6 +23,7 @@ import { LegendModule } from './legend/legend.module';
 import { UpperBarModule } from './upper-bar/upper-bar.module';
 
 import { TokenInterceptor } from './auth-module/token.interceptor';
+import { InfoPopupComponent } from './components/info-popup/info-popup.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +35,8 @@ import { TokenInterceptor } from './auth-module/token.interceptor';
     ErrordialogComponent,
     BikeStationInfoComponent,
     WelcomeComponent,
-    TabledetailComponent
+    TabledetailComponent,
+    InfoPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +54,7 @@ import { TokenInterceptor } from './auth-module/token.interceptor';
   entryComponents: [
     DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,
     NomadriddialogComponent,ErrordialogComponent,BikeStationInfoComponent,
-    TabledetailComponent
+    TabledetailComponent, InfoPopupComponent
   ],
   providers: [
      MapComponent,

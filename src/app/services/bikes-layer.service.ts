@@ -143,7 +143,8 @@ export class BikesLayerService {
 
         bikeStationFeature.setId(bikeStation.stationId);
 
-        bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks, 'stationId':bikeStation.stationId });
+        bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks, 
+        'stationId':bikeStation.stationId, 'name':bikeStation.name, 'updatedAt':bikeStation.updatedAt, 'address':bikeStation.address });
   
         if(bikeOrSlot === undefined){
           this.styleService.applyStyleToMarker(bikeStationFeature,bikeStation);

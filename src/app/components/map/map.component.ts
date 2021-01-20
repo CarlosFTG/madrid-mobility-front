@@ -1,22 +1,18 @@
-import { Component, OnInit, Inject, ViewChild, AfterContentInit, HostListener } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit} from '@angular/core';
 //import { MatExpansionPanel } from '@angular/material/expansion'
 //import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DialogComponent } from '../dialog/dialog.component';
-import { LoaadingNearStationsComponent } from '../loaading-near-stations/loaading-near-stations.component';
 
-import { NomadriddialogComponent } from '../nomadriddialog/nomadriddialog.component';
-import { ErrordialogComponent } from '../errordialog/errordialog.component';
-import { TabledetailComponent } from '../tabledetail/tabledetail.component'
 import { BikeAccidentService } from '../../services/bike-accident.service'
-import { InfoCardService } from '../../info-card/services/info-card.service';
 import { MapService } from '../../services/map.service';
 import { BikesLayerService } from 'src/app/services/bikes-layer.service';
 import { UserService } from 'src/app/services/user.service';
 import { DistrictsService } from 'src/app/services/districts.service';
 import { BusesService } from 'src/app/services/buses.service';
 import { MatDialog } from '@angular/material/dialog';
+
+import Select from 'ol/interaction/Select';
+import { InfoPopupComponent } from '../info-popup/info-popup.component';
 
 declare let L;
 var marker;
@@ -34,6 +30,7 @@ let maxBounds = [[[-3.8094818592, 40.3347849588], [-3.5842621326, 40.3347849588]
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements OnInit {
+
 
   constructor(private mapService: MapService, 
     private bikesLayerService: BikesLayerService, 
@@ -55,7 +52,37 @@ export class MapComponent implements OnInit {
   }
 
   selectOnMap(event){
+    let dialog = this.dialog;
+    let targetLayer = this.mapService.map$.getLayers().getArray()[3];
     
+     let select = new Select({
+       layers: [targetLayer],
+       //style:selectStyle
+     });
+
+      select.getFeatures().on('change:length', function (e) {
+        var feature_buff = select.getFeatures();
+        if(feature_buff.getLength() >0){
+          for (var i = 0; i < feature_buff.getLength(); i++) {
+           
+            console.log(feature_buff.item(0).values_)
+            const dialogRef = dialog.open(InfoPopupComponent, {
+              width: '600px',
+            });
+            dialogRef.componentInstance.totalBikes = feature_buff.item(0).values_.availableBikes;
+            dialogRef.componentInstance.availableSlots = feature_buff.item(0).values_.availableSlots;
+            dialogRef.componentInstance.name = feature_buff.item(0).values_.name;
+            dialogRef.componentInstance.address = feature_buff.item(0).values_.address;
+            dialogRef.componentInstance.updatedAt = feature_buff.item(0).values_.updatedAt;
+          }
+          //detecta cuando no se hace click sobre alguna feature
+        }else{
+          // vehiclesRoutesService.openInfoCard(null);
+          // sharedService.updateVehicleSelection(null);
+        }
+         
+      });
+     this.mapService.map$.addInteraction(select);
   }
 
   openLoading() {
