@@ -14,15 +14,6 @@ import { MatDialog } from '@angular/material/dialog';
 import Select from 'ol/interaction/Select';
 import { InfoPopupComponent } from '../info-popup/info-popup.component';
 
-declare let L;
-var marker;
-var polygon;
-let mapLeaflet;
-//var globalLatlng
-var polygon
-var userCity;
-var legend
-let maxBounds = [[[-3.8094818592, 40.3347849588], [-3.5842621326, 40.3347849588], [-3.5842621326, 40.51042249], [-3.8094818592, 40.51042249], [-3.8094818592, 40.3347849588]]]
 
 @Component({
   selector: 'app-map',
@@ -31,6 +22,7 @@ let maxBounds = [[[-3.8094818592, 40.3347849588], [-3.5842621326, 40.3347849588]
 })
 export class MapComponent implements OnInit {
 
+  selectIndex: number=0;
 
   constructor(private mapService: MapService, 
     private bikesLayerService: BikesLayerService, 
@@ -51,30 +43,35 @@ export class MapComponent implements OnInit {
 
   }
 
-  selectOnMap(event){
+  selectOnMap(){
+    let bikeStationsLayerIndex;
     let dialog = this.dialog;
-    let targetLayer = this.mapService.map$.getLayers().getArray()[3];
+    for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
+      if(this.mapService.map$.getLayers().getArray()[i].values_.name === 'bikeStations'){
+        bikeStationsLayerIndex=i;
+      }
+    }
+    let targetLayer = this.mapService.map$.getLayers().getArray()[bikeStationsLayerIndex];
     
      let select = new Select({
        layers: [targetLayer],
        //style:selectStyle
      });
-
+     
       select.getFeatures().on('change:length', function (e) {
         var feature_buff = select.getFeatures();
         if(feature_buff.getLength() >0){
-          for (var i = 0; i < feature_buff.getLength(); i++) {
-           
-            console.log(feature_buff.item(0).values_)
-            const dialogRef = dialog.open(InfoPopupComponent, {
-              width: '600px',
-            });
-            dialogRef.componentInstance.totalBikes = feature_buff.item(0).values_.availableBikes;
-            dialogRef.componentInstance.availableSlots = feature_buff.item(0).values_.availableSlots;
-            dialogRef.componentInstance.name = feature_buff.item(0).values_.name;
-            dialogRef.componentInstance.address = feature_buff.item(0).values_.address;
-            dialogRef.componentInstance.updatedAt = feature_buff.item(0).values_.updatedAt;
-          }
+            for (var i = 0; i < feature_buff.getLength(); i++) {
+              const dialogRef = dialog.open(InfoPopupComponent, {
+                width: '600px',
+              });
+              dialogRef.componentInstance.totalBikes = feature_buff.item(0).values_.availableBikes;
+              dialogRef.componentInstance.availableSlots = feature_buff.item(0).values_.availableSlots;
+              dialogRef.componentInstance.name = feature_buff.item(0).values_.name;
+              dialogRef.componentInstance.address = feature_buff.item(0).values_.address;
+              dialogRef.componentInstance.updatedAt = feature_buff.item(0).values_.updatedAt;
+            }
+          
           //detecta cuando no se hace click sobre alguna feature
         }else{
           // vehiclesRoutesService.openInfoCard(null);
@@ -82,7 +79,10 @@ export class MapComponent implements OnInit {
         }
          
       });
-     this.mapService.map$.addInteraction(select);
+      if(this.selectIndex <1){
+        this.selectIndex++;
+        this.mapService.map$.addInteraction(select);
+      }
   }
 
   openLoading() {
