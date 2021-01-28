@@ -141,7 +141,7 @@ export class UserService {
   getGeoCodingAPI(coords): Observable<any> {
     let lat = coords.latitude;
     let lng = coords.longitude;
-    return this.httpClient.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location='
+    return this.httpClient.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=<APIKEY>&location='
       + lat + ',' + lng).pipe(
         retry(3),
         //catchError(this.handleError)
