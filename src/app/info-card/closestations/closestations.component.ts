@@ -9,6 +9,7 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dial
 import { InfoCardService } from '../services/info-card.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RoutesService } from 'src/app/services/routes.service';
 
 @Component({
   selector: 'app-closestations',
@@ -21,14 +22,20 @@ export class ClosestationsComponent implements OnInit {
   errorNumberResults = false;
   nearestBikeStations: any = new Array;
   userPosition = { 'lat': null, 'lng': null };
+  routeShowed:boolean=false;
 
   constructor(private bikesLayerService: BikesLayerService,
     private infoCardService: InfoCardService,
     private mapService: MapService,
+    private routeService: RoutesService,
     public dialog: MatDialog,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer) { 
-      
+      this.routeService.route$.subscribe(route=>{
+        if(route != null){
+          this.routeShowed = true;
+        }
+      })
     }
 
   ngOnInit(): void {
@@ -92,6 +99,11 @@ export class ClosestationsComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
     });
+  }
+
+  clearRoute(){
+    this.routeShowed=false;
+    this.routeService.clearRoute();
   }
 
 }

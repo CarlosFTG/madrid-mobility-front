@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import Feature from 'ol/Feature';
@@ -10,6 +10,7 @@ import VectorLayer from 'ol/layer/Vector';
 import Collection from 'ol/Collection';
 import WKT from 'ol/format/WKT';
 import { MapService } from './map.service';
+import { StyleLineFeaturesService } from './style-line-features.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,11 @@ export class RoutesService {
   lineCollection = new Collection;
   format = new WKT();
 
-  constructor(private httpClient: HttpClient, private mapService:MapService) { }
+  private routeOut = new BehaviorSubject<boolean>(null);
+
+  route$ = this.routeOut.asObservable();
+
+  constructor(private httpClient: HttpClient, private mapService:MapService, private styleLineFeaturesService:StyleLineFeaturesService) { }
 
   getRoute(userCoords,bikeStationCoords):Observable<any>{
     
@@ -39,6 +44,7 @@ export class RoutesService {
   }
 
   createRouteLayer(coordinates){
+    this.lineCollection=new Collection;
     coordinates.forEach(coordinates =>{
 
       //let splitCoords = coordinates.pointsList.coordinates.split(' ');
@@ -57,11 +63,7 @@ export class RoutesService {
         // bikeStationFeature.setProperties({ 'availableBikes':coordinates.availableBikes, 'availableSlots': coordinates.freeDocks, 
         // 'stationId':coordinates.stationId, 'name':coordinates.name, 'updatedAt':coordinates.updatedAt, 'address':coordinates.address });
   
-        // if(bikeOrSlot === undefined){
-        //   this.styleService.applyStyleToMarker(bikeStationFeature,coordinates);
-        // }else{
-        //   this.styleService.applyStyleToMarker(bikeStationFeature,coordinates, bikeOrSlot);
-        // }
+           //this.styleLineFeaturesService.styleRoute(lineFeature);
         
         this.lineCollection.push(lineFeature);
     });
@@ -72,7 +74,20 @@ export class RoutesService {
 				features: this.lineCollection
 			})
     })
-
+    this.clearRoute();
     this.mapService.map$.addLayer(routeLayer);
+    this.notifyRoute();
+  }
+
+  clearRoute(){
+    for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
+      if(this.mapService.map$.getLayers().getArray()[i].getProperties().name === 'route'){
+        this.mapService.map$.removeLayer(this.mapService.map$.getLayers().getArray()[i]);
+      }
+    }
+  }
+
+  notifyRoute(){
+    this.routeOut.next(true);
   }
 }
