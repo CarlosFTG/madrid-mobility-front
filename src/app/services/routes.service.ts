@@ -32,7 +32,7 @@ export class RoutesService {
     let bikeStationCoordsStr = bikeStationCoords.lat+ ','+bikeStationCoords.lng
 
      //http://www.mapquestapi.com/directions/v2/route?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&from=Clarendon Blvd,Arlington,VA&to=2400+S+Glebe+Rd,+Arlington,+VA
-    return this.httpClient.get('https://api.openrouteservice.org/v2/directions/foot-walking?api_key=5b3ce3597851110001cf62485f1920e92dc94c50bc5c40c1b2d2ed46&start='
+    return this.httpClient.get('https://api.openrouteservice.org/v2/directions/foot-walking?api_key=<APIKEY>&start='
      +userCoordsStr+'&end='+bikeStationCoordsStr).pipe(catchError(error => {
       if (error instanceof HttpErrorResponse && error.status === 401) {
         //return this.handle401Error(request, next);
