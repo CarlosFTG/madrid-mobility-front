@@ -22,6 +22,7 @@ export interface DialogData {
 export class NomadriddialogComponent implements OnInit {
   value: any;
   format = new WKT();
+  apiError:boolean=false;
   constructor(
     public dialogRef: MatDialogRef<NomadriddialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, private mapService: MapService, private styleService: StyleService) { }

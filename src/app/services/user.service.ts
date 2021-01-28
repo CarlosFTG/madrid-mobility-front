@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MapService } from './map.service';
 
@@ -18,6 +18,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { NomadriddialogComponent } from '../components/nomadriddialog/nomadriddialog.component';
 import { StyleService } from './style.service';
 import { ErrordialogComponent } from '../components/errordialog/errordialog.component';
+import { catchError, retry, shareReplay } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class UserService {
   userPosition$ = this.userPositionOut.asObservable();
 
   private REST_API_SERVER = "http://localhost:8081/api/auth/EMTServices/";
+  private REST_API_SERVER_URBAN = "http://localhost:8081/api/urban/EMTServices/";
   //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/auth/EMTServices/";
 
   constructor(private httpClient: HttpClient, private mapService: MapService,
@@ -43,6 +45,27 @@ export class UserService {
 
   // notifyUserPosition(userPosition) {
   //   this.userPositionOut.next(userPosition)
+  // }
+
+  handleError(error: HttpErrorResponse) {
+    let dialog: MatDialog;
+    let errorMessage = 'Unknown error!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side errors
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side errors
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    window.alert(errorMessage);
+    return throwError(errorMessage);
+  }
+
+  // openDialog(){
+  //   const dialogRef = this.dialog.open(ErrordialogComponent, {
+  //     width: '600px',
+  //     data: { err: 'An error has ocurred getting your' }
+  //   });
   // }
 
   async getUserPosition() {
@@ -68,31 +91,56 @@ export class UserService {
   }
 
   getGeoCoding(coords) {
+    let userCity
+    this.getGeoCodingAPI(coords).subscribe(
+      res => {
+        //@ts-ignore
+        if (res.results[0].locations[0] != undefined) {
+          //@ts-ignore
+          localStorage.setItem('userLocationAddress', res.results[0].locations[0].street);
+          //@ts-ignore
+          userCity=res.results[0].locations[0].adminArea5;
+        }
+        this.registerVisit(userCity);
+        //@ts-ignore
+        this.checkIfUserInMadrid(userCity, res.results[0].providedLocation.latLng.lng, res.results[0].providedLocation.latLng.lat, res.results[0].providedLocation.latLng);
+      },err=>{
+        // let params = {
+        //   //@ts-ignore
+        //   'coordinates': 'POINT (' + coords.longitude + ' ' + coords.latitude + '),3857)'
+        // }
+        //  this.httpClient.post(this.REST_API_SERVER_URBAN+'checkIfUserInMadrid', params).subscribe(
+        //    res=>{
+        //      console.log(res)
+        //    },err=>{
+        //      console.log(err)
+        //    }
+        //  );
+        const dialogRef = this.dialog.open(NomadriddialogComponent, {
+          width: '600px',
+        });
+
+        dialogRef.componentInstance.apiError = true;
+  
+        dialogRef.afterClosed().subscribe(result => {
+          console.log(result)
+        });
+      }
+    )
+  }
+
+  getGeoCodingAPI(coords): Observable<any> {
     let lat = coords.latitude;
     let lng = coords.longitude;
-    this.httpClient.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location='
-      + lat + ',' + lng).subscribe(
-        res => {
-          //@ts-ignore
-          if(res.results[0].locations[0] != undefined){
-            //@ts-ignore
-            localStorage.setItem('userLocationAddress', res.results[0].locations[0].street);
-          }
-          
-          //@ts-ignore
-          let userCity = res.results[0].locations[0].adminArea5;
-          this.registerVisit(userCity);
-          //@ts-ignore
-          this.checkIfUserInMadrid(userCity,res.results[0].providedLocation.latLng.lng, res.results[0].providedLocation.latLng.lat, res.results[0].providedLocation.latLng);
-        },
-        err => {
-          const dialogRef = this.dialog.open(ErrordialogComponent, {
-            width: '600px',
-            data: { err: err }
-          });
-        }
-      )
+    return this.httpClient.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location='
+      + lat + ',' + lng).pipe(
+        retry(3),
+        //catchError(this.handleError)
+      );
+    shareReplay();
   }
+
+  
 
   registerVisit(userCity) {
     this.httpClient.get(this.REST_API_SERVER + 'registerVisit', {
@@ -104,12 +152,12 @@ export class UserService {
       res => {
       },
       err => {
-
+        console.log(err)
       }
     )
   }
 
-  checkIfUserInMadrid(userCity, lng,lat,latLng){
+  checkIfUserInMadrid(userCity, lng, lat, latLng) {
     if (userCity === 'Madrid') {
       let formatCoords = 'POINT(' + lng + ' ' + lat + " 216.7" + ')';
       let formatCoords2 = 'POINT(' + lng + ' ' + lat + ')';

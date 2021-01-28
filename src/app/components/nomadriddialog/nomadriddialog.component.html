@@ -1,4 +1,5 @@
-<h2>It seems that you are not located in Madrid</h2>
+<h2 *ngIf='!apiError'>It seems that you are not located in Madrid</h2>
+<h2 *ngIf='apiError'>Mapquest api geolocation service has failed,</h2>
 <h3>To have a try to this app, choose any address to be used as your current position</h3>
 <mat-form-field>
     <mat-label>Addresses</mat-label>
