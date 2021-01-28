@@ -32,11 +32,26 @@ export class TabledetailComponent implements OnInit {
     });
   }
   async findNearStations(select: any) {
-    let lat = select.pointsList.coordinates.substring(0, select.pointsList.coordinates.indexOf(" "));
-    let lng = select.pointsList.coordinates.substring(select.pointsList.coordinates.indexOf(" ") + 1, select.pointsList.coordinates.length);
-    let setViewPoint = 'POINT(' + lat + ' ' + lng+ ')';
+    let latBikeStation = select.pointsList.coordinates.substring(0, select.pointsList.coordinates.indexOf(" "));
+    let lngBikeStation = select.pointsList.coordinates.substring(select.pointsList.coordinates.indexOf(" ") + 1, select.pointsList.coordinates.length);
+
+    let bikeStationCoords = {
+      lat:latBikeStation,
+      lng:lngBikeStation
+    }
+
+    let userCoords = {
+      lat: JSON.parse(localStorage.getItem('userCoords')).lat,
+      lng:JSON.parse(localStorage.getItem('userCoords')).lng
+    }
+    let setViewPoint = 'POINT(' + latBikeStation + ' ' + lngBikeStation+ ')';
     this.tabledetailService.notifySelectedStationId(select.stationId);
-    this.routeService.getRoute(select.address);
+    this.routeService.getRoute(userCoords,bikeStationCoords).subscribe(
+      res=>{
+        this.routeService.createRouteLayer(res.features[0].geometry.coordinates);
+    }, err=>{
+      console.log(err)
+    });
     this.closeDialog();
     this.mapService.updateMapViewCenter(setViewPoint);
   }

@@ -15,6 +15,7 @@ import { StyleService } from 'src/app/services/style.service';
 import { MapService } from 'src/app/services/map.service';
 import { MatIconRegistry } from '@angular/material/icon';
 import { DomSanitizer } from '@angular/platform-browser';
+import { StylePointsFeaturesService } from 'src/app/services/style-points-features.service';
 
 @Component({
   selector: 'app-adress-finder',
@@ -32,7 +33,7 @@ export class AdressFinderComponent implements OnInit {
 
   constructor(private streetsService: StreetsService,
     private infoCardService: InfoCardService,
-    private styleService: StyleService,
+    private stylePointsFeaturesService: StylePointsFeaturesService,
     private mapService: MapService,
     iconRegistry: MatIconRegistry,
     sanitizer: DomSanitizer) {
@@ -113,7 +114,7 @@ export class AdressFinderComponent implements OnInit {
           geometry: new Point(foundAddressCoordsFormatted)
         });
 
-        this.styleService.applyStyleToFoundAdressMarker(foundAddressFeature);
+        this.stylePointsFeaturesService.applyStyleToFoundAdressMarker(foundAddressFeature);
         this.foundAddressCollection.push(foundAddressFeature);
 
         let foundAddressLayer = new VectorLayer({

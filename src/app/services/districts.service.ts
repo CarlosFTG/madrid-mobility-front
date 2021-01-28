@@ -13,6 +13,7 @@ import { Style, Icon as IconStyle, Text, Fill, Stroke, Circle as CircleStyle } f
 import { MapService } from './map.service';
 import { StyleService } from './style.service';
 import { BikesLayerService } from './bikes-layer.service';
+import { StylePolygonFeaturesService } from './style-polygon-features.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class DistrictsService {
   districtsFeaturesCollection = new Collection;
   alreadyDistricts: boolean = false;
   
-  constructor(private httpClient: HttpClient, private mapService: MapService, private styleService: StyleService, private bikesService: BikesLayerService) {
+  constructor(private httpClient: HttpClient, private mapService: MapService, private stylePolygonFeaturesService: StylePolygonFeaturesService, private bikesService: BikesLayerService) {
     
     this.bikesService.bikes$.subscribe(bikes=>{
       if(bikes && !this.alreadyDistricts){
@@ -91,7 +92,7 @@ export class DistrictsService {
   
         feature.setProperties({'totalBikes':districtsArrayInfo[i]})
   
-         this.styleService.applyStyleToDistricts(feature);
+         this.stylePolygonFeaturesService.applyStyleToDistricts(feature);
         // feature.setId(coordsArray[i].name);
     
         this.districtsFeaturesCollection.push(feature)

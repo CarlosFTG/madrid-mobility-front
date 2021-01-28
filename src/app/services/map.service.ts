@@ -108,7 +108,6 @@ export class MapService {
     let bikeStationsLayerIndex;
     let dialog = this.dialog;
     for(let i = 0; i < this.map$.getLayers().getArray().length;i++){
-      console.log(this.map$.getLayers().getArray()[i].values_.name)
       if(this.map$.getLayers().getArray()[i].values_.name === 'bikeStations'){
         bikeStationsLayerIndex=i;
       }

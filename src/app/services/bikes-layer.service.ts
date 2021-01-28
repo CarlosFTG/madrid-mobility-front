@@ -18,6 +18,7 @@ import { StyleService } from './style.service';
 import { AuthModuleModule } from '../auth-module/auth-module.module';
 import { AuthService } from '../auth-module/services/auth.service';
 import { TabledetailService } from '../components/tabledetail/services/tabledetail.service';
+import { StylePointsFeaturesService } from './style-points-features.service';
 
 @Injectable({
   providedIn: 'root'
@@ -47,7 +48,7 @@ export class BikesLayerService {
 
   constructor(private httpClient: HttpClient, 
     private mapService : MapService,
-    private styleService: StyleService,
+    private stylePointsFeaturesService: StylePointsFeaturesService,
     private authService: AuthService,
     private tabledetailService:TabledetailService) {
 
@@ -147,9 +148,9 @@ export class BikesLayerService {
         'stationId':bikeStation.stationId, 'name':bikeStation.name, 'updatedAt':bikeStation.updatedAt, 'address':bikeStation.address });
   
         if(bikeOrSlot === undefined){
-          this.styleService.applyStyleToMarker(bikeStationFeature,bikeStation);
+          this.stylePointsFeaturesService.applyStyleToMarker(bikeStationFeature,bikeStation);
         }else{
-          this.styleService.applyStyleToMarker(bikeStationFeature,bikeStation, bikeOrSlot);
+          this.stylePointsFeaturesService.applyStyleToMarker(bikeStationFeature,bikeStation, bikeOrSlot);
         }
         
         this.bikeStationsCollection.push(bikeStationFeature);
@@ -191,7 +192,7 @@ export class BikesLayerService {
         bikeStationFeature.setId(this.stationId.stationId);
 
         //bikeStationFeature.setProperties({ 'availableBikes':bikeStation.availableBikes, 'availableSlots': bikeStation.freeDocks, 'stationId':bikeStation.stationId });
-        this.styleService.applyStyleToSelectedFeature(bikeStationFeature);
+        this.stylePointsFeaturesService.applyStyleToSelectedFeature(bikeStationFeature);
 
         this.selectedBikeStationCollection = new Collection;
         this.selectedBikeStationCollection.push(bikeStationFeature);

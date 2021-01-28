@@ -9,6 +9,7 @@ import { Vector as VectorSource } from 'ol/source';
 import VectorLayer from 'ol/layer/Vector';
 import { StyleService } from 'src/app/services/style.service';
 import Collection from 'ol/Collection';
+import { StylePointsFeaturesService } from 'src/app/services/style-points-features.service';
 
 export interface DialogData {
   fakeAddress: string;
@@ -25,7 +26,7 @@ export class NomadriddialogComponent implements OnInit {
   apiError:boolean=false;
   constructor(
     public dialogRef: MatDialogRef<NomadriddialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData, private mapService: MapService, private styleService: StyleService) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData, private mapService: MapService, private stylePointsFeaturesService: StylePointsFeaturesService) { }
 
   ngOnInit(): void {
   }
@@ -41,6 +42,16 @@ export class NomadriddialogComponent implements OnInit {
     sessionStorage.setItem('userLat', String(lat));
     sessionStorage.setItem('userLng', String(lng));
 
+    let userCoords = {
+      //@ts-ignore
+      lat:lat,
+      //@ts-ignore
+      lng:lng
+    }
+
+    localStorage.removeItem('userCoords')
+    localStorage.setItem('userCoords',JSON.stringify(userCoords));
+
     let fakeAddressCoords = 'POINT(' + fakeAddress + ')';
 
     let userPositionCoords = this.format.readFeature(fakeAddressCoords, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).getGeometry().getCoordinates()
@@ -49,7 +60,7 @@ export class NomadriddialogComponent implements OnInit {
       geometry: new Point(userPositionCoords)
     });
 
-    this.styleService.applyStyleToUser(userPositionFeature);
+    this.stylePointsFeaturesService.applyStyleToUser(userPositionFeature);
 
     let userPositionCollection = new Collection;
 

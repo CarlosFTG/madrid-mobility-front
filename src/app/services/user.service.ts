@@ -19,6 +19,7 @@ import { NomadriddialogComponent } from '../components/nomadriddialog/nomadriddi
 import { StyleService } from './style.service';
 import { ErrordialogComponent } from '../components/errordialog/errordialog.component';
 import { catchError, retry, shareReplay } from 'rxjs/operators';
+import { StylePointsFeaturesService } from './style-points-features.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,12 +35,12 @@ export class UserService {
 
   userPosition$ = this.userPositionOut.asObservable();
 
-  private REST_API_SERVER = "http://localhost:8081/api/auth/EMTServices/";
+  //private REST_API_SERVER = "http://localhost:8081/api/auth/EMTServices/";
   private REST_API_SERVER_URBAN = "http://localhost:8081/api/urban/EMTServices/";
-  //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/auth/EMTServices/";
+  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/auth/EMTServices/";
 
   constructor(private httpClient: HttpClient, private mapService: MapService,
-    private infoCardService: InfoCardService, public dialog: MatDialog, private styleService: StyleService) {
+    private infoCardService: InfoCardService, public dialog: MatDialog, private stylePointsFeaturesService: StylePointsFeaturesService) {
     this.getUserPosition();
   }
 
@@ -71,7 +72,15 @@ export class UserService {
   async getUserPosition() {
     let coords = await this.fetchCoordinates();
     //@ts-ignore
-    this.getGeoCoding(coords.coords)
+    this.getGeoCoding(coords.coords);
+
+    let userCoords = {
+      //@ts-ignore
+      lat:coords.coords.latitude,
+      //@ts-ignore
+      lng:coords.coords.longitude
+    }
+    localStorage.setItem('userCoords',JSON.stringify(userCoords));
 
   }
 
@@ -174,7 +183,7 @@ export class UserService {
       //@ts-ignore
       this.mapService.sendUserPositionToInfoCard(latLng);
 
-      this.styleService.applyStyleToUser(userPositionFeature);
+      this.stylePointsFeaturesService.applyStyleToUser(userPositionFeature);
 
       let userPositionCollection = new Collection;
 
