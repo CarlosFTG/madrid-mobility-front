@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 
 import Select from 'ol/interaction/Select';
 import { InfoPopupComponent } from '../info-popup/info-popup.component';
+import { LegendService } from 'src/app/legend/services/legend.service';
 
 
 @Component({
@@ -30,7 +31,8 @@ export class MapComponent implements OnInit {
     private districtsService: DistrictsService, 
     private busesService: BusesService,
     private bikeAccidents: BikeAccidentService,
-    public dialog: MatDialog){
+    public dialog: MatDialog,
+    private legendService: LegendService){
 
   }
 
@@ -44,45 +46,7 @@ export class MapComponent implements OnInit {
   }
 
   selectOnMap(){
-    let bikeStationsLayerIndex;
-    let dialog = this.dialog;
-    for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
-      if(this.mapService.map$.getLayers().getArray()[i].values_.name === 'bikeStations'){
-        bikeStationsLayerIndex=i;
-      }
-    }
-    let targetLayer = this.mapService.map$.getLayers().getArray()[bikeStationsLayerIndex];
-    
-     let select = new Select({
-       layers: [targetLayer],
-       //style:selectStyle
-     });
-     
-      select.getFeatures().on('change:length', function (e) {
-        var feature_buff = select.getFeatures();
-        if(feature_buff.getLength() >0){
-            for (var i = 0; i < feature_buff.getLength(); i++) {
-              const dialogRef = dialog.open(InfoPopupComponent, {
-                width: '600px',
-              });
-              dialogRef.componentInstance.totalBikes = feature_buff.item(0).values_.availableBikes;
-              dialogRef.componentInstance.availableSlots = feature_buff.item(0).values_.availableSlots;
-              dialogRef.componentInstance.name = feature_buff.item(0).values_.name;
-              dialogRef.componentInstance.address = feature_buff.item(0).values_.address;
-              dialogRef.componentInstance.updatedAt = feature_buff.item(0).values_.updatedAt;
-            }
-          
-          //detecta cuando no se hace click sobre alguna feature
-        }else{
-          // vehiclesRoutesService.openInfoCard(null);
-          // sharedService.updateVehicleSelection(null);
-        }
-         
-      });
-      if(this.selectIndex <1){
-        this.selectIndex++;
-        this.mapService.map$.addInteraction(select);
-      }
+    this.mapService.selectOnMap();
   }
 
   openLoading() {

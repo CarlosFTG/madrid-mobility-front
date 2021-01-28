@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { BikesLayerService } from 'src/app/services/bikes-layer.service';
 import { StyleService } from 'src/app/services/style.service';
+import { LegendService } from '../services/legend.service';
 
 @Component({
   selector: 'app-bikes-legend',
@@ -9,7 +10,7 @@ import { StyleService } from 'src/app/services/style.service';
 })
 export class BikesLegendComponent implements OnInit {
 
-  constructor(private styleService: StyleService, private bikesLayerService: BikesLayerService) { }
+  constructor(private styleService: StyleService, private bikesLayerService: BikesLayerService, private legendService: LegendService) { }
 
   bikesOrSlots:string = 'bikes';
   checked = false;
@@ -23,10 +24,12 @@ export class BikesLegendComponent implements OnInit {
     //@ts-ignore
     if(bikeOrDot.checked){
       this.bikesOrSlots='slots';
-      this.bikesLayerService.createBikeStationsFeatures('slots')
+      this.bikesLayerService.createBikeStationsFeatures('slots');
+      this.legendService.toggleChange();
     }else{
       this.bikesOrSlots='bikes';
-      this.bikesLayerService.createBikeStationsFeatures('bikes')
+      this.bikesLayerService.createBikeStationsFeatures('bikes');
+      this.legendService.toggleChange();
     }
   }
 
