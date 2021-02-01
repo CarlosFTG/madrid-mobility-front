@@ -33,8 +33,8 @@ export class BikesLayerService {
 
   bikes$ = this.bikesOut.asObservable();
 
-  //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/bikes/EMTServices/";
-  private REST_API_SERVER = "http://localhost:8081/api/bikes/EMTServices/";
+  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/bikes/EMTServices/";
+  //private REST_API_SERVER = "http://localhost:8081/api/bikes/EMTServices/";
 
   biciMadAPIStatus;
   accesToken;
