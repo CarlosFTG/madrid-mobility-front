@@ -13,7 +13,7 @@ import Collection from 'ol/Collection';
 import WKT from 'ol/format/WKT';
 import { MapService } from './map.service';
 import { HttpErrorResponse } from '@angular/common/http';
-import { throwError,BehaviorSubject } from 'rxjs';
+import { throwError,BehaviorSubject, interval, Subscription } from 'rxjs';
 import { StyleService } from './style.service';
 import { AuthModuleModule } from '../auth-module/auth-module.module';
 import { AuthService } from '../auth-module/services/auth.service';
@@ -33,8 +33,8 @@ export class BikesLayerService {
 
   bikes$ = this.bikesOut.asObservable();
 
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/bikes/EMTServices/";
-  //private REST_API_SERVER = "http://localhost:8081/api/bikes/EMTServices/";
+  //private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/bikes/EMTServices/";
+  private REST_API_SERVER = "http://localhost:8081/api/bikes/EMTServices/";
 
   biciMadAPIStatus;
   accesToken;
@@ -45,13 +45,16 @@ export class BikesLayerService {
   selectedBikeStationCollection = new Collection;
   userPosition = { 'lat': null, 'lng': null };
   stationId;
+  subscription: Subscription;
 
   constructor(private httpClient: HttpClient, 
     private mapService : MapService,
     private stylePointsFeaturesService: StylePointsFeaturesService,
     private authService: AuthService,
-    private tabledetailService:TabledetailService) {
-
+    private tabledetailService:TabledetailService,
+    ) {
+      const source = interval(30000);
+      this.subscription = source.subscribe(val => this.getBikeStations());
       this.mapService.sendUserPositionToInfoCard$.subscribe(data => {
         if (data != null) {
           if (typeof (data) === 'object') {
