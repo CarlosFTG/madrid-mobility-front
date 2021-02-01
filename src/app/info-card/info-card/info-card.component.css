@@ -21,7 +21,7 @@
   width: 50%;
  }
 
- @media only screen and (max-width:1800px) and (max-heigth:1800px) {
+ @media only screen and (max-width:1800px) {
   /* For tablets: */
   .info-card {
     margin-left: 25%;
@@ -34,7 +34,7 @@
   width: 50%;
   }}
 
- @media only screen and (max-width:1600px) and (max-heigth:1600px) {
+ @media only screen and (max-width:1600px)  {
   /* For tablets: */
   .info-card {
     margin-left: 25%;
@@ -47,11 +47,11 @@
   width: 50%;
   }}
 
- @media only screen and (max-width:1400px) and (max-heigth:1400px)  {
+ @media only screen and (max-width:1400px)  {
   /* For tablets: */
   .info-card {
     margin-left: 25%;
-  margin-top: 45%;
+  margin-top: 28%;
   background: white;
   border-radius: 5%;
   z-index: 5;
@@ -60,11 +60,11 @@
   width: 50%;
   }}
 
- @media only screen and (max-width:1200px) and (max-heigth:1200px)  {
+ @media only screen and (max-width:1200px)  {
   /* For tablets: */
   .info-card {
     margin-left: 25%;
-  margin-top: 55%;
+  margin-top: 35%;
   background: white;
   border-radius: 5%;
   z-index: 5;
@@ -73,11 +73,11 @@
   width: 50%;
   }}
 
- @media only screen and (max-width:1000px)and (max-heigth:1000px)  {
+ @media only screen and (max-width:1000px)  {
   /* For tablets: */
   .info-card {
     margin-left: 25%;
-  margin-top: 65%;
+  margin-top: 38%;
   background: white;
   border-radius: 5%;
   z-index: 5;
@@ -86,11 +86,11 @@
   width: 50%;
   }}
 
-  @media only screen and (max-width:800px)and (max-heigth:800px)  {
+  @media only screen and (max-width:800px)  {
     /* For tablets: */
     .info-card {
       margin-left: 25%;
-    margin-top: 80%;
+    margin-top: 50%;
     background: white;
     border-radius: 5%;
     z-index: 5;
@@ -99,11 +99,11 @@
     width: 50%;
     }}
 
-    @media only screen and (max-width:600px)and (max-heigth:600px)  {
+    @media only screen and (max-width:750px) {
       /* For tablets: */
       .info-card {
         margin-left: 25%;
-      margin-top: 100%;
+      margin-top: 55%;
       background: white;
       border-radius: 5%;
       z-index: 5;
@@ -112,11 +112,37 @@
       width: 50%;
       }}
 
-    @media only screen and (max-width:500px)and (max-heigth:500px)  {
+    @media only screen and (max-width:700px) {
       /* For tablets: */
       .info-card {
         margin-left: 25%;
-      margin-top: 100%;
+      margin-top: 60%;
+      background: white;
+      border-radius: 5%;
+      z-index: 5;
+      position: absolute;
+      padding: 2%;
+      width: 50%;
+      }}
+
+    @media only screen and (max-width:600px) {
+      /* For tablets: */
+      .info-card {
+        margin-left: 25%;
+      margin-top: 65%;
+      background: white;
+      border-radius: 5%;
+      z-index: 5;
+      position: absolute;
+      padding: 2%;
+      width: 50%;
+      }}
+
+    @media only screen and (max-width:500px)  {
+      /* For tablets: */
+      .info-card {
+        margin-left: 25%;
+      margin-top: 80%;
       background: white;
       border-radius: 5%;
       z-index: 5;
