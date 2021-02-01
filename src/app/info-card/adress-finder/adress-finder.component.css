@@ -1,0 +1,58 @@
+.address-finder{
+    width: 300px;
+}
+
+@media only screen and (max-width:1600px)  {
+    /* For tablets: */
+    .address-finder {
+    width: 250px;
+    }}
+  
+   @media only screen and (max-width:1400px)  {
+    /* For tablets: */
+    .address-finder {
+    width: 200px;
+    }}
+  
+   @media only screen and (max-width:1200px)  {
+    /* For tablets: */
+    .address-finder {
+    width: 175px;
+    }}
+  
+   @media only screen and (max-width:1000px)  {
+    /* For tablets: */
+    .address-finder {
+    width: 175px;
+    }}
+
+@media only screen and (max-width:800px)  {
+    /* For tablets: */
+    .address-finder {
+    width: 150px;
+    }}
+
+@media only screen and (max-width:750px) {
+    /* For tablets: */
+    .address-finder{
+    width: 150px;
+    }}
+
+@media only screen and (max-width:700px) {
+    /* For tablets: */
+    .address-finder{
+    width: 125px;
+    }}
+
+@media only screen and (max-width:600px) {
+    /* For tablets: */
+    .address-finder{
+    width: 125px;
+    }}
+
+@media only screen and (max-width:500px)  {
+    /* For tablets: */
+    .address-finder {
+    width: 125px;
+    }
+}
