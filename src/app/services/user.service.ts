@@ -104,15 +104,15 @@ export class UserService {
     this.getGeoCodingAPI(coords).subscribe(
       res => {
         //@ts-ignore
-        if (res.results[0].locations[0] != undefined) {
+        if (res.features[0].properties != undefined) {
           //@ts-ignore
-          localStorage.setItem('userLocationAddress', res.results[0].locations[0].street);
+          localStorage.setItem('userLocationAddress', res.features[0].properties.label);
           //@ts-ignore
-          userCity=res.results[0].locations[0].adminArea5;
+          userCity=res.features[0].properties.locality;
         }
         this.registerVisit(userCity);
         //@ts-ignore
-        this.checkIfUserInMadrid(userCity, res.results[0].providedLocation.latLng.lng, res.results[0].providedLocation.latLng.lat, res.results[0].providedLocation.latLng);
+        this.checkIfUserInMadrid(userCity, coords.longitude, coords.latitude);
       },err=>{
         // let params = {
         //   //@ts-ignore
@@ -141,10 +141,10 @@ export class UserService {
   getGeoCodingAPI(coords): Observable<any> {
     let lat = coords.latitude;
     let lng = coords.longitude;
-    return this.httpClient.get('https://www.mapquestapi.com/geocoding/v1/reverse?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location='
-      + lat + ',' + lng).pipe(
+    return this.httpClient.get('https://api.openrouteservice.org/geocode/reverse?api_key=5b3ce3597851110001cf62485f1920e92dc94c50bc5c40c1b2d2ed46&point.lon='
+    +lng+'&point.lat='+lat).pipe(
         retry(3),
-        //catchError(this.handleError)
+        catchError(this.handleError)
       );
     shareReplay();
   }
@@ -166,7 +166,7 @@ export class UserService {
     )
   }
 
-  checkIfUserInMadrid(userCity, lng, lat, latLng) {
+  checkIfUserInMadrid(userCity, lng, lat) {
     if (userCity === 'Madrid') {
       let formatCoords = 'POINT(' + lng + ' ' + lat + " 216.7" + ')';
       let formatCoords2 = 'POINT(' + lng + ' ' + lat + ')';
@@ -179,6 +179,11 @@ export class UserService {
       let userPositionFeature = new Feature({
         geometry: new Point(userPositionCoords)
       });
+
+      let latLng={
+        'lat':lat,
+        'lng':lng
+      }
 
       //@ts-ignore
       this.mapService.sendUserPositionToInfoCard(latLng);

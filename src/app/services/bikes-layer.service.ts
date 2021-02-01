@@ -53,8 +53,8 @@ export class BikesLayerService {
     private authService: AuthService,
     private tabledetailService:TabledetailService,
     ) {
-      const source = interval(30000);
-      this.subscription = source.subscribe(val => this.getBikeStations());
+      //const source = interval(300000);
+      //this.subscription = source.subscribe(val => this.getBikeStations());
       this.mapService.sendUserPositionToInfoCard$.subscribe(data => {
         if (data != null) {
           if (typeof (data) === 'object') {
