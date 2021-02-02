@@ -1,16 +1,16 @@
 <div *ngIf="showInLegend ==='legend'">
-  <mat-tab-group class="container legend-container">
+  <mat-tab-group >
     <mat-tab label="BiciMad"> <app-bikes-legend></app-bikes-legend> </mat-tab>
     <mat-tab label="Buses"> <app-buses-legend></app-buses-legend> </mat-tab>
   </mat-tab-group>
 </div>
 <div *ngIf="showInLegend ==='login'">
-  <div class="container legend-container">
+  <div >
     <app-login></app-login>
   </div>
 </div>
 <div *ngIf="showInLegend ==='register'">
-  <div class="container legend-container">
+  <div >
     <app-register></app-register>
   </div>
 </div>
