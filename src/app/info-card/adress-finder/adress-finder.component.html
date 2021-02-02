@@ -3,7 +3,7 @@
     <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon" matTooltip="Type and address. Ex: calle limón "></mat-icon>
     <div >
         <form class="example-form" [formGroup]="addressFinderForm" style="display: table-cell;">
-            <mat-form-field style="width: 300px;">
+            <mat-form-field class="address-finder">
               <input type="text" placeholder="Find address" aria-label="Number" matInput [formGroup]="addressFinderForm"
                 [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="addressToFind" panelWidth=5>
               <mat-autocomplete lass="autocompletable" #auto="matAutocomplete" (optionSelected)="onChangeStreet($event)">

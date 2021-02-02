@@ -68,7 +68,7 @@ export class AdressFinderComponent implements OnInit {
   }
 
   _filterAdress(value: string): any[] {
-    const filterValue = value;
+    const filterValue = value.toLowerCase();
     let resultF: any[];
     if (filterValue.length > 8) {
       if (this.streetsList) {
