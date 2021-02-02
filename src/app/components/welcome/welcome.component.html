@@ -1,4 +1,4 @@
-<div id="container">
+<div *ngIf='languageEN' id="container">
     <h1>Welcome to Madrid Mobility</h1>
     <h3>This app has been developed in order to provide data from the <a href="https://mobilitylabs.emtmadrid.es/">EMT
             API-REST service</a></h3>
@@ -8,6 +8,20 @@
         reasons,
         and please, if you agree, allow geolocation in your browser when required.</h3>
     <div id="button">
-        <button mat-raised-button color="primary" (click)="navigateToMadridMobility()">Carry on</button>
+        <button mat-raised-button color="primary" (click)="navigateToMadridMobility()">Let´s go</button>
+    </div>
+</div>
+
+<div *ngIf='!languageEN' id="container">
+    <h1>Bienvenido/a a Madrid Mobility</h1>
+    <h3>Esta aplicación ha sido desarrollado para proporcionar información de <a href="https://mobilitylabs.emtmadrid.es/">servicio EMT
+            API-REST </a></h3>
+    <h3>, mostrándola en un mapa y realizando operaciones SIG.</h3>
+
+    <h3>Antes de continar, debe saber que la localidad en que se encuentra queda localizada por motivos estadísticos,
+        si está de acuerdo con esto, acepte la geolocalización cuando le sea requerida
+    </h3>
+    <div id="button">
+        <button mat-raised-button color="primary" (click)="navigateToMadridMobility()">¡Vamos!</button>
     </div>
 </div>
