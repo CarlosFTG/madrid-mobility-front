@@ -23,6 +23,7 @@ export class ClosestationsComponent implements OnInit {
   nearestBikeStations: any = new Array;
   userPosition = { 'lat': null, 'lng': null };
   routeShowed:boolean=false;
+  coordinatesPoint;
 
   @Input() languageEN: boolean;
 
@@ -71,10 +72,12 @@ export class ClosestationsComponent implements OnInit {
     if (this.positionCompositionForm.get('numberOfResults').value != null && re.test(this.positionCompositionForm.get('numberOfResults').value)) {
       this.errorNumberResults = false;
 
+      this.coordinatesPoint = 'POINT (' + this.userPosition.lng + ' ' + this.userPosition.lat + '),3857)';
+
       let params = {
         'numberOfResults': parseFloat(this.positionCompositionForm.get('numberOfResults').value),
         //@ts-ignore
-        'coordinates': 'POINT (' + this.userPosition.lng + ' ' + this.userPosition.lat + '),3857)'
+        'coordinates': this.coordinatesPoint
       }
       this.bikesLayerService.getClosestsStations(params).subscribe(
         data => {
@@ -106,6 +109,7 @@ export class ClosestationsComponent implements OnInit {
   clearRoute(){
     this.routeShowed=false;
     this.routeService.clearRoute();
+    this.mapService.updateMapViewCenter(this.coordinatesPoint,17)
   }
 
 }

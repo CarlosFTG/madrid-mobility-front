@@ -60,6 +60,9 @@ export class TabledetailComponent implements OnInit {
     this.routeService.getRoute(userCoords,bikeStationCoords).subscribe(
       res=>{
         this.routeService.createRouteLayer(res.features[0].geometry.coordinates);
+        let index=Math.round(res.features[0].geometry.coordinates.length/2);
+        let setViewPoint = 'POINT(' +res.features[0].geometry.coordinates[index][0] + ' ' + res.features[0].geometry.coordinates[index][1]+ ')';
+        this.mapService.updateMapViewCenter(setViewPoint, 16);
     }, err=>{
       console.log(err)
     });

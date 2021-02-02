@@ -91,13 +91,18 @@ export class MapService {
     });
   }
 
-  updateMapViewCenter(viewCoordinates){
+  updateMapViewCenter(viewCoordinates, zoom?:number){
     this.viewCoordinates = new String;
+    let zoomCenter =17;
+
+    if(zoom != undefined){
+      zoomCenter=zoom;
+    }
     
     this.viewCoordinates = viewCoordinates;
     this.view = new View({
       center: this.format.readFeature(this.viewCoordinates, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).getGeometry().getCoordinates(),
-      zoom: 17,
+      zoom: zoomCenter,
       maxZoom: 20,
     });
     
