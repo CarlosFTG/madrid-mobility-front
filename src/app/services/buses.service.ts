@@ -6,13 +6,14 @@ import { BehaviorSubject } from 'rxjs';
 import { AuthService } from '../auth-module/services/auth.service';
 import { MapService } from './map.service';
 
+import { environment } from "../../environments/environment"
+
 @Injectable({
   providedIn: 'root'
 })
 export class BusesService {
 
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/buses/EMTServices/";
-  //private REST_API_SERVER = "http://localhost:8081/api/buses/EMTServices/";
+  private REST_API_SERVER = environment.baseUrl+'buses/EMTServices/';
 
   token: string;
 
@@ -52,8 +53,8 @@ export class BusesService {
 
   getBusStops(){
 
-    //this.httpClient.get(this.REST_API_SERVER+'getBusStops').subscribe(
-    this.httpClient.get('http://localhost:8081/api/buses/EMTServices/getBusStops').subscribe(
+    this.httpClient.get(this.REST_API_SERVER+'getBusStops').subscribe(
+    //this.httpClient.get('http://localhost:8081/api/buses/EMTServices/getBusStops').subscribe(
       res=>{
         console.log(res)
       }

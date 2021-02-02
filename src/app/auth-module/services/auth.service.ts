@@ -1,6 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+import { environment } from "../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +11,7 @@ import { BehaviorSubject } from 'rxjs';
 export class AuthService {
 
   //private REST_API_SERVER = "http://localhost:8081/api/auth/EMTServices/";
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/auth/EMTServices/";
+  private REST_API_SERVER = environment.baseUrl+'auth/EMTServices/';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -19,6 +22,19 @@ export class AuthService {
   private userTokenOut = new BehaviorSubject<string>(null);
 
   userToken$ = this.userTokenOut.asObservable();
+
+  handleError(error: HttpErrorResponse) {
+    let errorMessage = 'Unknown error!';
+    if (error.error instanceof ErrorEvent) {
+      // Client-side errors
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // Server-side errors
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    window.alert(errorMessage);
+    return throwError(errorMessage);
+  }
 
   doLogin(){
     this.httpClient.get(this.REST_API_SERVER+'login').subscribe(
@@ -44,7 +60,7 @@ export class AuthService {
             //@ts-ignore
             token :res.token
           }
-        this.httpClient.post('http://localhost:8081/api/auth/EMTServices/getUserToken',params).subscribe(
+        this.httpClient.post('http://localhost:8081/api/auth/EMTServices/setUserToken',params).subscribe(
           res=>{
             this.notifyUserToken(localStorage.getItem('JWT_TOKEN'));
           }, err=>{
@@ -59,8 +75,8 @@ export class AuthService {
     });
   }
 
-  registerUser(registerParams){
-    this.httpClient.post('http://localhost:8082/api/register', registerParams).subscribe(
+  registerUser(userBean){
+    this.httpClient.post('http://localhost:8081/api/auth/EMTServices/registerUser', userBean).subscribe(
       res=>{
       console.log(res)
     },
@@ -75,5 +91,9 @@ export class AuthService {
 
   notifyToken(token: string){
     this.emtTokenOut.next(token);
+  }
+
+  logOut(){
+    this.httpClient.post(this.REST_API_SERVER+'logOut', null).subscribe();
   }
 }

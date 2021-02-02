@@ -11,13 +11,16 @@ import Feature from 'ol/Feature';
 import WKT from 'ol/format/WKT';
 import Point from 'ol/geom/Point';
 import { MapService } from './map.service';
+
+import { environment } from "../../environments/environment"
+
 @Injectable({
   providedIn: 'root'
 })
 export class BikeAccidentService {
 
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/bikes/EMTServices/";
-  //private REST_API_SERVER = "http://localhost:8081/api/bikes/EMTServices/";
+  
+  private REST_API_SERVER = environment.baseUrl+'bikes/EMTServices/';
 
   private bikeAccidents: any;
 
@@ -56,26 +59,26 @@ export class BikeAccidentService {
 
   createHeatMap(res) {
 
-    res.forEach(bikeAccident => {
+    // res.forEach(bikeAccident => {
 
-      let bikeAccidentCoords = this.format.readFeature(bikeAccident.accidentPoint, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).getGeometry().getCoordinates()
+    //   let bikeAccidentCoords = this.format.readFeature(bikeAccident.accidentPoint, { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:3857' }).getGeometry().getCoordinates()
 
 
-      let bikeAccidentFeature = new Feature({
-        geometry: new Point(bikeAccidentCoords)
-      });
-      this.bikeAccidentsCollection.push(bikeAccidentFeature);
-    });
+    //   let bikeAccidentFeature = new Feature({
+    //     geometry: new Point(bikeAccidentCoords)
+    //   });
+    //   this.bikeAccidentsCollection.push(bikeAccidentFeature);
+    // });
 
-    let bikeAccidentsLayer = new VectorLayer({
-      name: 'bikeAccidents',
-      source: new VectorSource({
-        features: this.bikeAccidentsCollection
-      })
-    })
-    let heatmap = new Heatmap({
-      source: bikeAccidentsLayer
-    });
+    // let bikeAccidentsLayer = new VectorLayer({
+    //   name: 'bikeAccidents',
+    //   source: new VectorSource({
+    //     features: this.bikeAccidentsCollection
+    //   })
+    // })
+    // let heatmap = new Heatmap({
+    //   source: bikeAccidentsLayer
+    // });
 
     //this.mapService.map$.addLayer(heatmap);
 

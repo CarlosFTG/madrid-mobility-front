@@ -20,6 +20,8 @@ import { AuthService } from '../auth-module/services/auth.service';
 import { TabledetailService } from '../components/tabledetail/services/tabledetail.service';
 import { StylePointsFeaturesService } from './style-points-features.service';
 
+import { environment } from "../../environments/environment"
+
 @Injectable({
   providedIn: 'root'
 })
@@ -33,8 +35,7 @@ export class BikesLayerService {
 
   bikes$ = this.bikesOut.asObservable();
 
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/bikes/EMTServices/";
-  //private REST_API_SERVER = "http://localhost:8081/api/bikes/EMTServices/";
+  private REST_API_SERVER = environment.baseUrl+'bikes/EMTServices/';
 
   biciMadAPIStatus;
   accesToken;

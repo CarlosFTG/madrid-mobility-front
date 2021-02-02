@@ -14,6 +14,8 @@ import WKT from 'ol/format/WKT';
 import { MapService } from './map.service';
 import { StreetsStyleService } from './streets-style.service';
 
+import { environment } from "../../environments/environment";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -25,8 +27,7 @@ export class StreetsService {
 
   format = new WKT();
 
-  private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/urban/EMTServices/";
-  //private REST_API_SERVER = "http://localhost:8081/api/urban/EMTServices/";
+  private REST_API_SERVER = environment.baseUrl+'urban/EMTServices/';
 
   private streetsListOut = new BehaviorSubject<any[]>(null);
 
@@ -62,7 +63,7 @@ export class StreetsService {
       this.httpClient.get(this.REST_API_SERVER+'getStreetsTopo').subscribe(
        res=>{
         this.streets = res;
-        this.createStreetsFeatures();
+        //this.createStreetsFeatures();
        },err=>{
 
        }

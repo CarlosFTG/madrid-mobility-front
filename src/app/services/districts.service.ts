@@ -15,6 +15,8 @@ import { StyleService } from './style.service';
 import { BikesLayerService } from './bikes-layer.service';
 import { StylePolygonFeaturesService } from './style-polygon-features.service';
 
+import { environment } from "../../environments/environment";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -23,6 +25,8 @@ export class DistrictsService {
   response: any;
   districtsFeaturesCollection = new Collection;
   alreadyDistricts: boolean = false;
+
+  private REST_API_SERVER = environment.baseUrl+'urban/EMTServices/';
   
   constructor(private httpClient: HttpClient, private mapService: MapService, private stylePolygonFeaturesService: StylePolygonFeaturesService, private bikesService: BikesLayerService) {
     
@@ -36,8 +40,7 @@ export class DistrictsService {
   }
 
   getDistricts() {
-    this.httpClient.get('https://floating-reef-24535.herokuapp.com/api/urban/EMTServices/getDistricts').subscribe(
-     // this.httpClient.get('http://localhost:8081/api/urban/EMTServices/getDistricts').subscribe(
+    this.httpClient.get(this.REST_API_SERVER+'getDistricts').subscribe(
       res => {
         this.response = res;
         this.createDistrictsFeatures()
@@ -79,7 +82,6 @@ export class DistrictsService {
       districtsArrayInfo.push(districtObj)
     }
     for (let i = 0; i < districtsArrayCoords.length; i++) {
-      //for(let j = 0; j < districtsArrayCoords[i].length; j++){
         let coorsTranform = districtsArrayCoords[i].map((coordinate) => {
           return olProj.transform([coordinate[0], coordinate[1]], 'EPSG:4326', 'EPSG:3857');
         });
@@ -93,10 +95,8 @@ export class DistrictsService {
         feature.setProperties({'totalBikes':districtsArrayInfo[i]})
   
          this.stylePolygonFeaturesService.applyStyleToDistricts(feature);
-        // feature.setId(coordsArray[i].name);
     
         this.districtsFeaturesCollection.push(feature)
-     // }
       
     }
 
