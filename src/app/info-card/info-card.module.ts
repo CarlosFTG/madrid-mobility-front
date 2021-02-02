@@ -5,13 +5,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from '../material-module';
 import { ClosestationsComponent } from './closestations/closestations.component';
 import { AdressFinderComponent } from './adress-finder/adress-finder.component';
+import { InfoCardCollapseComponent } from './info-card-collapse/info-card-collapse.component';
 
 
 @NgModule({
-  declarations: [InfoCardComponent, ClosestationsComponent, AdressFinderComponent],
+  declarations: [InfoCardComponent, ClosestationsComponent, AdressFinderComponent, InfoCardCollapseComponent],
   imports: [
     CommonModule,ReactiveFormsModule, MaterialModule
   ],
-  exports:[InfoCardComponent]
+  exports:[InfoCardComponent,InfoCardCollapseComponent]
 })
 export class InfoCardModule { }
