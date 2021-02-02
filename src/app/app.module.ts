@@ -36,7 +36,7 @@ import { InfoPopupComponent } from './components/info-popup/info-popup.component
     BikeStationInfoComponent,
     WelcomeComponent,
     TabledetailComponent,
-    InfoPopupComponent
+    InfoPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -49,7 +49,7 @@ import { InfoPopupComponent } from './components/info-popup/info-popup.component
     //MatProgressSpinnerModule,
     InfoCardModule,
     LegendModule,
-    UpperBarModule
+    UpperBarModule,
   ],
   entryComponents: [
     DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,
