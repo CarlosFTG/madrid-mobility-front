@@ -33,7 +33,7 @@ width: 20%;
   position: absolute;
   padding: 2%;
   width: 40%;
-  height: 40%;
+  /* height: 40%; */
   }
 .legend-container-colapsed{
   margin-left: 57%;
