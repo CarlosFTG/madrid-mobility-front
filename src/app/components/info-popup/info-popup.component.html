@@ -1,5 +1,15 @@
-<h3 class="bold">Bike station name:</h3><h4>{{name}}</h4>
-<p>Address:</p>{{address}}
-<p>Available bikes:</p>{{totalBikes}}
-<p>Available slots:</p>{{availableSlots}}
-<p>Last update:</p> {{updatedAt | date: 'medium'}}
+<div *ngIf='languageEN'>
+    <h3 class="bold">Bike station name:</h3><h4>{{name}}</h4>
+    <p>Address:</p>{{address}}
+    <p>Available bikes:</p>{{totalBikes}}
+    <p>Available slots:</p>{{availableSlots}}
+    <p>Last update:</p> {{updatedAt | date: 'medium'}}
+</div>
+
+<div *ngIf='!languageEN'>
+    <h3 class="bold">Nombre parada:</h3><h4>{{name}}</h4>
+    <p>Dirección:</p>{{address}}
+    <p>Bicis disponibles:</p>{{totalBikes}}
+    <p>Huecos disponibles:</p>{{availableSlots}}
+    <p>Última actualización:</p> {{updatedAt | date: 'medium'}}
+</div>

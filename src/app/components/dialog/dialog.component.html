@@ -1,4 +1,9 @@
-<div style="text-align: center;">
+<div *ngIf='languageEN' style="text-align: center;">
     <mat-spinner style="margin: 0 auto;"></mat-spinner>
     <span style="display: inline-block;">Loading bike stations</span>
+</div>
+
+<div *ngIf='!languageEN' style="text-align: center;">
+    <mat-spinner style="margin: 0 auto;"></mat-spinner>
+    <span style="display: inline-block;">Cargando paradas BiciMad</span>
 </div>

@@ -8,6 +8,8 @@ import { BikesLayerService } from 'src/app/services/bikes-layer.service';
 })
 export class DialogComponent implements OnInit {
 
+  languageEN: boolean;
+
   constructor(public dialogRef: MatDialogRef<DialogComponent>,
      private bikesService: BikesLayerService
     ) {
@@ -20,6 +22,15 @@ export class DialogComponent implements OnInit {
      }
 
   ngOnInit(): void {
+    this.getLanguage();
+  }
+
+  getLanguage(){
+    if(localStorage.getItem('language')==='ES'){
+      this.languageEN = false;
+    }else{
+      this.languageEN = true;
+    }
   }
 
   closeDialog() {

@@ -1,10 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 
-export interface PeriodicElement {
-  name: string;
-  availableBikes: number;
-  freeDocks: number;
-}
 
 @Component({
   selector: 'app-info-popup',
@@ -17,9 +12,19 @@ export class InfoPopupComponent implements OnInit {
   name:string;
   address:string;
   updatedAt: string;
+  languageEN: boolean;
   constructor() { }
 
   ngOnInit(): void {
+    this.getLanguage();
+  }
+
+  getLanguage(){
+    if(localStorage.getItem('language')==='ES'){
+      this.languageEN = false;
+    }else{
+      this.languageEN = true;
+    }
   }
 
 }

@@ -1,35 +1,76 @@
-<div><p>Last update: {{updatedAt | date: 'medium'}} </p></div>
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
-  <!-- Position Column -->
-  <ng-container matColumnDef="address">
-    <th mat-header-cell *matHeaderCellDef> Address </th>
-    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.address}} </td>
-  </ng-container>
+<div *ngIf='languageEN'>
+  <div><p>Last update: {{updatedAt | date: 'medium'}} </p></div>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
+    <!-- Position Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Address </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.address}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Name </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.name}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="availableBikes">
+      <th mat-header-cell *matHeaderCellDef> Available bikes </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.availableBikes}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="freeDocks">
+      <th mat-header-cell *matHeaderCellDef> Free docks </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.freeDocks}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="distance">
+      <th mat-header-cell *matHeaderCellDef> Distance (mts) </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.distance}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
 
-  <!-- Name Column -->
-  <ng-container matColumnDef="name">
-    <th mat-header-cell *matHeaderCellDef> Name </th>
-    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.name}} </td>
-  </ng-container>
+<div *ngIf='!languageEN'>
+  <div><p>Última actualización: {{updatedAt | date: 'medium'}} </p></div>
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
+    <!-- Position Column -->
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef> Dirección </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.address}} </td>
+    </ng-container>
+  
+    <!-- Name Column -->
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef> Nombre </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.name}} </td>
+    </ng-container>
+  
+    <!-- Weight Column -->
+    <ng-container matColumnDef="availableBikes">
+      <th mat-header-cell *matHeaderCellDef> Bicis disponibles </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.availableBikes}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="freeDocks">
+      <th mat-header-cell *matHeaderCellDef> Huecos disponibles </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.freeDocks}} </td>
+    </ng-container>
+  
+    <!-- Symbol Column -->
+    <ng-container matColumnDef="distance">
+      <th mat-header-cell *matHeaderCellDef> Distancia (mts) </th>
+      <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.distance}} </td>
+    </ng-container>
+  
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
 
-  <!-- Weight Column -->
-  <ng-container matColumnDef="availableBikes">
-    <th mat-header-cell *matHeaderCellDef> Available bikes </th>
-    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.availableBikes}} </td>
-  </ng-container>
-
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="freeDocks">
-    <th mat-header-cell *matHeaderCellDef> Free docks </th>
-    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.freeDocks}} </td>
-  </ng-container>
-
-  <!-- Symbol Column -->
-  <ng-container matColumnDef="distance">
-    <th mat-header-cell *matHeaderCellDef> Distance (mts) </th>
-    <td mat-cell *matCellDef="let element" role="button" (click)="findNearStations(element)"> {{element.distance}} </td>
-  </ng-container>
-
-  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
-</table>

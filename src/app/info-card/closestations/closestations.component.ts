@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { TabledetailComponent } from 'src/app/components/tabledetail/tabledetail.component';
 import { BikesLayerService } from 'src/app/services/bikes-layer.service';
@@ -23,6 +23,8 @@ export class ClosestationsComponent implements OnInit {
   nearestBikeStations: any = new Array;
   userPosition = { 'lat': null, 'lng': null };
   routeShowed:boolean=false;
+
+  @Input() languageEN: boolean;
 
   constructor(private bikesLayerService: BikesLayerService,
     private infoCardService: InfoCardService,

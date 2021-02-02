@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -30,6 +30,7 @@ export class AdressFinderComponent implements OnInit {
   streetsList: any[] = new Array;
   format = new WKT();
   foundAddressCollection = new Collection;
+  @Input() languageEN: boolean;
 
   constructor(private streetsService: StreetsService,
     private infoCardService: InfoCardService,

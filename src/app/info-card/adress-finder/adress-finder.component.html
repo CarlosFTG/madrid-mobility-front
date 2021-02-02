@@ -1,22 +1,51 @@
-<div *ngIf="streetsList.length >0" style="margin-left: 5%;">
-    <div >Address finder</div>
-    <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon" matTooltip="Type and address. Ex: calle limón "></mat-icon>
-    <div >
-        <form class="example-form" [formGroup]="addressFinderForm" style="display: table-cell;">
-            <mat-form-field class="address-finder">
-              <input type="text" placeholder="Find address" aria-label="Number" matInput [formGroup]="addressFinderForm"
-                [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="addressToFind" panelWidth=5>
-              <mat-autocomplete lass="autocompletable" #auto="matAutocomplete" (optionSelected)="onChangeStreet($event)">
-                <mat-option *ngFor="let street of filteredStreets | async" [value]="street.wholeAddress">
-                  {{street.wholeAddress}}
-                </mat-option>
-              </mat-autocomplete>
-            </mat-form-field>
-          </form>
+<div *ngIf='languageEN'>
+  <div *ngIf="streetsList.length >0" style="margin-left: 5%;">
+    <div>Address finder</div>
+    <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"
+      matTooltip="Type and address. Ex: calle limón "></mat-icon>
+    <div>
+      <form class="example-form" [formGroup]="addressFinderForm" style="display: table-cell;">
+        <mat-form-field class="address-finder">
+          <input type="text" placeholder="Find address" aria-label="Number" matInput [formGroup]="addressFinderForm"
+            [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="addressToFind" panelWidth=5>
+          <mat-autocomplete lass="autocompletable" #auto="matAutocomplete" (optionSelected)="onChangeStreet($event)">
+            <mat-option *ngFor="let street of filteredStreets | async" [value]="street.wholeAddress">
+              {{street.wholeAddress}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
     </div>
+  </div>
+
+  <div *ngIf="streetsList.length < 1" style="margin-left: 5%;">
+    <div>Address finder</div>
+    <p>Address finder is temporarily disabled</p>
+  </div>
 </div>
 
-<div *ngIf="streetsList.length < 1"  style="margin-left: 5%;">
-  <div >Address finder</div>
-    <p>Address finder is temporarily disabled</p>
+<div *ngIf='!languageEN'>
+  <div *ngIf="streetsList.length >0" style="margin-left: 5%;">
+    <div>Buscador de direcciones</div>
+    <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon"
+      matTooltip="Teclee una dirección ej: calle atocha"></mat-icon>
+    <div>
+      <form class="example-form" [formGroup]="addressFinderForm" style="display: table-cell;">
+        <mat-form-field class="address-finder">
+          <input type="text" placeholder="Teclee una dirección ej: calle atocha" aria-label="Number" matInput [formGroup]="addressFinderForm"
+            [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="addressToFind" panelWidth=5>
+          <mat-autocomplete lass="autocompletable" #auto="matAutocomplete" (optionSelected)="onChangeStreet($event)">
+            <mat-option *ngFor="let street of filteredStreets | async" [value]="street.wholeAddress">
+              {{street.wholeAddress}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="streetsList.length < 1" style="margin-left: 5%;">
+    <div>Buscador de direcciones</div>
+    <p>Buscador de direcciones está temporalmente fuera de servicio</p>
+  </div>
 </div>

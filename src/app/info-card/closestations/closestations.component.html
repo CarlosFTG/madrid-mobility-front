@@ -1,14 +1,34 @@
-<div style="width: 25%;">
-  <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon" matTooltip="Type a a number and find the nearest bike stations"></mat-icon>
-  <div [formGroup]="positionCompositionForm" >
-    <mat-form-field appearance="outline">
-    <mat-label>Number of bike stations to be shown</mat-label>
-    <input matInput formControlName="numberOfResults">
-    </mat-form-field>
+<div *ngIf='languageEN'>
+  <div style="width: 25%;">
+    <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon" matTooltip="Type a a number and find the nearest bike stations"></mat-icon>
+    <div [formGroup]="positionCompositionForm" >
+      <mat-form-field appearance="outline">
+      <mat-label>Number of bike stations to be shown</mat-label>
+      <input matInput formControlName="numberOfResults">
+      </mat-form-field>
+    </div>
   </div>
+  <div class="bikes-number">
+    <button mat-raised-button color="primary" (click)="getClosestStation()" >Get nearests bike stations </button><br>
+  </div>
+  <p *ngIf="errorNumberResults">Please, type an integer from 1 to 9</p>
+  <button *ngIf="routeShowed" mat-raised-button color="primary" (click)="clearRoute()" >Clear route </button>
 </div>
-<div class="bikes-number">
-  <button mat-raised-button color="primary" (click)="getClosestStation()" >Get nearests bike stations </button><br>
+
+<div *ngIf='!languageEN'>
+  <div style="width: 25%;">
+    <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon" matTooltip="Teclee un número para buscar paradas BiciMad cercanas"></mat-icon>
+    <div [formGroup]="positionCompositionForm" >
+      <mat-form-field appearance="outline">
+      <mat-label>Número de bicis mostradas</mat-label>
+      <input matInput formControlName="numberOfResults">
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="bikes-number">
+    <button mat-raised-button color="primary" (click)="getClosestStation()" >Encuentre paradas cercanas </button><br>
+  </div>
+  <p *ngIf="errorNumberResults">Teclee un número de 1 a 9</p>
+  <button *ngIf="routeShowed" mat-raised-button color="primary" (click)="clearRoute()" >Limpiar ruta </button>
 </div>
-<p *ngIf="errorNumberResults">Please, type an integer from 1 to 9</p>
-<button *ngIf="routeShowed" mat-raised-button color="primary" (click)="clearRoute()" >Clear route </button>
+

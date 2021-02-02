@@ -1,7 +1,19 @@
-<div *ngIf="showMenu" class="info-card">
-    <a role="button" (click)="showHideMenu()">Hide menu</a>
-    <app-info-card></app-info-card>
+<div *ngIf='languageEN'>
+    <div *ngIf="showMenu" class="info-card">
+        <a role="button" (click)="showHideMenu()">Hide menu</a>
+        <app-info-card [languageEN]="languageEN"></app-info-card>
+    </div>
+    <div *ngIf="!showMenu" class="info-card-collapse"> 
+        <a role="button" (click)="showHideMenu()">Show menu</a>
+    </div>
 </div>
-<div *ngIf="!showMenu" class="info-card-collapse"> 
-    <a role="button" (click)="showHideMenu()">Show menu</a>
+
+<div *ngIf='!languageEN'>
+    <div *ngIf="showMenu" class="info-card">
+        <a role="button" (click)="showHideMenu()">Contraer menú</a>
+        <app-info-card [languageEN]="languageEN"></app-info-card>
+    </div>
+    <div *ngIf="!showMenu" class="info-card-collapse"> 
+        <a role="button" (click)="showHideMenu()">Ver menú</a>
+    </div>
 </div>

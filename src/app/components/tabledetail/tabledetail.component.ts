@@ -16,6 +16,7 @@ export class TabledetailComponent implements OnInit {
   closetsStation: any;
   dataSource;
   updatedAt: Date;
+  languageEN: boolean;
   constructor(private infoCardService: InfoCardService,
      private mapService : MapService, 
     private routeService: RoutesService,
@@ -30,7 +31,17 @@ export class TabledetailComponent implements OnInit {
          this.updatedAt = this.dataSource[0].updatedAt
       }
     });
+
+    this.getLanguage();
   }
+  getLanguage(){
+    if(localStorage.getItem('language')==='ES'){
+      this.languageEN = false;
+    }else{
+      this.languageEN = true;
+    }
+  }
+
   async findNearStations(select: any) {
     let latBikeStation = select.pointsList.coordinates.substring(0, select.pointsList.coordinates.indexOf(" "));
     let lngBikeStation = select.pointsList.coordinates.substring(select.pointsList.coordinates.indexOf(" ") + 1, select.pointsList.coordinates.length);

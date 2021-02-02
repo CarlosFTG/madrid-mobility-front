@@ -24,11 +24,22 @@ export class NomadriddialogComponent implements OnInit {
   value: any;
   format = new WKT();
   apiError:boolean=false;
+  languageEN: boolean;
+  
   constructor(
     public dialogRef: MatDialogRef<NomadriddialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData, private mapService: MapService, private stylePointsFeaturesService: StylePointsFeaturesService) { }
 
   ngOnInit(): void {
+    this.getLanguage();
+  }
+
+  getLanguage(){
+    if(localStorage.getItem('language')==='ES'){
+      this.languageEN = false;
+    }else{
+      this.languageEN = true;
+    }
   }
 
   setFakeUserPosition(fakeAddress) {

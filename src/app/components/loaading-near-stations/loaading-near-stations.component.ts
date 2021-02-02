@@ -7,10 +7,21 @@ import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog
 })
 export class LoaadingNearStationsComponent implements OnInit {
 
+  languageEN: boolean;
+
   constructor(public dialogRef: MatDialogRef<LoaadingNearStationsComponent>,
     ) { }
 
   ngOnInit(): void {
+    this.getLanguage();
+  }
+
+  getLanguage(){
+    if(localStorage.getItem('language')==='ES'){
+      this.languageEN = false;
+    }else{
+      this.languageEN = true;
+    }
   }
 
 }

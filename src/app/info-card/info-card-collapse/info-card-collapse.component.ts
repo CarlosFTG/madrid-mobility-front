@@ -9,6 +9,8 @@ export class InfoCardCollapseComponent implements OnInit {
 
   showMenu:boolean=true;
 
+  languageEN: boolean;
+
   constructor() { }
 
   ngOnInit(): void {
@@ -19,6 +21,14 @@ export class InfoCardCollapseComponent implements OnInit {
       this.showMenu=false
     }else{
       this.showMenu=true;
+    }
+  }
+
+  getLanguage(){
+    if(localStorage.getItem('language')==='ES'){
+      this.languageEN = false;
+    }else{
+      this.languageEN = true;
     }
   }
 

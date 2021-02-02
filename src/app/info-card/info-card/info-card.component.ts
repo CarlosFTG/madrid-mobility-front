@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { InfoCardService } from '../services/info-card.service';
 
 import { Observable } from 'rxjs';
@@ -21,7 +21,7 @@ export class InfoCardComponent implements OnInit {
   errorNumberResults = false;
   zoomButtontext: String = 'Zoom to my position';
   userPosition;
-  mobile: boolean;
+  @Input() languageEN: boolean;
 
   constructor(private infoCardService: InfoCardService,
     private mapService: MapService) {
@@ -35,10 +35,10 @@ export class InfoCardComponent implements OnInit {
       this.userPosition = userPosition;
     });
 
-    this.mapService.sendDevice$.subscribe(mobile => {
-      console.log(mobile)
-      this.mobile = mobile;
-    });
+    // this.mapService.sendDevice$.subscribe(mobile => {
+    //   console.log(mobile)
+    //   this.mobile = mobile;
+    // });
   }
 
   createAddressForm() {
