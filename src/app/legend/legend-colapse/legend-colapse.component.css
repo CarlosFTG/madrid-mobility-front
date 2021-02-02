@@ -7,12 +7,12 @@
   position: absolute;
   padding: 2%;
   width: 20%;
-  height: 40%;
+  height: 50%;
 }
 
 .legend-container-colapsed{
   margin-left: 78%;
-margin-top: 5%;
+margin-top: 90%;
 background: white;
 border-radius: 5%;
 z-index: 5;
@@ -22,7 +22,7 @@ width: 20%;
 /* height: 40%; */
 }
 
-@media only screen and (max-width:500px)  {
+@media only screen and (max-width:600px)  {
   /* For tablets: */
   .legend-container {
     margin-left: 57%;
@@ -33,7 +33,7 @@ width: 20%;
   position: absolute;
   padding: 2%;
   width: 40%;
-  /* height: 40%; */
+   height: 70%; 
   }
 .legend-container-colapsed{
   margin-left: 57%;
