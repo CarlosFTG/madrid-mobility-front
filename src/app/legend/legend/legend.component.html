@@ -1,7 +1,7 @@
-<div *ngIf="showInLegend ==='legend'">
+<div *ngIf="showInLegend ==='legend'" style="height: 200px;">
   <mat-tab-group >
     <mat-tab label="BiciMad"> <app-bikes-legend></app-bikes-legend> </mat-tab>
-    <mat-tab label="Buses"> <app-buses-legend></app-buses-legend> </mat-tab>
+    <mat-tab label="Buses"> <div class="buses-container"><app-buses-legend></app-buses-legend></div> </mat-tab>
   </mat-tab-group>
 </div>
 <div *ngIf="showInLegend ==='login'">

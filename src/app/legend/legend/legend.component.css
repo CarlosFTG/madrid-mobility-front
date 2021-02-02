@@ -24,6 +24,10 @@
   margin: 5px!important;
  }
 
+ .buses-container{
+  height: 200px;
+ }
+
  @media only screen and (max-width:500px)  {
   /* For tablets: */
   .legend-container {
