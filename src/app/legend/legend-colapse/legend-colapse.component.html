@@ -1,8 +1,17 @@
-<div>
+<div *ngIf='languageEN'>
     <a role="button" class="legend-container-colapsed" *ngIf="!showLegend" (click)="showCollapseLegend()">Show legend</a>
     
     <div class="legend-container" *ngIf="showLegend">
         <a role="button" (click)="showCollapseLegend()">Collapse legend</a>
+        <app-legend></app-legend>
+    </div>
+</div>
+
+<div *ngIf='!languageEN'>
+    <a role="button" class="legend-container-colapsed" *ngIf="!showLegend" (click)="showCollapseLegend()">Expandir leyenda</a>
+    
+    <div class="legend-container" *ngIf="showLegend">
+        <a role="button" (click)="showCollapseLegend()">Contraer leyenda</a>
         <app-legend></app-legend>
     </div>
 </div>

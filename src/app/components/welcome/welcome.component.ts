@@ -23,9 +23,11 @@ getLanguage(){
   let languageMavigator =  window.navigator.language;
   
   if(languageMavigator === 'es-ES'){
+    localStorage.setItem('language','ES');
     this.languageEN = false;
   }else{
     this.languageEN = true;
+    localStorage.setItem('language','EN');
   }
 
 }

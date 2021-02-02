@@ -12,22 +12,44 @@ export class BikesLegendComponent implements OnInit {
 
   constructor(private styleService: StyleService, private bikesLayerService: BikesLayerService, private legendService: LegendService) { }
 
-  bikesOrSlots:string = 'bikes';
+  bikesOrSlots:string ;
   checked = false;
   disabled = false;
 
+  languageEN: boolean;
+
   ngOnInit(): void {
+    this.getLanguage();
+  }
+
+  getLanguage(){
+    if(localStorage.getItem('language')==='ES'){
+      this.languageEN = false;
+      this.bikesOrSlots = 'Bicis';
+    }else{
+      this.languageEN = true;
+      this.bikesOrSlots = 'Bikes';
+    }
   }
 
   setBikeOrDot(bikeOrDot: string){
     
     //@ts-ignore
     if(bikeOrDot.checked){
-      this.bikesOrSlots='slots';
+      if(!this.languageEN){
+        this.bikesOrSlots='huecos';
+      }else{
+        this.bikesOrSlots='slots';
+      }
+      
       this.bikesLayerService.createBikeStationsFeatures('slots');
       this.legendService.toggleChange();
     }else{
-      this.bikesOrSlots='bikes';
+      if(!this.languageEN){
+        this.bikesOrSlots='bicis';
+      }else{
+        this.bikesOrSlots='bikes';
+      }
       this.bikesLayerService.createBikeStationsFeatures('bikes');
       this.legendService.toggleChange();
     }

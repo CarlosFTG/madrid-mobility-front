@@ -9,9 +9,20 @@ export class LegendColapseComponent implements OnInit {
 
   showLegend:boolean=true
 
+  languageEN: boolean;
+
   constructor() { }
 
   ngOnInit(): void {
+    this.getLanguage();
+  }
+
+  getLanguage(){
+    if(localStorage.getItem('language')==='ES'){
+      this.languageEN = false;
+    }else{
+      this.languageEN = true;
+    }
   }
 
   showCollapseLegend(){
