@@ -33,7 +33,7 @@
       <form class="example-form" [formGroup]="addressFinderForm" style="display: table-cell;">
         <mat-form-field class="address-finder">
           <input type="text" placeholder="Teclee una dirección ej: calle atocha" aria-label="Number" matInput [formGroup]="addressFinderForm"
-            [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="addressToFind" panelWidth=5>
+            [formControl]="addressFinderControl" [matAutocomplete]="auto" formControlName="addressToFind" >
           <mat-autocomplete lass="autocompletable" #auto="matAutocomplete" (optionSelected)="onChangeStreet($event)">
             <mat-option *ngFor="let street of filteredStreets | async" [value]="street.wholeAddress">
               {{street.wholeAddress}}

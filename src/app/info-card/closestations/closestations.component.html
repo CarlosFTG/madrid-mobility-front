@@ -9,24 +9,27 @@
     </div>
   </div>
   <div class="bikes-number">
-    <button mat-raised-button color="primary" (click)="getClosestStation()" >Get nearests bike stations </button><br>
+    <button mat-raised-button color="primary" (click)="getClosestStation()" >Find </button><br>
   </div>
   <p *ngIf="errorNumberResults">Please, type an integer from 1 to 9</p>
   <button *ngIf="routeShowed" mat-raised-button color="primary" (click)="clearRoute()" >Clear route </button>
 </div>
 
 <div *ngIf='!languageEN'>
-  <div style="width: 25%;">
-    <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon" matTooltip="Teclee un número para buscar paradas BiciMad cercanas"></mat-icon>
+  <div class="form-material">
+    <mat-icon svgIcon="thumbs-up" aria-hidden="false" aria-label="Example thumbs up SVG icon" 
+    matTooltip="Teclee un número para buscar paradas BiciMad cercanas"></mat-icon>
     <div [formGroup]="positionCompositionForm" >
-      <mat-form-field appearance="outline">
+      <mat-form-field appearance="outline" class="mat-input-wrapper">
       <mat-label>Número de bicis mostradas</mat-label>
-      <input matInput formControlName="numberOfResults">
+      <input  matInput formControlName="numberOfResults">
       </mat-form-field>
     </div>
   </div>
-  <div class="bikes-number">
-    <button mat-raised-button color="primary" (click)="getClosestStation()" >Encuentre paradas cercanas </button><br>
+  <div >
+    <button mat-raised-button class="bikes-number"  color="primary" (click)="getClosestStation()" >
+      <span >Buscar</span>
+    </button><br>
   </div>
   <p *ngIf="errorNumberResults">Teclee un número de 1 a 9</p>
   <button *ngIf="routeShowed" mat-raised-button color="primary" (click)="clearRoute()" >Limpiar ruta </button>

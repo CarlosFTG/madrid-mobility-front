@@ -33,7 +33,31 @@ width: 20%;
   position: absolute;
   padding: 2%;
   width: 40%;
-   height: 70%; 
+   height: 80%; 
+  }
+.legend-container-colapsed{
+  margin-left: 57%;
+  margin-top: 15%;
+  background: white;
+  border-radius: 5%;
+  z-index: 5;
+  position: absolute;
+  padding: 2%;
+  width: 40%;
+}}
+
+@media only screen and (max-width:300px)  {
+  /* For tablets: */
+  .legend-container {
+    margin-left: 57%;
+  margin-top: 15%;
+  background: white;
+  border-radius: 5%;
+  z-index: 5;
+  position: absolute;
+  padding: 2%;
+  width: 40%;
+   height: 85%; 
   }
 .legend-container-colapsed{
   margin-left: 57%;

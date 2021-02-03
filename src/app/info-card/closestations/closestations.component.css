@@ -2,8 +2,76 @@
     width: 25%;
 }
 
+.mat-input-wrapper{
+  width: 140%;
+}
+
+.form-material{
+  width: 80%;
+}
+
+@media only screen and (max-width:600px)  {
+  /* For tablets: */
+  .bikes-number {
+    width: 75%;
+  }
+  .mat-input-wrapper{
+    width:140% !important;
+  }
+  .form-material{
+    width: 70%;
+  }
+}
+
 @media only screen and (max-width:500px)  {
     /* For tablets: */
     .bikes-number {
-      width: 100px;
-    }}
+      width: 75%;
+    }
+    .mat-input-wrapper{
+      width:140% !important;
+    }
+    .form-material{
+      width: 70%;
+    }
+  }
+
+  @media only screen and (max-width:450px)  {
+    /* For tablets: */
+    .bikes-number {
+      width: 75%;
+    }
+    .mat-input-wrapper{
+      width:140% !important;
+    }
+    .form-material{
+      width: 70%;
+    }
+  }
+
+  @media only screen and (max-width:400px)  {
+    /* For tablets: */
+    .bikes-number {
+      width: 100%;
+    }
+    .mat-input-wrapper{
+      width:140% !important;
+    }
+    .form-material{
+      width: 70%;
+    }
+  }
+
+  @media only screen and (max-width:380px)  {
+    /* For tablets: */
+    .bikes-number {
+      width: 100%;
+    }
+    .mat-input-wrapper{
+      width:140% !important;
+    }
+
+    .form-material{
+      width: 70%;
+    }
+  }
