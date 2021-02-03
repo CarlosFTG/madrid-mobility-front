@@ -6,10 +6,22 @@ h3{
     text-align: center;
 }
 
-#button{
+.button-welcome{
     margin-left:820px;
 }
 
 #container{
-    margin-top: 200px;
+    margin-top: 2%;
 }
+
+@media only screen and (max-width:500px) {
+    /* For tablets: */
+    .button-welcome{
+        margin-left:45%;
+    }}
+
+@media only screen and (max-width:450px) {
+    /* For tablets: */
+    .button-welcome{
+        margin-left:45%;
+    }}

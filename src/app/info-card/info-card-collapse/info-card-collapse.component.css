@@ -219,7 +219,7 @@
         }
         .info-card-collapse{
           margin-left: 5%;
-          margin-top: 140%;
+          margin-top: 90%;
           background: white;
           border-radius: 5%;
           z-index: 5;
@@ -242,7 +242,7 @@
           }
           .info-card-collapse{
             margin-left: 5%;
-            margin-top: 140%;
+            margin-top: 110%;
             background: white;
             border-radius: 5%;
             z-index: 5;
@@ -255,7 +255,7 @@
         /* For tablets: */
         .info-card {
           margin-left: 5%;
-        margin-top: 85%;
+        margin-top: 65%;
         background: white;
         border-radius: 5%;
         z-index: 5;
@@ -265,7 +265,7 @@
         }
         .info-card-collapse{
           margin-left: 5%;
-          margin-top: 140%;
+          margin-top: 110%;
           background: white;
           border-radius: 5%;
           z-index: 5;
@@ -279,7 +279,7 @@
       /* For tablets: */
       .info-card {
         margin-left: 5%;
-      margin-top: 85%;
+      margin-top: 65%;
       background: white;
       border-radius: 5%;
       z-index: 5;
@@ -289,7 +289,7 @@
       }
       .info-card-collapse{
         margin-left: 5%;
-        margin-top: 160%;
+        margin-top: 120%;
         background: white;
         border-radius: 5%;
         z-index: 5;
@@ -303,7 +303,7 @@
     /* For tablets: */
     .info-card {
       margin-left: 5%;
-    margin-top: 85%;
+    margin-top: 70%;
     background: white;
     border-radius: 5%;
     z-index: 5;
@@ -313,7 +313,7 @@
     }
     .info-card-collapse{
       margin-left: 5%;
-      margin-top: 165%;
+      margin-top: 125%;
       background: white;
       border-radius: 5%;
       z-index: 5;
@@ -327,7 +327,7 @@
   /* For tablets: */
   .info-card {
     margin-left: 5%;
-  margin-top: 110%;
+  margin-top: 70%;
   background: white;
   border-radius: 5%;
   z-index: 5;
@@ -337,7 +337,7 @@
   }
   .info-card-collapse{
     margin-left: 5%;
-    margin-top: 170%;
+    margin-top: 130%;
     background: white;
     border-radius: 5%;
     z-index: 5;
@@ -351,7 +351,7 @@
   /* For tablets: */
   .info-card {
     margin-left: 5%;
-  margin-top: 85%;
+  margin-top: 80%;
   background: white;
   border-radius: 5%;
   z-index: 5;
@@ -361,7 +361,7 @@
   }
   .info-card-collapse{
     margin-left: 5%;
-    margin-top: 190%;
+    margin-top: 145%;
     background: white;
     border-radius: 5%;
     z-index: 5;
@@ -375,7 +375,7 @@
     /* For tablets: */
     .info-card {
       margin-left: 5%;
-    margin-top: 120%;
+    margin-top: 80%;
     background: white;
     border-radius: 5%;
     z-index: 5;
@@ -385,7 +385,7 @@
     }
     .info-card-collapse{
       margin-left: 5%;
-      margin-top: 195%;
+      margin-top: 150%;
       background: white;
       border-radius: 5%;
       z-index: 5;
@@ -395,11 +395,34 @@
      } 
     }
 
-    @media only screen and (max-width:380px)  {
+    @media only screen and (max-width:350px)  {
       /* For tablets: */
       .info-card {
+        margin-left: 2%;
+      margin-top: 80%;
+      background: white;
+      border-radius: 5%;
+      z-index: 5;
+      position: absolute;
+      padding: 2%;
+      width: 50%;
+      }
+      .info-card-collapse{
+        margin-left: 2%;
+        margin-top: 170%;
+        background: white;
+        border-radius: 5%;
+        z-index: 5;
+        position: absolute;
+        padding: 2%;
+        width: 50%;
+       } 
+      }
+
+    /* @media only screen and (max-width:380px)  {
+      .info-card {
         margin-left: 5%;
-      margin-top: 140%;
+      margin-top: 110%;
       background: white;
       border-radius: 5%;
       z-index: 5;
@@ -409,7 +432,7 @@
       }
       .info-card-collapse{
         margin-left: 5%;
-        margin-top: 225%;
+        margin-top: 195%;
         background: white;
         border-radius: 5%;
         z-index: 5;
@@ -417,4 +440,4 @@
         padding: 2%;
         width: 50%;
        } 
-      }
+      } */

@@ -7,12 +7,12 @@
   position: absolute;
   padding: 2%;
   width: 20%;
-  height: 40%;
+  /* height: 40%; */
 }
 
-.buses-container{
+/* .buses-container{
   height: 40%;
-}
+} */
 
 .row{
     padding: 2%;
@@ -39,18 +39,89 @@
   position: absolute;
   padding: 2%;
   width: 40%;
-  height: 40%;
-  }}
+  /* height: 40%; */
+  }
+   /* .buses-container{
+  height: 700px;
+}  */
+}
 
-  /* @media only screen and (max-width:470px)  {
-    .legend-container {
-      margin-left: 57%;
-    margin-top: 15%;
-    background: white;
-    border-radius: 5%;
-    z-index: 5;
-    position: absolute;
-    padding: 2%;
-    width: 40%;
-    height: 80%;
-    }} */
+ @media only screen and (max-width:450px)  {
+  /* For tablets: */
+  .legend-container {
+    margin-left: 57%;
+  margin-top: 15%;
+  background: white;
+  border-radius: 5%;
+  z-index: 5;
+  position: absolute;
+  padding: 2%;
+  width: 40%;
+  /* height: 60%; */
+  }
+   /* .buses-container{
+  height: 600px;
+}  */
+ }
+
+ @media only screen and (max-width:447px)  {
+  /* For tablets: */
+  .legend-container {
+    margin-left: 57%;
+  margin-top: 15%;
+  background: white;
+  border-radius: 5%;
+  z-index: 5;
+  position: absolute;
+  padding: 2%;
+  width: 40%;
+  /* height: 75%; */
+  }
+   /* .buses-container{
+  height: 600px;
+}  */
+ }
+
+  @media only screen and (max-width:440px)  {
+  /* For tablets: */
+  .legend-container {
+    margin-left: 57%;
+  margin-top: 15%;
+  background: white;
+  border-radius: 5%;
+  z-index: 5;
+  position: absolute;
+  padding: 2%;
+  width: 40%;
+  /* height: 90%; */
+  }
+  }
+
+  @media only screen and (max-width:420px)  {
+  /* For tablets: */
+  .legend-container {
+    margin-left: 57%;
+  margin-top: 15%;
+  background: white;
+  border-radius: 5%;
+  z-index: 5;
+  position: absolute;
+  padding: 2%;
+  width: 40%;
+  /* height: 50%; */
+  }
+  }
+
+   @media only screen and (max-width:400px)  {
+  .legend-container {
+    margin-left: 57%;
+  margin-top: 15%;
+  background: white;
+  border-radius: 5%;
+  z-index: 5;
+  position: absolute;
+  padding: 2%;
+  width: 40%;
+  /* height: 100%; */
+  }
+  } 
