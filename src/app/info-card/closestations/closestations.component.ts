@@ -39,26 +39,28 @@ export class ClosestationsComponent implements OnInit {
           this.routeShowed = true;
         }
       })
+
+      this.mapService.sendUserPositionToInfoCard$.subscribe(data => {
+        if (data != null) {
+          if (typeof (data) === 'object') {
+            //@ts-ignore
+            this.userPosition.lat = data.lat;
+            //@ts-ignore
+            this.userPosition.lng = data.lng;
+          } else {
+            let fakeAddressSplt = String(data).split(' ');
+            //@ts-ignore
+            this.userPosition.lat = fakeAddressSplt[1];
+            //@ts-ignore
+            this.userPosition.lng = fakeAddressSplt[0];
+          }
+        }
+      })
     }
 
   ngOnInit(): void {
     this.createForm();
-    this.mapService.sendUserPositionToInfoCard$.subscribe(data => {
-      if (data != null) {
-        if (typeof (data) === 'object') {
-          //@ts-ignore
-          this.userPosition.lat = data.lat;
-          //@ts-ignore
-          this.userPosition.lng = data.lng;
-        } else {
-          let fakeAddressSplt = String(data).split(' ');
-          //@ts-ignore
-          this.userPosition.lat = fakeAddressSplt[1];
-          //@ts-ignore
-          this.userPosition.lng = fakeAddressSplt[0];
-        }
-      }
-    })
+    
   }
 
   createForm() {

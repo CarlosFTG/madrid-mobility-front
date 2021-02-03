@@ -89,6 +89,7 @@ export class AdressFinderComponent implements OnInit {
 
   onChangeStreet(event: any) {
     let address = event.option.value;
+    let addressSp = event.option.value;
     var matches = address.match(/(\d+)/);
     let streetWithOutNumber = address.substring(0, matches.index).trim() + '+';
     let addressSplitted = address.split(" ");
@@ -118,12 +119,28 @@ export class AdressFinderComponent implements OnInit {
         this.stylePointsFeaturesService.applyStyleToFoundAdressMarker(foundAddressFeature);
         this.foundAddressCollection.push(foundAddressFeature);
 
+        this.infoCardService.notifyNewUserPosition(addressSp);
+
+        let latLng={
+          'lat':foundAddressCoords.lat,
+          'lng':foundAddressCoords.lng
+        }
+        localStorage.setItem('userCoords',JSON.stringify(latLng));
+
+        this.mapService.sendUserPositionToInfoCard(latLng);
+
         let foundAddressLayer = new VectorLayer({
-          name: 'foundAddress',
+          name: 'userPosition',
           source: new VectorSource({
             features: this.foundAddressCollection
           })
         })
+
+        for(let i = 0; i < this.mapService.map$.getLayers().getArray().length;i++){
+          if(this.mapService.map$.getLayers().getArray()[i].getProperties().name === 'userPosition'){
+            this.mapService.map$.removeLayer(this.mapService.map$.getLayers().getArray()[i]);
+          }
+        } 
 
         this.mapService.map$.addLayer(foundAddressLayer);
         

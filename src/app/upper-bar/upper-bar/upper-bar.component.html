@@ -1,16 +1,20 @@
 <mat-toolbar>
     <div *ngIf="userName === undefined">
-        <div style="padding: 2%;">
-            MadridMobility
-             <a role="button" (click)="openLogin()">login</a>
+        <div class="row">
+            <div class="col" >
+                MadridMobility
+                  <!-- <a role="button" (click)="openLogin()">login</a>  -->
+            </div>
+            <div class="col mat-typography" style="margin-left: 30%;">
+                <p>Usted está en {{userLocationAddress}}</p>
+            </div>
         </div>
-        
     </div>
     <div *ngIf="userName !== undefined">
         <div style="padding: 2%;">
             MadridMobility
              <p>Hola {{userName}}</p>
-        </div>
-        
+        </div> 
     </div>
+    <div *ngIf="userName !== undefined"><a role="button" (click)="logOut()">LogOut</a> </div>
 </mat-toolbar>

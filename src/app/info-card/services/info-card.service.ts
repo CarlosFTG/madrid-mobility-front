@@ -12,12 +12,15 @@ export class InfoCardService {
   //private REST_API_SERVER = "https://localhost:8081/api/bikes/EMTServices/";
 
   private closetsStationsListOut = new BehaviorSubject<any[]>(null);
+  private newUserPositionOut = new BehaviorSubject<string>(null);
   private iconOut = new BehaviorSubject<any[]>(null);
   private zoomToOut = new BehaviorSubject<any[]>(null);
+  
 
   notifyClosestsStations$ = this.closetsStationsListOut.asObservable();
   sendFoundAdressIconToMap$ = this.iconOut.asObservable();
   zoomTo$ = this.zoomToOut.asObservable();
+  newUserPosition$ = this.newUserPositionOut.asObservable();
 
   constructor(private httpClient: HttpClient) { }
 
@@ -41,7 +44,8 @@ export class InfoCardService {
   }
 
   getAdressCoordinates(address: string){
-    return this.httpClient.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' + address).pipe(catchError(this.handleError));
+    return this.httpClient.get('https://www.mapquestapi.com/geocoding/v1/address?key=rap9nA00BZ9zIZLP1eWHyyyrRkqGdFVX&location=' 
+    + address).pipe(catchError(this.handleError));
   }
 
   notifyClosestStations(closetsStations: any) {
@@ -54,5 +58,9 @@ export class InfoCardService {
 
   zoomTo(userPosition: any) {
     this.zoomToOut.next(userPosition);
+  }
+
+  notifyNewUserPosition(newUserPosition: string){
+    this.newUserPositionOut.next(newUserPosition);
   }
 }
