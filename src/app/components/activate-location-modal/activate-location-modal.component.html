@@ -1,0 +1,6 @@
+<div *ngIf='!languageEN'>Por favor, active la geolocalización de su navegador y refresque</div>
+<div *ngIf='languageEN'>Please, allow geolocation in your browser and refresh</div>
+<button (click)='closeDialog()'>
+    <span *ngIf='!languageEN'>Cerrar</span>
+    <span *ngIf='languageEN'>Close</span>
+</button>

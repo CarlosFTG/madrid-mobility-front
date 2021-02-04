@@ -1,0 +1,33 @@
+.button-welcome{
+    margin-left: 40%;
+}
+
+.message{
+    margin: auto;
+    /* margin-left:30%; */
+    justify-content: center;
+}
+
+.message-error{
+    padding: 2%;
+    margin-left:35%;
+    color:red
+}
+
+@media only screen and (max-width:450px) {
+    /* For tablets: */
+    .button-welcome{
+        margin-left:10%;
+    }
+    .message{
+        margin: auto;
+        /* margin-left:10%; */
+        justify-content: center;
+    }
+    
+    .message-error{
+        padding: 2%;
+        margin-left:2%;
+        color:red
+    }
+}

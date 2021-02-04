@@ -28,7 +28,8 @@ export class NomadriddialogComponent implements OnInit {
   
   constructor(
     public dialogRef: MatDialogRef<NomadriddialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData, private mapService: MapService, private stylePointsFeaturesService: StylePointsFeaturesService) { }
+    @Inject(MAT_DIALOG_DATA) public data: DialogData, 
+    private mapService: MapService, private stylePointsFeaturesService: StylePointsFeaturesService) { }
 
   ngOnInit(): void {
     this.getLanguage();

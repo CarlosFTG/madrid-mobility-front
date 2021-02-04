@@ -1,0 +1,16 @@
+<div class="container message">
+    <p style="text-align: center;" *ngIf="!languageEn">Para poder utilizar Madrid Mobility asegúrese </p>
+    <p style="text-align: center;"*ngIf="!languageEn">de tener la geolocalización activada</p>
+    <p *ngIf="languageEn">To use Madrid Mobility be sure of </p>
+    <p *ngIf="languageEn">activate your browser geolocation</p>
+    <div class="button-welcome">
+        <button   mat-raised-button color="primary"(click)="goToMadridMobility()">
+            <span *ngIf="languageEn">Ir a Madrid Mobility</span>
+            <span *ngIf="!languageEn">Go to Madrid Mobility</span>
+        </button>
+    </div>
+    <div class="message-error" *ngIf="!geoLoc">
+        <p *ngIf="!languageEn">Por favor, permita la geolocalización</p>
+        <p *ngIf="languageEn">Please, allo geolocation</p>
+    </div>
+</div>

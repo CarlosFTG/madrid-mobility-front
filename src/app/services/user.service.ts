@@ -1,4 +1,5 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router'
 import { Injectable } from '@angular/core';
 import { MapService } from './map.service';
 
@@ -13,13 +14,13 @@ import { InfoCardService } from '../info-card/services/info-card.service';
 
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { stringify } from 'querystring';
-import { TabledetailComponent } from '../components/tabledetail/tabledetail.component';
 import { MatDialog } from '@angular/material/dialog';
 import { NomadriddialogComponent } from '../components/nomadriddialog/nomadriddialog.component';
 import { StyleService } from './style.service';
 import { ErrordialogComponent } from '../components/errordialog/errordialog.component';
 import { catchError, retry, shareReplay } from 'rxjs/operators';
 import { StylePointsFeaturesService } from './style-points-features.service';
+import { ActivateLocationModalComponent } from '../components/activate-location-modal/activate-location-modal.component';
 
 @Injectable({
   providedIn: 'root'
@@ -40,7 +41,9 @@ export class UserService {
   private REST_API_SERVER = "https://floating-reef-24535.herokuapp.com/api/auth/EMTServices/";
 
   constructor(private httpClient: HttpClient, private mapService: MapService,
-    private infoCardService: InfoCardService, public dialog: MatDialog, private stylePointsFeaturesService: StylePointsFeaturesService) {
+    private infoCardService: InfoCardService, public dialog: MatDialog,
+    private stylePointsFeaturesService: StylePointsFeaturesService,
+    private router: Router) {
     this.getUserPosition();
   }
 
@@ -61,27 +64,21 @@ export class UserService {
     window.alert(errorMessage);
     return throwError(errorMessage);
   }
-
-  // openDialog(){
-  //   const dialogRef = this.dialog.open(ErrordialogComponent, {
-  //     width: '600px',
-  //     data: { err: 'An error has ocurred getting your' }
-  //   });
-  // }
-
   async getUserPosition() {
     let coords = await this.fetchCoordinates();
-    //@ts-ignore
-    this.getGeoCoding(coords.coords);
 
-    let userCoords = {
+    if (coords !== undefined) {
       //@ts-ignore
-      lat:coords.coords.latitude,
-      //@ts-ignore
-      lng:coords.coords.longitude
+      this.getGeoCoding(coords.coords);
+
+      let userCoords = {
+        //@ts-ignore
+        lat: coords.coords.latitude,
+        //@ts-ignore
+        lng: coords.coords.longitude
+      }
+      localStorage.setItem('userCoords', JSON.stringify(userCoords));
     }
-    localStorage.setItem('userCoords',JSON.stringify(userCoords));
-
   }
 
   getCoordinates() {
@@ -91,29 +88,40 @@ export class UserService {
   }
 
   async fetchCoordinates() {
-    // notice, no then(), cause await would block and 
-    // wait for the resolved result
-    const position = await this.getCoordinates();
+    const position = await this.getCoordinates()
+      .catch(err => console.log(err));
 
-    // Actually return a value
-    return position;
+    if (position === undefined) {
+      const dialogRef = this.dialog.open(ActivateLocationModalComponent, {
+        width: '600px',
+      });
+
+      // dialogRef.afterClosed().subscribe(result => {
+      //   this.router.navigate(['geoError']);
+      // });
+    } else {
+      return position;
+    }
   }
 
+  
   getGeoCoding(coords) {
     let userCity
     this.getGeoCodingAPI(coords).subscribe(
       res => {
         //@ts-ignore
         if (res.features[0].properties != undefined) {
-          //@ts-ignore
-          localStorage.setItem('userLocationAddress', res.features[0].properties.label);
-          //@ts-ignore
-          userCity=res.features[0].properties.locality;
+
+          let address = res.features[0].properties.label.split(',')[0];
+
+          this.infoCardService.notifyNewUserPosition(address);
+
+          userCity = res.features[0].properties.locality;
         }
         this.registerVisit(userCity);
         //@ts-ignore
         this.checkIfUserInMadrid(userCity, coords.longitude, coords.latitude);
-      },err=>{
+      }, err => {
         // let params = {
         //   //@ts-ignore
         //   'coordinates': 'POINT (' + coords.longitude + ' ' + coords.latitude + '),3857)'
@@ -130,7 +138,7 @@ export class UserService {
         });
 
         dialogRef.componentInstance.apiError = true;
-  
+
         dialogRef.afterClosed().subscribe(result => {
           console.log(result)
         });
@@ -142,14 +150,14 @@ export class UserService {
     let lat = coords.latitude;
     let lng = coords.longitude;
     return this.httpClient.get('https://api.openrouteservice.org/geocode/reverse?api_key=5b3ce3597851110001cf62485f1920e92dc94c50bc5c40c1b2d2ed46&point.lon='
-    +lng+'&point.lat='+lat).pipe(
+      + lng + '&point.lat=' + lat).pipe(
         retry(3),
         catchError(this.handleError)
       );
     shareReplay();
   }
 
-  
+
 
   registerVisit(userCity) {
     this.httpClient.get(this.REST_API_SERVER + 'registerVisit', {
@@ -180,9 +188,9 @@ export class UserService {
         geometry: new Point(userPositionCoords)
       });
 
-      let latLng={
-        'lat':lat,
-        'lng':lng
+      let latLng = {
+        'lat': lat,
+        'lng': lng
       }
 
       //@ts-ignore

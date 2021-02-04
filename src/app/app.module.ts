@@ -24,6 +24,8 @@ import { UpperBarModule } from './upper-bar/upper-bar.module';
 
 import { TokenInterceptor } from './auth-module/token.interceptor';
 import { InfoPopupComponent } from './components/info-popup/info-popup.component';
+import { ActivateLocationModalComponent } from './components/activate-location-modal/activate-location-modal.component';
+import { GeolocationErrorViewComponent } from './components/geolocation-error-view/geolocation-error-view.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -37,6 +39,8 @@ import { InfoPopupComponent } from './components/info-popup/info-popup.component
     WelcomeComponent,
     TabledetailComponent,
     InfoPopupComponent,
+    ActivateLocationModalComponent,
+    GeolocationErrorViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,7 +58,7 @@ import { InfoPopupComponent } from './components/info-popup/info-popup.component
   entryComponents: [
     DialogComponent,LoaadingNearStationsComponent,WelcomeDialogComponent,
     NomadriddialogComponent,ErrordialogComponent,BikeStationInfoComponent,
-    TabledetailComponent, InfoPopupComponent
+    TabledetailComponent, InfoPopupComponent,ActivateLocationModalComponent
   ],
   providers: [
      MapComponent,
